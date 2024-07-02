@@ -22,7 +22,7 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
     @Query("SELECT COUNT(t) FROM Ticket t WHERE t.sender = :username AND t.status = 'Closed'")
     long getClosedTicketCount(@Param("username") String username);
 
-    @Query("SELECT COUNT(t) FROM Ticket t WHERE t.sender = :username")
+    @Query("SELECT COUNT(t) FROM Ticket t WHERE t.sender = :username and t.status !='Deleted'")
     long getTotalTicketCount(@Param("username") String username);
 
     @Query("SELECT t FROM Ticket t WHERE t.status != 'Deleted'")

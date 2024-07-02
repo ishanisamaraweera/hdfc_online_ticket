@@ -20,6 +20,7 @@ public class TicketController {
     @CrossOrigin(origins = "*")
     @PostMapping("/addTicket")
     public Ticket addTicket(@RequestBody Ticket ticket){
+
         return ticketService.saveDetails(ticket);
     }
 
@@ -36,7 +37,7 @@ public class TicketController {
 
     //Update all ticket details
     @PutMapping("/updateTicket")
-    public Ticket updateTicket(@RequestBody Ticket ticket){
+    public Ticket updateTicket(@RequestBody Ticket ticket) throws Exception{
         return ticketService.updateTicket(ticket);
     }
 

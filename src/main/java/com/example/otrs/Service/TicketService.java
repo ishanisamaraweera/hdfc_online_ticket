@@ -19,6 +19,11 @@ public class TicketService {
     private TicketRepository ticketRepository;
 
     public Ticket saveDetails(Ticket ticket) {
+        if (ticketRepository.findMaxTicketNo() == null) {
+            ticket.setTicketNo(1L);
+        } else {
+            ticket.setTicketNo(Long.parseLong(ticketRepository.findMaxTicketNo()) + 1);
+        }
         return ticketRepository.save(ticket);
     }
 
@@ -30,33 +35,37 @@ public class TicketService {
         return ticketRepository.findById(ticketNo).orElse(null);
     }
 
+    public Ticket updateTicket(Ticket ticket) throws Exception {
+        Ticket updateTicket = ticketRepository.findById(ticket.getTicketNo().toString()).orElse(null);
 
-    public Ticket updateTicket(Ticket ticket) {
-        Ticket updateTicket = ticketRepository.findById(ticket.getTicketNo()).orElse(null);
-
-        if (updateTicket != null) {
-            updateTicket.setAssignee(ticket.getAssignee());
-            updateTicket.setEmergencyLevel(ticket.getEmergencyLevel());
-            updateTicket.setStatus(ticket.getStatus());
-            updateTicket.setLocation(ticket.getLocation());
-            updateTicket.setBranchOrDivision(ticket.getBranchOrDivision());
-            updateTicket.setIssueType(ticket.getIssueType());
-            updateTicket.setIssueCategory(ticket.getIssueCategory());
-            updateTicket.setContactNo(ticket.getContactNo());
-            updateTicket.setSerialNo(ticket.getSerialNo());
-            updateTicket.setIsWorkingPc(ticket.getIsWorkingPc());
-            updateTicket.setIp(ticket.getIp());
-            updateTicket.setIssueDesAndRemarks(ticket.getIssueDesAndRemarks());
-            updateTicket.setAgentResponseDateTime(ticket.getAgentResponseDateTime());
-            updateTicket.setResolvedDateTime(ticket.getResolvedDateTime());
-            updateTicket.setResolutionPeriod(ticket.getResolutionPeriod());
-            updateTicket.setAgentComments(ticket.getAgentComments());
-            updateTicket.setLastUpdatedUser(ticket.getLastUpdatedUser());
-            updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
-            ticketRepository.save((updateTicket));
-            return updateTicket;
+        if (updateTicket == null) {
+            throw new AccessDeniedException("Ticket not found");
         }
-        return null;
+
+        if (!updateTicket.getStatus().equals("New")) {
+            throw new AccessDeniedException("Access denied: Only tickets with status 'New' can be deleted");
+        }
+
+        updateTicket.setAssignee(ticket.getAssignee());
+        updateTicket.setEmergencyLevel(ticket.getEmergencyLevel());
+        updateTicket.setStatus(ticket.getStatus());
+        updateTicket.setLocation(ticket.getLocation());
+        updateTicket.setBranchOrDivision(ticket.getBranchOrDivision());
+        updateTicket.setIssueType(ticket.getIssueType());
+        updateTicket.setIssueCategory(ticket.getIssueCategory());
+        updateTicket.setContactNo(ticket.getContactNo());
+        updateTicket.setSerialNo(ticket.getSerialNo());
+        updateTicket.setIsWorkingPc(ticket.getIsWorkingPc());
+        updateTicket.setIp(ticket.getIp());
+        updateTicket.setIssueDesAndRemarks(ticket.getIssueDesAndRemarks());
+        updateTicket.setAgentResponseDateTime(ticket.getAgentResponseDateTime());
+        updateTicket.setResolvedDateTime(ticket.getResolvedDateTime());
+        updateTicket.setResolutionPeriod(ticket.getResolutionPeriod());
+        updateTicket.setAgentComments(ticket.getAgentComments());
+        updateTicket.setLastUpdatedUser(ticket.getLastUpdatedUser());
+        updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        ticketRepository.save((updateTicket));
+        return updateTicket;
     }
 
     public Ticket closeTicket(String ticketNo) {

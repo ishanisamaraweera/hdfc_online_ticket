@@ -25,7 +25,10 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
     @Query("SELECT COUNT(t) FROM Ticket t WHERE t.sender = :username and t.status !='Deleted'")
     long getTotalTicketCount(@Param("username") String username);
 
-    @Query("SELECT t FROM Ticket t WHERE t.status != 'Deleted'")
+    @Query("SELECT t FROM Ticket t WHERE t.status != 'Deleted' ORDER BY t.lastUpdatedDateTime DESC")
     List<Ticket> getAllTicketDetails();
+
+    @Query("SELECT MAX(t.ticketNo) FROM Ticket t")
+    String findMaxTicketNo();
 }
 

@@ -1,9 +1,6 @@
 package com.example.otrs.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 /*
@@ -21,7 +18,7 @@ import lombok.*;
 public class Ticket {
     @Id
     @Column(name = "ticket_no")
-    private String ticketNo;
+    private Long ticketNo;
     @Column(name = "sender")
     private String sender;
     @Column(name = "assignee")
@@ -63,11 +60,11 @@ public class Ticket {
     @Column(name = "last_updated_user")
     private String lastUpdatedUser;
 
-    public String getTicketNo() {
+    public Long getTicketNo() {
         return ticketNo;
     }
 
-    public void setTicketNo(String ticketNo) {
+    public void setTicketNo(Long ticketNo) {
         this.ticketNo = ticketNo;
     }
 

@@ -5,6 +5,7 @@ import com.example.otrs.Repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -63,21 +64,28 @@ public class TicketService {
 
         if (updateTicket != null) {
             updateTicket.setStatus("Closed");
+            updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
             ticketRepository.save((updateTicket));
             return updateTicket;
         }
         return null;
     }
 
-    public Ticket deleteTicket(String ticketNo) {
+    public Ticket deleteTicket(String ticketNo) throws AccessDeniedException {
         Ticket updateTicket = ticketRepository.findById(ticketNo).orElse(null);
 
-        if (updateTicket != null) {
-            updateTicket.setStatus("Deleted");
-            ticketRepository.save((updateTicket));
-            return updateTicket;
+        if (updateTicket == null) {
+            throw new AccessDeniedException("Ticket not found");
         }
-        return null;
+
+        if (!updateTicket.getStatus().equals("New")) {
+            throw new AccessDeniedException("Access denied: Only tickets with status 'New' can be deleted");
+        }
+
+        updateTicket.setStatus("Deleted");
+        updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        ticketRepository.save(updateTicket);
+        return updateTicket;
     }
 
     public long getActiveTicketCount(String username) {

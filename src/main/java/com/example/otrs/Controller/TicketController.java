@@ -48,7 +48,7 @@ public class TicketController {
 
     //Change the ticket status as delete
     @PutMapping("/deleteTicket/{ticketNo}")
-    public Ticket deleteTicket(@PathVariable String ticketNo){
+    public Ticket deleteTicket(@PathVariable String ticketNo) throws Exception {
         return ticketService.deleteTicket(ticketNo);
     }
 

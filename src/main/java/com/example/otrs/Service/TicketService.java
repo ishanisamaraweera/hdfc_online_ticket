@@ -23,7 +23,6 @@ public class TicketService {
 
     public List<Ticket> getAllDetails() {
         return ticketRepository.getAllTicketDetails();
-//        return ticketRepository.findAll();
     }
 
     public Ticket getAllDetailsByID(String ticketNo) {

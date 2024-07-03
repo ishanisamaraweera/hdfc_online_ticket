@@ -20,7 +20,6 @@ public class TicketController {
     @CrossOrigin(origins = "*")
     @PostMapping("/addTicket")
     public Ticket addTicket(@RequestBody Ticket ticket){
-
         return ticketService.saveDetails(ticket);
     }
 

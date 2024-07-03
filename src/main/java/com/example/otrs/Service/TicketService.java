@@ -2,9 +2,11 @@ package com.example.otrs.Service;
 
 import com.example.otrs.Entity.Ticket;
 import com.example.otrs.Repository.TicketRepository;
+import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,7 +41,7 @@ public class TicketService {
         Ticket updateTicket = ticketRepository.findById(ticket.getTicketNo().toString()).orElse(null);
 
         if (updateTicket == null) {
-            throw new AccessDeniedException("Ticket not found");
+            throw new Exception("Ticket not found");
         }
 
         if (!updateTicket.getStatus().equals("New")) {
@@ -80,11 +82,11 @@ public class TicketService {
         return null;
     }
 
-    public Ticket deleteTicket(String ticketNo) throws AccessDeniedException {
+    public Ticket deleteTicket(String ticketNo) throws Exception {
         Ticket updateTicket = ticketRepository.findById(ticketNo).orElse(null);
 
         if (updateTicket == null) {
-            throw new AccessDeniedException("Ticket not found");
+            throw new Exception("Ticket not found");
         }
 
         if (!updateTicket.getStatus().equals("New")) {

@@ -28,8 +28,18 @@ public class User {
     private String password;
     @Column(name = "location")
     private String location;
-    @Column(name = "branch_division")
-    private String branchDivision;
-    @Column(name = "ip")
-    private String ip;
+    @Column(name = "branch_or_division")
+    private String branchOrDivision;
+    @Column(name = "designation")
+    private String designation;
+    @Column(name = "user_role")
+    private String userRole;
+    @Column(name = "added_by")
+    private String addedBy;
+    @Column(name = "added_date_time")
+    private String addedDateTime;
+    @Column(name = "last_updated_user")
+    private String lastUpdatedUser;
+    @Column(name = "last_updated_date_time")
+    private String lastUpdatedDateTime;
 }

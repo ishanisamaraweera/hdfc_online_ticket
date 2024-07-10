@@ -5,6 +5,6 @@ public interface UserDetailsProjection {
     String getDisplayName();
     String getUserRole();
     String getLocation();
-    String getBranchDivision();
+    String getBranchOrDivision();
 }
 

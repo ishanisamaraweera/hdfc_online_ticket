@@ -6,6 +6,9 @@ import com.example.otrs.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @Service
 public class UserService {
     @Autowired
@@ -17,5 +20,10 @@ public class UserService {
 
     public UserDetailsDTO getUserDetailsForTicketByUsername(String username) {
         return userRepository.getUserDetailsForTicketByUsername(username);
+    }
+
+    public String getIPAddress() throws UnknownHostException {
+        InetAddress localHost = InetAddress.getLocalHost();
+        return localHost.getHostAddress();
     }
 }

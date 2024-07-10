@@ -52,11 +52,22 @@ public class TicketController {
         return ticketService.deleteTicket(ticketNo);
     }
 
-
     //Get the active ticket count of particular user
     @GetMapping("/getActiveTicketCount/{username}")
     public long getActiveTicketCount(@PathVariable String username){
         return ticketService.getActiveTicketCount(username);
+    }
+
+    //Get the active ticket count of particular user
+    @GetMapping("/getNewTicketCount/{username}")
+    public long getNewTicketCount(@PathVariable String username){
+        return ticketService.getNewTicketCount(username);
+    }
+
+    //Get the active ticket count of particular user
+    @GetMapping("/getAssignedTicketCount/{username}")
+    public long getAssignedTicketCount(@PathVariable String username){
+        return ticketService.getAssignedTicketCount(username);
     }
 
     //Get the completed ticket count of particular user

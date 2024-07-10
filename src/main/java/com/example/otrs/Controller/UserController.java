@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.UnknownHostException;
+
 @RestController
 public class UserController {
     @Autowired
@@ -23,5 +25,10 @@ public class UserController {
     @GetMapping("/getUserDetailsForTicketByUsername/{username}")
     public UserDetailsDTO getUserDetailsForTicketByUsername(@PathVariable String username) {
         return userService.getUserDetailsForTicketByUsername(username);
+    }
+
+    @GetMapping("/getIPAddress")
+    public String getIPAddress() throws UnknownHostException {
+        return userService.getIPAddress();
     }
 }

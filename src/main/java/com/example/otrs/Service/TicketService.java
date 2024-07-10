@@ -99,6 +99,14 @@ public class TicketService {
         return updateTicket;
     }
 
+    public long getNewTicketCount(String username) {
+        return ticketRepository.getNewTicketCount(username);
+    }
+
+    public long getAssignedTicketCount(String username) {
+        return ticketRepository.getAssignedTicketCount(username);
+    }
+
     public long getActiveTicketCount(String username) {
         return ticketRepository.getActiveTicketCount(username);
     }

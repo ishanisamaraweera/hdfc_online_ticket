@@ -28,8 +28,8 @@ public class User {
     private String password;
     @Column(name = "location")
     private String location;
-    @Column(name = "branch_division")
-    private String branchDivision;
+    @Column(name = "branch_or_division")
+    private String branchOrDivision;
     @Column(name = "designation")
     private String designation;
     @Column(name = "user_role")

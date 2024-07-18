@@ -17,26 +17,27 @@ import lombok.*;
 @AllArgsConstructor
 public class Ticket {
     @Id
-    @Column(name = "ticket_no")
-    private Long ticketNo;
-    @Column(name = "sender")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ticket_id", length = 12)
+    private String ticketId;
+    @Column(name = "sender", length = 45)
     private String sender;
-    @Column(name = "assignee")
+    @Column(name = "assignee", length = 45)
     private String assignee;
     @Column(name = "reported_date_time")
     private String reportedDateTime;
-    @Column(name = "emergency_level")
+    @Column(name = "emergency_level", length = 20)
     private String emergencyLevel;
     @Column(name = "status")
-    private String status;
+    private Integer status;
     @Column(name = "location")
     private String location;
     @Column(name = "branch_or_division")
-    private String branchOrDivision;
+    private String branchDivision;
     @Column(name = "issue_type")
-    private String issueType;
+    private Integer issueType;
     @Column(name = "issue_category")
-    private String issueCategory;
+    private Integer issueCategory;
     @Column(name = "contact_no")
     private String contactNo;
     @Column(name = "serial_no")
@@ -47,17 +48,18 @@ public class Ticket {
     private String ip;
     @Column(name = "issue_des_and_remarks")
     private String issueDesAndRemarks;
-    @Column(name = "agent_response_date_time")
-    private String agentResponseDateTime;
+    @Column(name = "assignee_response_date_time")
+    private String assigneeResponseDateTime;
     @Column(name = "resolved_date_time")
     private String resolvedDateTime;
     @Column(name = "resolution_period")
     private String resolutionPeriod;
     @Column(name = "agent_comments")
-    private String agentComments;
-    @Column(name = "last_updated_user")
+    private String assigneeComments;
+    @Column(name = "last_updated_user", length = 45)
     private String lastUpdatedUser;
     @Column(name = "last_updated_date_time")
     private String lastUpdatedDateTime;
+    @Column(name = "completed_percentage")
+    private String completedPercentage;
 }
-

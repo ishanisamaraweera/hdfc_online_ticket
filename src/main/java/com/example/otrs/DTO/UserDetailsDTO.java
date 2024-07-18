@@ -11,14 +11,14 @@ public class UserDetailsDTO {
     private String password;
     private String displayName;
     private String userRole;
-    private String location;
-    private String branchOrDivision;
+    private String locationDes;
+    private String branchDivisionDes;
 
-    public UserDetailsDTO(String password, String displayName, String userRole, String location, String branchOrDivision) {
+    public UserDetailsDTO(String password, String displayName, String userRole, String locationDes, String branchDivisionDes) {
         this.password = password;
         this.displayName = displayName;
         this.userRole = userRole;
-        this.location = location;
-        this.branchOrDivision = branchOrDivision;
+        this.locationDes = locationDes;
+        this.branchDivisionDes = branchDivisionDes;
     }
 }

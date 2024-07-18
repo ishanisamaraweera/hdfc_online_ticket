@@ -1,6 +1,8 @@
 package com.example.otrs.Service;
 
+import com.example.otrs.Entity.Status;
 import com.example.otrs.Entity.Ticket;
+import com.example.otrs.Repository.StatusRepository;
 import com.example.otrs.Repository.TicketRepository;
 import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +21,14 @@ import java.util.List;
 public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
+    @Autowired
+    private StatusRepository statusRepository;
 
     public Ticket saveDetails(Ticket ticket) {
         if (ticketRepository.findMaxTicketNo() == null) {
-            ticket.setTicketNo(1L);
+            ticket.setTicketId("00001");
         } else {
-            ticket.setTicketNo(Long.parseLong(ticketRepository.findMaxTicketNo()) + 1);
+            ticket.setTicketId(Long.toString(ticketRepository.findMaxTicketNo() + 1));
         }
         return ticketRepository.save(ticket);
     }
@@ -33,18 +37,18 @@ public class TicketService {
         return ticketRepository.getAllTicketDetails();
     }
 
-    public Ticket getAllDetailsByID(String ticketNo) {
-        return ticketRepository.findById(ticketNo).orElse(null);
+    public Ticket getAllDetailsByID(String ticketId) {
+        return ticketRepository.getAllDetailsByID(ticketId);
     }
 
     public Ticket updateTicket(Ticket ticket) throws Exception {
-        Ticket updateTicket = ticketRepository.findById(ticket.getTicketNo().toString()).orElse(null);
+        Ticket updateTicket = ticketRepository.findById(ticket.getTicketId()).orElse(null);
 
         if (updateTicket == null) {
             throw new Exception("Ticket not found");
         }
 
-        if (!updateTicket.getStatus().equals("New")) {
+        if (!updateTicket.getStatus().equals(1)) {
             throw new AccessDeniedException("Access denied: Only tickets with status 'New' can be deleted");
         }
 
@@ -52,7 +56,7 @@ public class TicketService {
         updateTicket.setEmergencyLevel(ticket.getEmergencyLevel());
         updateTicket.setStatus(ticket.getStatus());
         updateTicket.setLocation(ticket.getLocation());
-        updateTicket.setBranchOrDivision(ticket.getBranchOrDivision());
+        updateTicket.setBranchDivision(ticket.getBranchDivision());
         updateTicket.setIssueType(ticket.getIssueType());
         updateTicket.setIssueCategory(ticket.getIssueCategory());
         updateTicket.setContactNo(ticket.getContactNo());
@@ -60,10 +64,10 @@ public class TicketService {
         updateTicket.setIsWorkingPc(ticket.getIsWorkingPc());
         updateTicket.setIp(ticket.getIp());
         updateTicket.setIssueDesAndRemarks(ticket.getIssueDesAndRemarks());
-        updateTicket.setAgentResponseDateTime(ticket.getAgentResponseDateTime());
+        updateTicket.setAssigneeResponseDateTime(ticket.getAssigneeResponseDateTime());
         updateTicket.setResolvedDateTime(ticket.getResolvedDateTime());
         updateTicket.setResolutionPeriod(ticket.getResolutionPeriod());
-        updateTicket.setAgentComments(ticket.getAgentComments());
+        updateTicket.setAssigneeComments(ticket.getAssigneeComments());
         updateTicket.setLastUpdatedUser(ticket.getLastUpdatedUser());
         updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
         ticketRepository.save((updateTicket));
@@ -74,9 +78,13 @@ public class TicketService {
         Ticket updateTicket = ticketRepository.findById(ticketNo).orElse(null);
 
         if (updateTicket != null) {
-            updateTicket.setStatus("Closed");
+            Status closedStatus = statusRepository.findById("Closed").orElse(null);
+            if (closedStatus == null) {
+                statusRepository.save(new Status(4, "Closed Status"));;
+            }
+            updateTicket.setStatus(4);
             updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
-            ticketRepository.save((updateTicket));
+            ticketRepository.save(updateTicket);
             return updateTicket;
         }
         return null;
@@ -89,11 +97,15 @@ public class TicketService {
             throw new Exception("Ticket not found");
         }
 
-        if (!updateTicket.getStatus().equals("New")) {
+        if (!updateTicket.getStatus().equals(1)) {
             throw new AccessDeniedException("Access denied: Only tickets with status 'New' can be deleted");
         }
 
-        updateTicket.setStatus("Deleted");
+        Status deletedStatus = statusRepository.findById("Deleted").orElse(null);
+        if (deletedStatus == null) {
+            statusRepository.save(new Status(5, "Deleted Status"));;
+        }
+        updateTicket.setStatus(5);
         updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
         ticketRepository.save(updateTicket);
         return updateTicket;

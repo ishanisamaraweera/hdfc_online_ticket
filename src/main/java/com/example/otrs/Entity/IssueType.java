@@ -8,15 +8,16 @@ import lombok.*;
 
 @Entity
 @Data
-@Table(name = "status")
+@Table(name = "issue_type")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Status {
+public class IssueType {
     @Id
-    @Column(name = "status_id")
-    private Integer statusId;
-    @Column(name = "status_des")
-    private String statusDes;
+    @Column(name = "issue_type_id")
+    private Integer issueTypeId;
+    @Column(name = "issue_type_des")
+    private String issueTypeDes;
 }
+

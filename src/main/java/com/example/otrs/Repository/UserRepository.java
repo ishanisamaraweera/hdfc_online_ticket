@@ -13,8 +13,10 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("SELECT new com.example.otrs.DTO.UserDetailsDTO(u.password, " +
             "u.displayName, " +
             "u.userRole, " +
-            "u.location, " +
-            "u.branchOrDivision) " +
-            "FROM User u WHERE u.username = :username")
+            "l.locationDes, " +
+            "bd.branchDivisionDes) " +
+            "FROM User u " +
+            "LEFT JOIN Location l ON l.locationId = u.location " +
+            "LEFT JOIN BranchDivision bd ON bd.location = u.location WHERE u.username = :username")
     UserDetailsDTO getUserDetailsForTicketByUsername(@Param("username") String username);
 }

@@ -20,19 +20,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
     @Id
-    @Column(name = "username")
+    @Column(name = "username", length = 45)
     private String username;
     @Column(name = "display_name")
     private String displayName;
     @Column(name = "password")
     private String password;
-    @Column(name = "location")
+    @Column(name = "location", length = 45)
     private String location;
-    @Column(name = "branch_or_division")
+    @Column(name = "branch_or_division", length = 45)
     private String branchOrDivision;
     @Column(name = "designation")
     private String designation;
-    @Column(name = "user_role")
+    @Column(name = "user_role", length = 45)
     private String userRole;
     @Column(name = "added_by")
     private String addedBy;

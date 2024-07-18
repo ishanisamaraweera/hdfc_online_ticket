@@ -1,0 +1,22 @@
+package com.example.otrs.Controller;
+
+import com.example.otrs.Entity.Status;
+import com.example.otrs.Service.ConfigurationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+public class ConfigurationController {
+    @Autowired
+    ConfigurationService configurationService;
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/getStatuses")
+    public List<Status> getStatuses() {
+        return configurationService.getStatues();
+    }
+}

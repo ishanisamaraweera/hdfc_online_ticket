@@ -4,7 +4,6 @@ import com.example.otrs.Entity.Ticket;
 import com.example.otrs.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 /*
@@ -41,15 +40,15 @@ public class TicketController {
     }
 
     //Update the status of the ticket as closed
-    @PutMapping("/closeTicket/{ticketNo}")
-    public Ticket closeTicket(@PathVariable String ticketNo){
-        return ticketService.closeTicket(ticketNo);
+    @PutMapping("/closeTicket/{ticketId}")
+    public Ticket closeTicket(@PathVariable String ticketId){
+        return ticketService.closeTicket(ticketId);
     }
 
     //Change the ticket status as delete
-    @PutMapping("/deleteTicket/{ticketNo}")
-    public Ticket deleteTicket(@PathVariable String ticketNo) throws Exception {
-        return ticketService.deleteTicket(ticketNo);
+    @PutMapping("/deleteTicket/{ticketId}")
+    public Ticket deleteTicket(@PathVariable String ticketId) throws Exception {
+        return ticketService.deleteTicket(ticketId);
     }
 
     //Get the active ticket count of particular user

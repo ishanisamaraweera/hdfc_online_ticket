@@ -26,4 +26,8 @@ public class UserService {
         InetAddress localHost = InetAddress.getLocalHost();
         return localHost.getHostAddress();
     }
+
+    public UserDetailsDTO getIssueTypes(String username) {
+        return userRepository.getUserDetailsForTicketByUsername(username);
+    }
 }

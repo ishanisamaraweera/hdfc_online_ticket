@@ -1,6 +1,7 @@
 package com.example.otrs.Service;
 
 import com.example.otrs.DTO.UserDetailsDTO;
+import com.example.otrs.Entity.Ticket;
 import com.example.otrs.Entity.User;
 import com.example.otrs.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,10 @@ public class UserService {
 
     public UserDetailsDTO getIssueTypes(String username) {
         return userRepository.getUserDetailsForTicketByUsername(username);
+    }
+
+    public User saveDetails(User user) {
+        user.setUsername(user.getEpf() + user.getDob().replace("-",""));
+        return userRepository.save(user);
     }
 }

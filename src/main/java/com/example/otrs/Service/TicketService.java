@@ -1,5 +1,8 @@
 package com.example.otrs.Service;
 
+import com.example.otrs.DTO.TicketDTO;
+import com.example.otrs.Entity.BranchDivision;
+import com.example.otrs.Entity.EmergencyLevel;
 import com.example.otrs.Entity.Status;
 import com.example.otrs.Entity.Ticket;
 import com.example.otrs.Repository.StatusRepository;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -25,21 +29,58 @@ public class TicketService {
     private StatusRepository statusRepository;
 
     public Ticket saveDetails(Ticket ticket) {
-        if (ticketRepository.findMaxTicketNo() == null) {
+        if (ticketRepository.findMaxTicketId() == null) {
             ticket.setTicketId("00001");
         } else {
-            ticket.setTicketId(Long.toString(ticketRepository.findMaxTicketNo() + 1));
+            ticket.setTicketId(Long.toString(ticketRepository.findMaxTicketId() + 1));
         }
         return ticketRepository.save(ticket);
     }
 
-    public List<Ticket> getAllDetails() {
-        return ticketRepository.getAllTicketDetails();
+    public List<TicketDTO> getAllDetails() {
+        List<Object[]> results = ticketRepository.getAllTicketDetails();
+        List<TicketDTO> tickets = new ArrayList<>();
+
+        for (Object[] result : results) {
+            TicketDTO ticket = new TicketDTO();
+            ticket.setTicketId((String) result[0]);
+            ticket.setSender((String) result[1]);
+            ticket.setAssignee((String) result[2]);
+            ticket.setReportedDateTime((String) result[3]);
+            ticket.setEmergencyLevel((String) result[4]);
+            ticket.setStatus((String) result[5]);
+            ticket.setIssueType((String) result[6]);
+            ticket.setIssueCategory((String) result[7]);
+            ticket.setSerialNo((String) result[8]);
+            ticket.setIsWorkingPc((String) result[9]);
+            ticket.setIp((String) result[10]);
+            ticket.setIssueDesAndRemarks((String) result[11]);
+            ticket.setAssigneeResponseDateTime((String) result[12]);
+            ticket.setResolvedDateTime((String) result[13]);
+            ticket.setLastUpdatedUser((String) result[14]);
+            ticket.setLastUpdatedDateTime((String) result[15]);
+            ticket.setCompletedPercentage((String) result[16]);
+            ticket.setAssigneeComments((String) result[17]);
+            ticket.setBranchDivision((String) result[18]);
+            ticket.setContactNo((String) result[19]);
+            ticket.setLocation((String) result[20]);
+            ticket.setResolutionPeriod((String) result[21]);
+
+            tickets.add(ticket);
+        }
+
+        return tickets;
     }
 
-    public Ticket getAllDetailsByID(String ticketId) {
+    public TicketDTO getAllDetailsByID(String ticketId) {
         return ticketRepository.getAllDetailsByID(ticketId);
     }
+
+
+
+//    public Object[] getAllDetailsByID(String ticketId) {
+//        return ticketRepository.getAllDetailsByID(ticketId);
+//    }
 
     public Ticket updateTicket(Ticket ticket) throws Exception {
         Ticket updateTicket = ticketRepository.findById(ticket.getTicketId()).orElse(null);
@@ -74,15 +115,15 @@ public class TicketService {
         return updateTicket;
     }
 
-    public Ticket closeTicket(String ticketNo) {
-        Ticket updateTicket = ticketRepository.findById(ticketNo).orElse(null);
+    public Ticket closeTicket(String ticketId) {
+        Ticket updateTicket = ticketRepository.findById(ticketId).orElse(null);
 
         if (updateTicket != null) {
-            Status closedStatus = statusRepository.findById("Closed").orElse(null);
+            Status closedStatus = statusRepository.findById("5").orElse(null);
             if (closedStatus == null) {
-                statusRepository.save(new Status(4, "Closed Status"));;
+                statusRepository.save(new Status(5, "Closed"));;
             }
-            updateTicket.setStatus(4);
+            updateTicket.setStatus(5);
             updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
             ticketRepository.save(updateTicket);
             return updateTicket;
@@ -90,8 +131,8 @@ public class TicketService {
         return null;
     }
 
-    public Ticket deleteTicket(String ticketNo) throws Exception {
-        Ticket updateTicket = ticketRepository.findById(ticketNo).orElse(null);
+    public Ticket deleteTicket(String ticketId) throws Exception {
+        Ticket updateTicket = ticketRepository.findById(ticketId).orElse(null);
 
         if (updateTicket == null) {
             throw new Exception("Ticket not found");
@@ -101,11 +142,11 @@ public class TicketService {
             throw new AccessDeniedException("Access denied: Only tickets with status 'New' can be deleted");
         }
 
-        Status deletedStatus = statusRepository.findById("Deleted").orElse(null);
+        Status deletedStatus = statusRepository.findById("6").orElse(null);
         if (deletedStatus == null) {
             statusRepository.save(new Status(5, "Deleted Status"));;
         }
-        updateTicket.setStatus(5);
+        updateTicket.setStatus(6);
         updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
         ticketRepository.save(updateTicket);
         return updateTicket;

@@ -28,7 +28,7 @@ public class User {
     private String password;
     @Column(name = "location", length = 45)
     private String location;
-    @Column(name = "branch_or_division", length = 45)
+    @Column(name = "branch_division", length = 45)
     private String branchOrDivision;
     @Column(name = "designation")
     private String designation;
@@ -42,4 +42,8 @@ public class User {
     private String lastUpdatedUser;
     @Column(name = "last_updated_date_time")
     private String lastUpdatedDateTime;
+    @Column(name = "dob")
+    private String dob;
+    @Column(name = "epf")
+    private String epf;
 }

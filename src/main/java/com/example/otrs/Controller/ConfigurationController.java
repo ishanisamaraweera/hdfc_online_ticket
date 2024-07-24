@@ -1,10 +1,14 @@
 package com.example.otrs.Controller;
 
+import com.example.otrs.Entity.EmergencyLevel;
+import com.example.otrs.Entity.IssueCategory;
+import com.example.otrs.Entity.IssueType;
 import com.example.otrs.Entity.Status;
 import com.example.otrs.Service.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,5 +22,26 @@ public class ConfigurationController {
     @GetMapping("/getStatuses")
     public List<Status> getStatuses() {
         return configurationService.getStatues();
+    }
+
+    @GetMapping("/getEmergencyLevels")
+    public List<EmergencyLevel> getEmergencyLevels() {
+        return configurationService.getEmergencyLevels();
+    }
+
+    @GetMapping("/getIssueTypes")
+    public List<IssueType> getIssueTypes() {
+        return configurationService.getIssueTypes();
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/getIssueCategories")
+    public List<IssueCategory> getIssueCategories() {
+        return configurationService.getIssueCategories();
+    }
+
+    @GetMapping("/getIssueCategoriesByIssueType/{issueType}")
+    public List<IssueCategory> getIssueCategoriesByIssueType(@PathVariable Integer issueType) {
+        return configurationService.getIssueCategoriesByIssueType(issueType);
     }
 }

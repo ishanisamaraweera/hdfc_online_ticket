@@ -1,5 +1,6 @@
 package com.example.otrs.Repository;
 
+import com.example.otrs.DTO.TicketDTO;
 import com.example.otrs.Entity.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,13 +32,77 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
     @Query("SELECT COUNT(t) FROM Ticket t WHERE t.sender = :username and t.status <> 6")
     long getTotalTicketCount(@Param("username") String username);
 
-    @Query("SELECT t FROM Ticket t WHERE t.status <> 6 ORDER BY t.lastUpdatedDateTime DESC")
-    List<Ticket> getAllTicketDetails();
+    @Query("SELECT t.ticketId, " +
+            "u1.displayName as sender, " +
+            "u2.displayName as assignee, " +
+            "t.reportedDateTime, " +
+            "e.levelDes as emergencyLevel, " +
+            "s.statusDes as status, " +
+            "it.issueTypeDes as issueType, " +
+            "ic.issueCategoryDes as issueCategory, " +
+            "t.serialNo, " +
+            "t.isWorkingPc, " +
+            "t.ip, " +
+            "t.issueDesAndRemarks, " +
+            "t.assigneeResponseDateTime, " +
+            "t.resolvedDateTime, " +
+            "u3.displayName as lastUpdatedUser, " +
+            "t.lastUpdatedDateTime, " +
+            "t.completedPercentage, " +
+            "t.assigneeComments, " +
+            "bd.branchDivisionDes as branchDivision, " +
+            "t.contactNo, " +
+            "l.locationDes as location, " +
+            "t.resolutionPeriod " +
+            "FROM Ticket t " +
+            "LEFT JOIN User u1 ON u1.username = t.sender " +
+            "LEFT JOIN User u2 ON u2.username = t.assignee " +
+            "LEFT JOIN User u3 ON u3.username = t.lastUpdatedUser " +
+            "LEFT JOIN EmergencyLevel e ON e.levelId = t.emergencyLevel " +
+            "LEFT JOIN Status s ON s.statusId = t.status " +
+            "LEFT JOIN Location l ON l.locationId = t.location " +
+            "LEFT JOIN BranchDivision bd ON bd.branchDivisionId = t.branchDivision " +
+            "LEFT JOIN IssueType it ON t.issueType = it.issueTypeId " +
+            "LEFT JOIN IssueCategory ic ON t.issueCategory = ic.issueCategoryId " +
+            "WHERE t.status <> 6 ORDER BY t.lastUpdatedDateTime DESC")
+    List<Object[]> getAllTicketDetails();
 
-    @Query("SELECT MAX(t.ticketId) FROM Ticket t")
-    Integer findMaxTicketNo();
+    @Query("SELECT MAX(RIGHT(t.ticketId,5)) AS  FROM Ticket t")
+    Integer findMaxTicketId();
 
-    @Query("SELECT t FROM Ticket t WHERE t.ticketId = :ticketId")
-    Ticket getAllDetailsByID(@Param("ticketId") String ticketId);
+    @Query(value = "SELECT new com.example.otrs.DTO.TicketDTO(t.ticketId, " +
+            "u1.displayName as sender, " +
+            "u2.displayName as assignee, " +
+            "t.reportedDateTime, " +
+            "e.levelDes as emergencyLevel, " +
+            "s.statusDes as status, " +
+            "l.locationDes as location, " +
+            "bd.branchDivisionDes as branchDivision, " +
+            "it.issueTypeDes as issueType, " +
+            "ic.issueCategoryDes as issueCategory, " +
+            "t.serialNo, " +
+            "t.isWorkingPc, " +
+            "t.ip, " +
+            "t.issueDesAndRemarks, " +
+            "t.assigneeResponseDateTime, " +
+            "t.resolvedDateTime, " +
+            "u3.displayName as lastUpdatedUser, " +
+            "t.lastUpdatedDateTime, " +
+            "t.completedPercentage, " +
+            "t.assigneeComments, " +
+            "t.contactNo, " +
+            "t.resolutionPeriod) " +
+            "FROM Ticket t " +
+            "LEFT JOIN User u1 ON u1.username = t.sender " +
+            "LEFT JOIN User u2 ON u2.username = t.assignee " +
+            "LEFT JOIN User u3 ON u3.username = t.lastUpdatedUser " +
+            "LEFT JOIN EmergencyLevel e ON e.levelId = t.emergencyLevel " +
+            "LEFT JOIN Status s ON s.statusId = t.status " +
+            "LEFT JOIN Location l ON l.locationId = t.location " +
+            "LEFT JOIN BranchDivision bd ON bd.branchDivisionId = t.branchDivision " +
+            "LEFT JOIN IssueType it ON t.issueType = it.issueTypeId " +
+            "LEFT JOIN IssueCategory ic ON t.issueCategory = ic.issueCategoryId " +
+            "WHERE t.status <> 6 AND  t.ticketId = :ticketId ORDER BY t.lastUpdatedDateTime DESC")
+    TicketDTO getAllDetailsByID(@Param("ticketId") String ticketId);
 }
 

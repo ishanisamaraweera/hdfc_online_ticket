@@ -1,9 +1,12 @@
 package com.example.otrs.Controller;
 
+import com.example.otrs.DTO.TicketDTO;
+import com.example.otrs.DTO.TicketMapper;
 import com.example.otrs.Entity.Ticket;
 import com.example.otrs.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /*
@@ -23,12 +26,13 @@ public class TicketController {
     }
 
     @GetMapping("/getTicket")
-    public List<Ticket> getDetails(){
+//    Ticket ticket = TicketMapper.mapToTicket(ticketService.getAllDetails());
+    public List<TicketDTO> getDetails(){
         return ticketService.getAllDetails();
     }
 
     @GetMapping("/getTicketByID/{id}")
-    public Ticket getDetailsByID(@PathVariable String id){
+    public TicketDTO getDetailsByID(@PathVariable String id){
         return ticketService.getAllDetailsByID(id);
     }
 

@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BranchDivision {
     @Id
-    @Column(name = "branch_or_division_id", length = 45)
-    private String branchDivision;
+    @Column(name = "branch_division_id", length = 45)
+    private String branchDivisionId;
     @Column(name = "branch_division_des")
     private String branchDivisionDes;
     @Column(name = "location", length = 45)

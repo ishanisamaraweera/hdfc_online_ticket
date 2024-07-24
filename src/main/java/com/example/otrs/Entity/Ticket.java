@@ -18,21 +18,25 @@ import lombok.*;
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ticket_id", length = 12)
+    @Column(name = "ticketId", length = 12)
     private String ticketId;
     @Column(name = "sender", length = 45)
     private String sender;
     @Column(name = "assignee", length = 45)
     private String assignee;
-    @Column(name = "reported_date_time")
+    @Column(name = "reportedDateTime")
     private String reportedDateTime;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "emergency_level", referencedColumnName = "level_id")
     @Column(name = "emergency_level", length = 20)
     private String emergencyLevel;
+
     @Column(name = "status")
     private Integer status;
     @Column(name = "location")
     private String location;
-    @Column(name = "branch_or_division")
+    @Column(name = "branch_division")
     private String branchDivision;
     @Column(name = "issue_type")
     private Integer issueType;
@@ -54,7 +58,7 @@ public class Ticket {
     private String resolvedDateTime;
     @Column(name = "resolution_period")
     private String resolutionPeriod;
-    @Column(name = "agent_comments")
+    @Column(name = "assignee_comments")
     private String assigneeComments;
     @Column(name = "last_updated_user", length = 45)
     private String lastUpdatedUser;

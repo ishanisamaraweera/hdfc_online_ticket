@@ -1,7 +1,6 @@
 package com.example.otrs.Controller;
 
 import com.example.otrs.DTO.UserDetailsDTO;
-import com.example.otrs.Entity.Ticket;
 import com.example.otrs.Entity.User;
 import com.example.otrs.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,17 +1,13 @@
 package com.example.otrs.Service;
 
 import com.example.otrs.DTO.TicketDTO;
-import com.example.otrs.Entity.BranchDivision;
-import com.example.otrs.Entity.EmergencyLevel;
 import com.example.otrs.Entity.Status;
 import com.example.otrs.Entity.Ticket;
 import com.example.otrs.Repository.StatusRepository;
 import com.example.otrs.Repository.TicketRepository;
-import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

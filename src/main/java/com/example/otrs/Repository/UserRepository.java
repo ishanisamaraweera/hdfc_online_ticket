@@ -12,7 +12,6 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query("SELECT new com.example.otrs.DTO.UserDetailsDTO(u.password, " +
             "u.displayName, " +
-            "u.userRole, " +
             "l.locationDes, " +
             "bd.branchDivisionDes) " +
             "FROM User u " +

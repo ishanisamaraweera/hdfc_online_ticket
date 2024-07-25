@@ -7,8 +7,6 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-
 /*
 
 @author ishani.s
@@ -29,11 +27,9 @@ public class User {
     @Column(name = "location", length = 45)
     private String location;
     @Column(name = "branch_division", length = 45)
-    private String branchOrDivision;
+    private String branchDivision;
     @Column(name = "designation")
     private String designation;
-    @Column(name = "user_role", length = 45)
-    private String userRole;
     @Column(name = "added_by")
     private String addedBy;
     @Column(name = "added_date_time")

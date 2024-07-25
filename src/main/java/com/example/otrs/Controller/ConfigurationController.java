@@ -1,9 +1,6 @@
 package com.example.otrs.Controller;
 
-import com.example.otrs.Entity.EmergencyLevel;
-import com.example.otrs.Entity.IssueCategory;
-import com.example.otrs.Entity.IssueType;
-import com.example.otrs.Entity.Status;
+import com.example.otrs.Entity.*;
 import com.example.otrs.Service.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,5 +40,20 @@ public class ConfigurationController {
     @GetMapping("/getIssueCategoriesByIssueType/{issueType}")
     public List<IssueCategory> getIssueCategoriesByIssueType(@PathVariable Integer issueType) {
         return configurationService.getIssueCategoriesByIssueType(issueType);
+    }
+
+    @GetMapping("/getUserRoles")
+    public List<UserRole> getUserRoles() {
+        return configurationService.getUserRoles();
+    }
+
+    @GetMapping("/getLocations")
+    public List<Location> getLocations() {
+        return configurationService.getLocations();
+    }
+
+    @GetMapping("/getBranchDivisionByLocation/{location}")
+    public List<BranchDivision> getBranchDivisionByLocation(@PathVariable String location) {
+        return configurationService.getBranchDivisionByLocation(location);
     }
 }

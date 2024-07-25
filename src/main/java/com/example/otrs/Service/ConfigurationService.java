@@ -1,13 +1,7 @@
 package com.example.otrs.Service;
 
-import com.example.otrs.Entity.EmergencyLevel;
-import com.example.otrs.Entity.IssueCategory;
-import com.example.otrs.Entity.IssueType;
-import com.example.otrs.Entity.Status;
-import com.example.otrs.Repository.EmergencyLevelRepository;
-import com.example.otrs.Repository.IssueCategoryRepository;
-import com.example.otrs.Repository.IssueTypeRepository;
-import com.example.otrs.Repository.StatusRepository;
+import com.example.otrs.Entity.*;
+import com.example.otrs.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +17,13 @@ public class ConfigurationService {
     IssueTypeRepository issueTypeRepository;
     @Autowired
     IssueCategoryRepository issueCategoryRepository;
+    @Autowired
+    UserRoleRepository userRoleRepository;
+    @Autowired
+    LocationRepository locationRepository;
+    @Autowired
+    BranchDivisionRepository branchDivisionRepository;
+
     public List<Status> getStatues() {
         return statusRepository.findAll();
     }
@@ -42,4 +43,18 @@ public class ConfigurationService {
     public List<IssueCategory> getIssueCategoriesByIssueType(Integer issueType) {
         return issueCategoryRepository.getIssueCategoriesByIssueType(issueType);
     }
+
+    public List<UserRole> getUserRoles() {
+        return userRoleRepository.findAll();
+    }
+
+    public List<Location> getLocations() {
+        return locationRepository.findAll();
+    }
+
+    public List<BranchDivision> getBranchDivisionByLocation(String location) {
+        return branchDivisionRepository.getBranchDivisionByLocation(location);
+    }
+
+
 }

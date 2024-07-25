@@ -10,14 +10,12 @@ import lombok.Setter;
 public class UserDetailsDTO {
     private String password;
     private String displayName;
-    private String userRole;
     private String locationDes;
     private String branchDivisionDes;
 
-    public UserDetailsDTO(String password, String displayName, String userRole, String locationDes, String branchDivisionDes) {
+    public UserDetailsDTO(String password, String displayName, String locationDes, String branchDivisionDes) {
         this.password = password;
         this.displayName = displayName;
-        this.userRole = userRole;
         this.locationDes = locationDes;
         this.branchDivisionDes = branchDivisionDes;
     }

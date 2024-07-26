@@ -1,12 +1,11 @@
 package com.example.otrs.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Entity
 @Data
@@ -14,9 +13,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRoleAssign {
-    @Id
-    @Column(name = "user_id", length = 45)
-    private String userRoleId;
-    @Column(name = "user_role_id")
-    private String userRoleDes;
+    @EmbeddedId
+    private UserRoleAssignId id;
 }
+
+//public class UserRoleAssign {
+//    @Id
+//    @Column(name = "user_id", length = 45)
+//    private String userId;
+//
+//    @Id
+//    @Column(name = "user_role_id", length = 45)
+//    private String userRoleId;
+//}

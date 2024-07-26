@@ -1,5 +1,6 @@
 package com.example.otrs.Controller;
 
+import com.example.otrs.DTO.UserDTO;
 import com.example.otrs.DTO.UserDetailsDTO;
 import com.example.otrs.Entity.User;
 import com.example.otrs.Service.UserService;
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public User addUser(@RequestBody User user){
-        return userService.saveDetails(user);
+    public User addUser(@RequestBody UserDTO userRequest) {
+        return userService.createUserWithRoles(userRequest);
     }
 }

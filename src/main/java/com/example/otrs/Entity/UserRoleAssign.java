@@ -16,13 +16,3 @@ public class UserRoleAssign {
     @EmbeddedId
     private UserRoleAssignId id;
 }
-
-//public class UserRoleAssign {
-//    @Id
-//    @Column(name = "user_id", length = 45)
-//    private String userId;
-//
-//    @Id
-//    @Column(name = "user_role_id", length = 45)
-//    private String userRoleId;
-//}

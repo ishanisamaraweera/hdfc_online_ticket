@@ -42,4 +42,6 @@ public class User {
     private String dob;
     @Column(name = "epf")
     private String epf;
+    @Column(name = "status")
+    private Integer status;
 }

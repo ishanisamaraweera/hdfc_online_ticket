@@ -23,4 +23,6 @@ public class UserRole {
     private String userRoleId;
     @Column(name = "user_role_des")
     private String userRoleDes;
+    @Column(name = "status")
+    private Integer status;
 }

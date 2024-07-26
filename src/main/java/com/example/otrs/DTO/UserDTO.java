@@ -19,4 +19,5 @@ public class UserDTO {
     private String dob;
     private String epf;
     private List<String> userRoles;
+    private Integer status;
 }

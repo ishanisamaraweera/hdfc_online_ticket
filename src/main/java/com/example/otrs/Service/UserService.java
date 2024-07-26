@@ -62,6 +62,8 @@ public class UserService {
         user.setDob(userRequest.getDob());
         user.setEpf(userRequest.getEpf());
         List<String> roles = userRequest.getUserRoles();
+        user.setStatus(userRequest.getStatus());
+
         userRepository.save(user);
 
         for (String role : roles) {

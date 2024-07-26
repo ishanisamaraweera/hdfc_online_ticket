@@ -19,4 +19,6 @@ public class UserFunction {
     private String userFunctionId;
     @Column(name = "user_function_des")
     private String userFunctionDes;
+    @Column(name = "status")
+    private Integer status;
 }

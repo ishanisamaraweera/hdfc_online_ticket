@@ -32,8 +32,9 @@ public class TicketController {
     }
 
     @GetMapping("/getTicketByID/{id}")
-    public TicketDTO getDetailsByID(@PathVariable String id){
-        return ticketService.getAllDetailsByID(id);
+    public Ticket getDetailsByID(@PathVariable String id){
+        Ticket ticket = ticketService.getAllDetailsByID(id);
+        return ticket;
     }
 
 

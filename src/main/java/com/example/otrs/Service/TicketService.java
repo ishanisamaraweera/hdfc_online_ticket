@@ -76,15 +76,9 @@ public class TicketService {
         return tickets;
     }
 
-    public TicketDTO getAllDetailsByID(String ticketId) {
+    public Ticket getAllDetailsByID(String ticketId) {
         return ticketRepository.getAllDetailsByID(ticketId);
     }
-
-
-
-//    public Object[] getAllDetailsByID(String ticketId) {
-//        return ticketRepository.getAllDetailsByID(ticketId);
-//    }
 
     public Ticket updateTicket(Ticket ticket) throws Exception {
         Ticket updateTicket = ticketRepository.findById(ticket.getTicketId()).orElse(null);

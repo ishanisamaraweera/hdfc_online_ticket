@@ -14,11 +14,13 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query("SELECT new com.example.otrs.DTO.UserDetailsDTO(u.password, " +
             "u.displayName, " +
+            "u.location as locationId, " +
             "l.locationDes, " +
+            "u.branchDivision as branchDivisionId, " +
             "bd.branchDivisionDes) " +
             "FROM User u " +
             "LEFT JOIN Location l ON l.locationId = u.location " +
-            "LEFT JOIN BranchDivision bd ON bd.location = u.location WHERE u.username = :username")
+            "LEFT JOIN BranchDivision bd ON bd.branchDivisionId = u.branchDivision WHERE u.username = :username")
     UserDetailsDTO getUserDetailsForTicketByUsername(@Param("username") String username);
 
     @Modifying

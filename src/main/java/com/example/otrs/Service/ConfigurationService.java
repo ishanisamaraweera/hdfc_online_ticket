@@ -1,11 +1,14 @@
 package com.example.otrs.Service;
 
+import com.example.otrs.DTO.BranchDivisionDTO;
+import com.example.otrs.DTO.StatusDTO;
 import com.example.otrs.Entity.*;
 import com.example.otrs.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ConfigurationService {
@@ -28,6 +31,13 @@ public class ConfigurationService {
         return statusRepository.findAll();
     }
 
+    public List<StatusDTO> getStatuesByModule(String module) {
+        List<Object[]> results = statusRepository.getStatuesByModule(module);
+        return results.stream()
+                .map(result -> new StatusDTO((Integer) result[0], (String) result[1]))
+                .collect(Collectors.toList());
+    }
+
     public List<EmergencyLevel> getEmergencyLevels() {
         return emergencyLevelRepository.findAll();
     }
@@ -45,14 +55,14 @@ public class ConfigurationService {
     }
 
     public List<UserRole> getUserRoles() {
-        return userRoleRepository.findAll();
+        return userRoleRepository.getActiveUserRoles();
     }
 
     public List<Location> getLocations() {
         return locationRepository.findAll();
     }
 
-    public List<BranchDivision> getBranchDivisionByLocation(String location) {
+    public List<BranchDivisionDTO> getBranchDivisionByLocation(String location) {
         return branchDivisionRepository.getBranchDivisionByLocation(location);
     }
 

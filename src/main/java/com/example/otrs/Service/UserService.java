@@ -56,7 +56,7 @@ public class UserService {
         user.setBranchDivision(userRequest.getBranchDivision());
         user.setDesignation(userRequest.getDesignation());
         user.setAddedBy("1428");
-        user.setAddedDateTime(LocalDateTime.now().toString());
+        user.setAddedDateTime(userRequest.getAddedDateTime());
         user.setLastUpdatedUser("1428");
         user.setLastUpdatedDateTime(userRequest.getLastUpdatedDateTime());
         user.setDob(userRequest.getDob());

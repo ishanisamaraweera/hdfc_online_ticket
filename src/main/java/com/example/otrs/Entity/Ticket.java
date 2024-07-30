@@ -17,7 +17,6 @@ import lombok.*;
 @AllArgsConstructor
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ticketId", length = 12)
     private String ticketId;
     @Column(name = "sender", length = 45)
@@ -26,12 +25,8 @@ public class Ticket {
     private String assignee;
     @Column(name = "reportedDateTime")
     private String reportedDateTime;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "emergency_level", referencedColumnName = "level_id")
     @Column(name = "emergency_level", length = 20)
     private String emergencyLevel;
-
     @Column(name = "status")
     private Integer status;
     @Column(name = "location")

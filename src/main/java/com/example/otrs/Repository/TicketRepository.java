@@ -67,10 +67,11 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
             "WHERE t.status <> 6 ORDER BY t.lastUpdatedDateTime DESC")
     List<Object[]> getAllTicketDetails();
 
-    @Query("SELECT MAX(RIGHT(t.ticketId,5)) AS  FROM Ticket t")
-    Integer findMaxTicketId();
+    @Query("SELECT MAX(t.ticketId) AS ticketId FROM Ticket t")
+    String findMaxTicketId();
 
-    @Query(value = "SELECT new com.example.otrs.DTO.TicketDTO(t.ticketId, " +
+    @Query(value = "SELECT new com.example.otrs.DTO.TicketDTO(" +
+            "t.ticketId, " +
             "u1.displayName as sender, " +
             "u2.displayName as assignee, " +
             "t.reportedDateTime, " +

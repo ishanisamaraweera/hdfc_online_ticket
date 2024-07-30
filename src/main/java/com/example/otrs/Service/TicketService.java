@@ -25,11 +25,19 @@ public class TicketService {
     private StatusRepository statusRepository;
 
     public Ticket saveDetails(Ticket ticket) {
-        if (ticketRepository.findMaxTicketId() == null) {
-            ticket.setTicketId("00001");
+        String lastTicketId = ticketRepository.findMaxTicketId();
+        String currentYear = Integer.toString(LocalDateTime.now().getYear());
+        String branch = ticket.getBranchDivision();
+        String ticketId;
+
+        if (lastTicketId == null || !lastTicketId.substring(0,4).equals(currentYear)) {
+            ticketId = "00001";
         } else {
-            ticket.setTicketId(Long.toString(ticketRepository.findMaxTicketId() + 1));
+            int lastId = Integer.parseInt(lastTicketId.substring(7));
+            ticketId = String.format("%05d", lastId + 1);
         }
+
+        ticket.setTicketId(currentYear + branch + ticketId);
         return ticketRepository.save(ticket);
     }
 
@@ -117,7 +125,7 @@ public class TicketService {
         if (updateTicket != null) {
             Status closedStatus = statusRepository.findById("5").orElse(null);
             if (closedStatus == null) {
-                statusRepository.save(new Status(5, "Closed"));;
+                statusRepository.saveDetails(5, "Closed");
             }
             updateTicket.setStatus(5);
             updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
@@ -140,7 +148,7 @@ public class TicketService {
 
         Status deletedStatus = statusRepository.findById("6").orElse(null);
         if (deletedStatus == null) {
-            statusRepository.save(new Status(5, "Deleted Status"));;
+            statusRepository.saveDetails(5, "Deleted Status");;
         }
         updateTicket.setStatus(6);
         updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());

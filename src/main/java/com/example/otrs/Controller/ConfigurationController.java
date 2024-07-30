@@ -1,5 +1,7 @@
 package com.example.otrs.Controller;
 
+import com.example.otrs.DTO.BranchDivisionDTO;
+import com.example.otrs.DTO.StatusDTO;
 import com.example.otrs.Entity.*;
 import com.example.otrs.Service.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,11 @@ public class ConfigurationController {
     @GetMapping("/getStatuses")
     public List<Status> getStatuses() {
         return configurationService.getStatues();
+    }
+
+    @GetMapping("/getStatuses/{module}")
+    public List<StatusDTO> getStatuesByModule(@PathVariable String module) {
+        return configurationService.getStatuesByModule(module);
     }
 
     @GetMapping("/getEmergencyLevels")
@@ -53,7 +60,7 @@ public class ConfigurationController {
     }
 
     @GetMapping("/getBranchDivisionByLocation/{location}")
-    public List<BranchDivision> getBranchDivisionByLocation(@PathVariable String location) {
+    public List<BranchDivisionDTO> getBranchDivisionByLocation(@PathVariable String location) {
         return configurationService.getBranchDivisionByLocation(location);
     }
 }

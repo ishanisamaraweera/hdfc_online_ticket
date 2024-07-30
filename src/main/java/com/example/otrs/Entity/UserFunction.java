@@ -21,4 +21,12 @@ public class UserFunction {
     private String userFunctionDes;
     @Column(name = "status")
     private Integer status;
+    @Column(name = "created_user", length = 45)
+    private String createdUser;
+    @Column(name = "created_date_time")
+    private String createdDateTime;
+    @Column(name = "last_updated_user", length = 45)
+    private String lastUpdatedUser;
+    @Column(name = "last_updated_date_time")
+    private String lastUpdatedDateTime;
 }

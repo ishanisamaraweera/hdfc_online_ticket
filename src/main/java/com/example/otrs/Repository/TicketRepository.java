@@ -63,7 +63,7 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
             "LEFT JOIN BranchDivision bd ON bd.branchDivisionId = t.branchDivision " +
             "LEFT JOIN IssueType it ON t.issueType = it.issueTypeId " +
             "LEFT JOIN IssueCategory ic ON t.issueCategory = ic.issueCategoryId " +
-            "WHERE t.status <> 6 ORDER BY t.lastUpdatedDateTime DESC")
+            "WHERE t.status <> 6 ORDER BY t.ticketId DESC")
     List<Object[]> getAllTicketDetails();
 
     @Query("SELECT MAX(t.ticketId) AS ticketId FROM Ticket t")

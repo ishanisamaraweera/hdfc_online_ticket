@@ -17,13 +17,13 @@ import lombok.*;
 @AllArgsConstructor
 public class Ticket {
     @Id
-    @Column(name = "ticketId", length = 12)
+    @Column(name = "ticket_id", length = 20)
     private String ticketId;
     @Column(name = "sender", length = 45)
     private String sender;
     @Column(name = "assignee", length = 45)
     private String assignee;
-    @Column(name = "reportedDateTime")
+    @Column(name = "reported_date_time")
     private String reportedDateTime;
     @Column(name = "emergency_level", length = 20)
     private String emergencyLevel;

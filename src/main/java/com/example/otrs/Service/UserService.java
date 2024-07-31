@@ -1,5 +1,6 @@
 package com.example.otrs.Service;
 
+import com.example.otrs.DTO.LoginDTO;
 import com.example.otrs.DTO.UserDTO;
 import com.example.otrs.DTO.UserDetailsDTO;
 import com.example.otrs.Entity.*;
@@ -9,6 +10,7 @@ import com.example.otrs.Repository.UserRoleAssignRepository;
 import com.example.otrs.Repository.UserRoleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +27,7 @@ public class UserService {
     private UserRoleRepository userRoleRepository;
     @Autowired
     private UserFunctionRepository userFunctionRepository;
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     private UserRoleAssignRepository userRoleAssignRepository;
@@ -54,7 +55,7 @@ public class UserService {
         // Set user fields from userRequest
         user.setUsername(userRequest.getEpf());
         user.setDisplayName(userRequest.getDisplayName());
-        user.setPassword(userRequest.getEpf() + userRequest.getDob().replace("-", ""));
+        user.setPassword(passwordEncoder.encode(userRequest.getEpf() + userRequest.getDob().replace("-", "")));
         user.setLocation(userRequest.getLocation());
         user.setBranchDivision(userRequest.getBranchDivision());
         user.setDesignation(userRequest.getDesignation());
@@ -87,29 +88,29 @@ public class UserService {
         return userFunctionRepository.save(userFunction);
     }
 
-//    public boolean authenticateUser(String username, String rawPassword) {
-//        User user = userRepository.getUserDetailsByUsername(username);
-//        if (user != null) {
-//            return passwordEncoder.matches(rawPassword, user.getPassword());
-//        }
-//        return false;
-//    }
-//
-//    public boolean changePassword(String username, String oldPassword, String newPassword, String confirmPassword) {
-//        User user = userRepository.getUserDetailsByUsername(username);
-//        if (user != null && passwordEncoder.matches(oldPassword, user.getPassword()) && newPassword.equals(confirmPassword)) {
-//            user.setPassword(passwordEncoder.encode(newPassword));
-//            userRepository.save(user);
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    public String encodePassword(String rawPassword) {
-//        return passwordEncoder.encode(rawPassword);
-//    }
-//
-//    public boolean matchesPassword(String rawPassword, String encodedPassword) {
-//        return passwordEncoder.matches(rawPassword, encodedPassword);
-//    }
+    public boolean authenticateUser(LoginDTO loginInfo) {
+        User user = userRepository.getUserDetailsByUsername(loginInfo.getUsername());
+        if (user != null) {
+            return passwordEncoder.matches(loginInfo.getPassword(), user.getPassword());
+        }
+        return false;
+    }
+
+    public boolean changePassword(String username, String oldPassword, String newPassword, String confirmPassword) {
+        User user = userRepository.getUserDetailsByUsername(username);
+        if (user != null && passwordEncoder.matches(oldPassword, user.getPassword()) && newPassword.equals(confirmPassword)) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    public String encodePassword(String rawPassword) {
+        return passwordEncoder.encode(rawPassword);
+    }
+
+    public boolean matchesPassword(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
 }

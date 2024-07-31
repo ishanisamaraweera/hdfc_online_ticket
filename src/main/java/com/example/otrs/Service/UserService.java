@@ -9,6 +9,7 @@ import com.example.otrs.Repository.UserRoleAssignRepository;
 import com.example.otrs.Repository.UserRoleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
@@ -24,6 +25,8 @@ public class UserService {
     private UserRoleRepository userRoleRepository;
     @Autowired
     private UserFunctionRepository userFunctionRepository;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRoleAssignRepository userRoleAssignRepository;
@@ -83,4 +86,30 @@ public class UserService {
     public UserFunction addFunction(UserFunction userFunction){
         return userFunctionRepository.save(userFunction);
     }
+
+//    public boolean authenticateUser(String username, String rawPassword) {
+//        User user = userRepository.getUserDetailsByUsername(username);
+//        if (user != null) {
+//            return passwordEncoder.matches(rawPassword, user.getPassword());
+//        }
+//        return false;
+//    }
+//
+//    public boolean changePassword(String username, String oldPassword, String newPassword, String confirmPassword) {
+//        User user = userRepository.getUserDetailsByUsername(username);
+//        if (user != null && passwordEncoder.matches(oldPassword, user.getPassword()) && newPassword.equals(confirmPassword)) {
+//            user.setPassword(passwordEncoder.encode(newPassword));
+//            userRepository.save(user);
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    public String encodePassword(String rawPassword) {
+//        return passwordEncoder.encode(rawPassword);
+//    }
+//
+//    public boolean matchesPassword(String rawPassword, String encodedPassword) {
+//        return passwordEncoder.matches(rawPassword, encodedPassword);
+//    }
 }

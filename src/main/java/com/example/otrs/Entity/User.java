@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 /*
 
 @author ishani.s
@@ -20,20 +19,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
     @Id
-    @Column(name = "username")
+    @Column(name = "username", length = 45)
     private String username;
     @Column(name = "display_name")
     private String displayName;
     @Column(name = "password")
     private String password;
-    @Column(name = "location")
+    @Column(name = "location", length = 45)
     private String location;
-    @Column(name = "branch_or_division")
-    private String branchOrDivision;
+    @Column(name = "branch_division", length = 45)
+    private String branchDivision;
     @Column(name = "designation")
     private String designation;
-    @Column(name = "user_role")
-    private String userRole;
     @Column(name = "added_by")
     private String addedBy;
     @Column(name = "added_date_time")
@@ -42,4 +39,12 @@ public class User {
     private String lastUpdatedUser;
     @Column(name = "last_updated_date_time")
     private String lastUpdatedDateTime;
+    @Column(name = "dob")
+    private String dob;
+    @Column(name = "epf")
+    private String epf;
+    @Column(name = "status")
+    private Integer status;
+    @Column(name = "initial_login")
+    private String initialLogin;
 }

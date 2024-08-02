@@ -1,7 +1,5 @@
 package com.example.otrs.Controller;
 
-//import com.example.otrs.DTO.PasswordChangeRequestDTO;
-
 import com.example.otrs.DTO.LoginDTO;
 import com.example.otrs.DTO.PasswordChangeRequestDTO;
 import com.example.otrs.DTO.UserDTO;
@@ -54,7 +52,8 @@ public class UserController {
     }
 
     @GetMapping("/authenticateUser")
-    public boolean authenticateUser(@RequestBody LoginDTO loginInfo) {
+    public boolean authenticateUser(@RequestParam String username, @RequestParam String password) {
+        LoginDTO loginInfo = new LoginDTO(username, password);
         return userService.authenticateUser(loginInfo);
     }
 
@@ -69,5 +68,11 @@ public class UserController {
         } else {
             return ResponseEntity.status(400).body("Invalid info");
         }
+    }
+
+
+    @GetMapping("/checkInitialLoginStatus/{username}")
+    public String checkInitialLoginStatus (@PathVariable String username){
+        return userService.checkInitialLoginStatus(username);
     }
 }

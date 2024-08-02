@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -67,6 +66,7 @@ public class UserService {
         user.setEpf(userRequest.getEpf());
         List<String> roles = userRequest.getUserRoles();
         user.setStatus(userRequest.getStatus());
+        user.setInitialLogin("Yes");
 
         userRepository.save(user);
 
@@ -100,6 +100,7 @@ public class UserService {
         User user = userRepository.getUserDetailsByUsername(username);
         if (user != null && passwordEncoder.matches(oldPassword, user.getPassword()) && newPassword.equals(confirmPassword)) {
             user.setPassword(passwordEncoder.encode(newPassword));
+            user.setInitialLogin("No");
             userRepository.save(user);
             return true;
         }
@@ -112,5 +113,9 @@ public class UserService {
 
     public boolean matchesPassword(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    public String checkInitialLoginStatus(String username){
+        return userRepository.checkInitialLoginStatus(username);
     }
 }

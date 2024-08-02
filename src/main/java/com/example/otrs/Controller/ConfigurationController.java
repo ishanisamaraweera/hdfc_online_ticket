@@ -54,6 +54,11 @@ public class ConfigurationController {
         return configurationService.getUserRoles();
     }
 
+    @GetMapping("/getFunctions")
+    public List<UserFunction> getFunctions() {
+        return configurationService.getUserFunctions();
+    }
+
     @GetMapping("/getLocations")
     public List<Location> getLocations() {
         return configurationService.getLocations();

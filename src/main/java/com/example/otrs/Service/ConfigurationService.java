@@ -26,6 +26,8 @@ public class ConfigurationService {
     LocationRepository locationRepository;
     @Autowired
     BranchDivisionRepository branchDivisionRepository;
+    @Autowired
+    UserFunctionRepository userFunctionRepository;
 
     public List<Status> getStatues() {
         return statusRepository.findAll();
@@ -56,6 +58,10 @@ public class ConfigurationService {
 
     public List<UserRole> getUserRoles() {
         return userRoleRepository.getActiveUserRoles();
+    }
+
+    public List<UserFunction> getUserFunctions() {
+        return userFunctionRepository.getUserFunctions();
     }
 
     public List<Location> getLocations() {

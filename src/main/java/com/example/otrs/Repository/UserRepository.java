@@ -41,4 +41,7 @@ public interface UserRepository extends JpaRepository<User, String> {
                      @Param("addedDateTime") String addedDateTime,
                      @Param("lastUpdatedUser") String lastUpdatedUser,
                      @Param("lastUpdatedDateTime") String lastUpdatedDateTime);
+
+    @Query("SELECT u.initialLogin FROM User u WHERE u.username = :username")
+    String checkInitialLoginStatus(@Param("username") String username);
 }

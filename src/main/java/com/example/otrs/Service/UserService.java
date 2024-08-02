@@ -1,5 +1,6 @@
 package com.example.otrs.Service;
 
+import com.example.otrs.DTO.LoginDTO;
 import com.example.otrs.DTO.UserDTO;
 import com.example.otrs.DTO.UserDetailsDTO;
 import com.example.otrs.Entity.*;
@@ -9,11 +10,12 @@ import com.example.otrs.Repository.UserRoleAssignRepository;
 import com.example.otrs.Repository.UserRoleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -24,6 +26,7 @@ public class UserService {
     private UserRoleRepository userRoleRepository;
     @Autowired
     private UserFunctionRepository userFunctionRepository;
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     private UserRoleAssignRepository userRoleAssignRepository;
@@ -51,7 +54,7 @@ public class UserService {
         // Set user fields from userRequest
         user.setUsername(userRequest.getEpf());
         user.setDisplayName(userRequest.getDisplayName());
-        user.setPassword(userRequest.getEpf() + userRequest.getDob().replace("-", ""));
+        user.setPassword(passwordEncoder.encode(userRequest.getEpf() + userRequest.getDob().replace("-", "")));
         user.setLocation(userRequest.getLocation());
         user.setBranchDivision(userRequest.getBranchDivision());
         user.setDesignation(userRequest.getDesignation());
@@ -63,6 +66,7 @@ public class UserService {
         user.setEpf(userRequest.getEpf());
         List<String> roles = userRequest.getUserRoles();
         user.setStatus(userRequest.getStatus());
+        user.setInitialLogin("Yes");
 
         userRepository.save(user);
 
@@ -82,5 +86,36 @@ public class UserService {
     @Transactional
     public UserFunction addFunction(UserFunction userFunction){
         return userFunctionRepository.save(userFunction);
+    }
+
+    public boolean authenticateUser(LoginDTO loginInfo) {
+        User user = userRepository.getUserDetailsByUsername(loginInfo.getUsername());
+        if (user != null) {
+            return passwordEncoder.matches(loginInfo.getPassword(), user.getPassword());
+        }
+        return false;
+    }
+
+    public boolean changePassword(String username, String oldPassword, String newPassword, String confirmPassword) {
+        User user = userRepository.getUserDetailsByUsername(username);
+        if (user != null && passwordEncoder.matches(oldPassword, user.getPassword()) && newPassword.equals(confirmPassword)) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            user.setInitialLogin("No");
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    public String encodePassword(String rawPassword) {
+        return passwordEncoder.encode(rawPassword);
+    }
+
+    public boolean matchesPassword(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    public String checkInitialLoginStatus(String username){
+        return userRepository.checkInitialLoginStatus(username);
     }
 }

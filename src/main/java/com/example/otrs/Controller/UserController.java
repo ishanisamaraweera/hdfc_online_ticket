@@ -80,4 +80,14 @@ public class UserController {
     public List<UserDataDTO> getAllUserDetails(){
         return userService.getAllUserDetails();
     }
+
+    @GetMapping("/getUserRolesForUsername/{username}")
+    public List<String> getUserRolesForUsername(@PathVariable String username){
+        return userService.getUserRolesForUsername(username);
+    }
+
+    @GetMapping("/getAllUserRoles")
+    public List<UserRole> getAllUserRoles(){
+        return userService.getAllUserRoles();
+    }
 }

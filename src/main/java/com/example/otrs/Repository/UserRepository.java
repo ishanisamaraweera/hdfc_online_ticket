@@ -1,13 +1,14 @@
 package com.example.otrs.Repository;
 
+import com.example.otrs.DTO.UserDTO;
 import com.example.otrs.DTO.UserDetailsDTO;
 import com.example.otrs.Entity.User;
+import com.example.otrs.Entity.UserRole;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, String> {
@@ -68,4 +69,12 @@ public interface UserRepository extends JpaRepository<User, String> {
             "WHERE u.status <> 6 ORDER BY u.lastUpdatedDateTime DESC")
     List<Object[]> getAllUserDetails();
 
+    @Query(value = "SELECT u.id.userRoleId " +
+            "FROM UserRoleAssign u " +
+            "WHERE u.id.userId = :username")
+    List<String> getUserRolesForUsername(String username);
+
+    @Query(value = "SELECT u.userRoleId, u.userRoleDes " +
+            "FROM UserRole u ")
+    List<UserRole> getAllUserRoles();
 }

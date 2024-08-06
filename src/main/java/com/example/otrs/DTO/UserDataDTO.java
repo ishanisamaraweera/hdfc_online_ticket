@@ -23,6 +23,11 @@ public class UserDataDTO {
     private String lastUpdatedDateTime;
     private String status;
     private List<String> userRoles;
+    private String password;
+    private String locationId;
+    private String locationDes;
+    private String branchDivisionId;
+    private String branchDivisionDes;
 
     public UserDataDTO(String username, String displayName, String designation, String dob, String epf,
                        String location, String branchDivision, String addedBy, String addedDateTime, String lastUpdatedUser,

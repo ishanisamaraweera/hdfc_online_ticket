@@ -6,10 +6,13 @@ import com.example.otrs.Entity.*;
 import com.example.otrs.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
+/*
+
+@author ishani.s
+ */
 @Service
 public class ConfigurationService {
     @Autowired

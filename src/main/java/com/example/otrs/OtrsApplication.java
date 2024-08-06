@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @author ishani.s
  */
-
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.example.otrs.Repository")
 public class OtrsApplication {

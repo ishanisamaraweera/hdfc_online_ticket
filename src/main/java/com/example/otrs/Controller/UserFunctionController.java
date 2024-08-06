@@ -2,13 +2,15 @@ package com.example.otrs.Controller;
 
 import com.example.otrs.DTO.UserFunctionAssignDTO;
 import com.example.otrs.DTO.UserFunctionDTO;
-import com.example.otrs.Entity.UserFunction;
 import com.example.otrs.Service.UserFunctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+/*
+
+@author ishani.s
+ */
 @RestController
 public class UserFunctionController {
     @Autowired

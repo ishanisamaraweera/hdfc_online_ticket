@@ -26,15 +26,13 @@ public class TicketController {
     }
 
     @GetMapping("/getTicket")
-//    Ticket ticket = TicketMapper.mapToTicket(ticketService.getAllDetails());
     public List<TicketDTO> getDetails(){
         return ticketService.getAllDetails();
     }
 
     @GetMapping("/getTicketByID/{id}")
     public Ticket getDetailsByID(@PathVariable String id){
-        Ticket ticket = ticketService.getAllDetailsByID(id);
-        return ticket;
+        return ticketService.getAllDetailsByID(id);
     }
 
 

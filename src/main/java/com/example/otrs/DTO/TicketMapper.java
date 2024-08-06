@@ -4,6 +4,10 @@ import com.example.otrs.Entity.Ticket;
 
 import java.util.List;
 
+/*
+
+@author ishani.s
+ */
 public class TicketMapper {
 
     public static Ticket mapToTicket(List<String> input) {

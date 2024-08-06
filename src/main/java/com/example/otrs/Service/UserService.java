@@ -1,8 +1,6 @@
 package com.example.otrs.Service;
 
-import com.example.otrs.DTO.LoginDTO;
-import com.example.otrs.DTO.UserDTO;
-import com.example.otrs.DTO.UserDetailsDTO;
+import com.example.otrs.DTO.*;
 import com.example.otrs.Entity.*;
 import com.example.otrs.Repository.UserFunctionRepository;
 import com.example.otrs.Repository.UserRepository;
@@ -13,11 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
+/*
+
+@author ishani.s
+ */
 @Service
 public class UserService {
     @Autowired
@@ -117,5 +119,28 @@ public class UserService {
 
     public String checkInitialLoginStatus(String username){
         return userRepository.checkInitialLoginStatus(username);
+    }
+
+    public List<UserDataDTO> getAllUserDetails() {
+        List<Object[]> results = userRepository.getAllUserDetails();
+        List<UserDataDTO> users = new ArrayList<>();
+
+        for (Object[] result : results) {
+            UserDataDTO user = new UserDataDTO();
+            user.setUsername((String) result[0]);
+            user.setDisplayName((String) result[1]);
+            user.setDesignation((String) result[2]);
+            user.setDob((String) result[3]);
+            user.setEpf((String) result[4]);
+            user.setLocation((String) result[5]);
+            user.setBranchDivision((String) result[6]);
+            user.setAddedBy((String) result[7]);
+            user.setAddedDateTime((String) result[8]);
+            user.setLastUpdatedUser((String) result[9]);
+            user.setLastUpdatedDateTime((String) result[10]);
+            user.setStatus((String) result[11]);
+            users.add(user);
+        }
+        return users;
     }
 }

@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/*
+
+@author ishani.s
+ */
 @Entity
 @Data
 @Table(name = "user_role_assign")

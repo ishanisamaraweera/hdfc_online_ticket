@@ -7,7 +7,6 @@ import lombok.*;
 
 @author ishani.s
  */
-
 @Entity
 @Data
 @Table(name = "ticket")

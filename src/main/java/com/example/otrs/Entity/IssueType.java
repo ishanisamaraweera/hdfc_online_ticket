@@ -6,6 +6,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+/*
+
+@author ishani.s
+ */
 @Entity
 @Data
 @Table(name = "issue_type")

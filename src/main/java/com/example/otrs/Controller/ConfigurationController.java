@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/*
+
+@author ishani.s
+ */
 @RestController
 public class ConfigurationController {
     @Autowired

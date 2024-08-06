@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/*
+
+@author ishani.s
+ */
 @Repository
 public interface BranchDivisionRepository extends JpaRepository<BranchDivision, String> {
     @Query("SELECT new com.example.otrs.DTO.BranchDivisionDTO(bd.branchDivisionId, bd.branchDivisionDes) " +

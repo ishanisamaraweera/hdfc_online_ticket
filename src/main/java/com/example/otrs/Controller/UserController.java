@@ -85,4 +85,19 @@ public class UserController {
     public List<String> getUserRolesForUsername(@PathVariable String username){
         return userService.getUserRolesForUsername(username);
     }
+
+    //Update all ticket details
+    @PutMapping("/updateUser")
+    public User updateUser(@RequestBody User user) throws Exception{
+        return userService.updateUser(user);
+    }
+
+    @PostMapping("/assignUserRoles/{username}")
+    public boolean assignUserRoles (@RequestBody List<String> userRoles, @PathVariable String username){
+        return userService.assignUserRoles(username, userRoles);
+    }
+//    @PostMapping("/assignUserRoles")
+//    public boolean assignUserRoles (@RequestBody List<String> userRoles, @PathVariable String username){
+//        return userService.assignUserRoles(username, userRoles);
+//    }
 }

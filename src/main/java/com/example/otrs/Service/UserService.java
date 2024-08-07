@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +30,10 @@ public class UserService {
     private UserRoleRepository userRoleRepository;
     @Autowired
     private UserFunctionRepository userFunctionRepository;
-    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
     @Autowired
     private UserRoleAssignRepository userRoleAssignRepository;
+
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User getUserDetailsByUsername(String username) {
         return userRepository.getUserDetailsByUsername(username);
@@ -146,5 +148,35 @@ public class UserService {
 
     public List<String> getUserRolesForUsername(String username) {
         return userRepository.getUserRolesForUsername(username);
+    }
+
+    public User updateUser(User user) throws Exception {
+        User updateUser = userRepository.findById(user.getUsername()).orElse(null);
+
+        if (updateUser == null) {
+            throw new Exception("User not found");
+        }
+        updateUser.setDisplayName(user.getDisplayName());
+        updateUser.setDesignation(user.getDesignation());
+        updateUser.setDob(user.getDob());
+        updateUser.setLocation(user.getLocation());
+        updateUser.setBranchDivision(user.getBranchDivision());
+        updateUser.setStatus(user.getStatus());
+        updateUser.setLastUpdatedUser(user.getLastUpdatedUser());
+        updateUser.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        userRepository.save((updateUser));
+        return updateUser;
+    }
+
+    @Transactional
+    public boolean assignUserRoles(String username, List<String> userRoles) {
+        userRoleAssignRepository.deleteExistingUserRoles(username);
+
+        for (String userRole : userRoles) {
+            UserRoleAssignId id = new UserRoleAssignId(username, userRole);
+            UserRoleAssign userRoleAssign = new UserRoleAssign(id);
+            userRoleAssignRepository.save(userRoleAssign);
+        }
+        return true;
     }
 }

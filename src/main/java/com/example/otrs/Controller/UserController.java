@@ -85,9 +85,4 @@ public class UserController {
     public List<String> getUserRolesForUsername(@PathVariable String username){
         return userService.getUserRolesForUsername(username);
     }
-
-    @GetMapping("/getAllUserRoles")
-    public List<UserRole> getAllUserRoles(){
-        return userService.getAllUserRoles();
-    }
 }

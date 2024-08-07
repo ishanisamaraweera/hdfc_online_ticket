@@ -147,8 +147,4 @@ public class UserService {
     public List<String> getUserRolesForUsername(String username) {
         return userRepository.getUserRolesForUsername(username);
     }
-
-    public List<UserRole> getAllUserRoles() {
-        return userRepository.getAllUserRoles();
-    }
 }

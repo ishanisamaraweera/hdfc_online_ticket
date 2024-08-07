@@ -73,8 +73,4 @@ public interface UserRepository extends JpaRepository<User, String> {
             "FROM UserRoleAssign u " +
             "WHERE u.id.userId = :username")
     List<String> getUserRolesForUsername(String username);
-
-    @Query(value = "SELECT u.userRoleId, u.userRoleDes " +
-            "FROM UserRole u ")
-    List<UserRole> getAllUserRoles();
 }

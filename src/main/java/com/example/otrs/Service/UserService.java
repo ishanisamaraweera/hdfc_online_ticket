@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -146,8 +147,30 @@ public class UserService {
         return users;
     }
 
+    public List<UserRoleDTO> getAllUserRoles() {
+        List<Object[]> results = userRoleRepository.getAllUserRoles();
+        List<UserRoleDTO> userRoles = new ArrayList<>();
+
+        for (Object[] result : results) {
+            UserRoleDTO userRole = new UserRoleDTO();
+            userRole.setUserRoleId((String) result[0]);
+            userRole.setUserRoleDes((String) result[1]);
+            userRole.setCreatedUser((String) result[2]);
+            userRole.setCreatedDateTime((String) result[3]);
+            userRole.setLastUpdatedUser((String) result[4]);
+            userRole.setLastUpdatedDateTime((String) result[5]);
+            userRole.setStatus((String) result[6]);
+            userRoles.add(userRole);
+        }
+        return userRoles;
+    }
+
     public List<String> getUserRolesForUsername(String username) {
         return userRepository.getUserRolesForUsername(username);
+    }
+
+    public UserRole getUserDetailsByUserRole(String userRoleId){
+        return userRoleRepository.getUserDetailsByUserRole(userRoleId);
     }
 
     public User updateUser(User user) throws Exception {
@@ -178,5 +201,16 @@ public class UserService {
             userRoleAssignRepository.save(userRoleAssign);
         }
         return true;
+    }
+
+    public void deleteUser(String username) throws Exception {
+        User deleteUser = userRepository.findById(username).orElse(null);
+
+        if (deleteUser == null) {
+            throw new Exception("User not found");
+        }
+        deleteUser.setStatus(6);
+        deleteUser.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        userRepository.save((deleteUser));
     }
 }

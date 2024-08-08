@@ -81,6 +81,11 @@ public class UserController {
         return userService.getAllUserDetails();
     }
 
+    @GetMapping("/getAllUserRoles")
+    public List<UserRoleDTO> getAllUserRoles(){
+        return userService.getAllUserRoles();
+    }
+
     @GetMapping("/getUserRolesForUsername/{username}")
     public List<String> getUserRolesForUsername(@PathVariable String username){
         return userService.getUserRolesForUsername(username);
@@ -96,8 +101,15 @@ public class UserController {
     public boolean assignUserRoles (@RequestBody List<String> userRoles, @PathVariable String username){
         return userService.assignUserRoles(username, userRoles);
     }
-//    @PostMapping("/assignUserRoles")
-//    public boolean assignUserRoles (@RequestBody List<String> userRoles, @PathVariable String username){
-//        return userService.assignUserRoles(username, userRoles);
-//    }
+
+    @PutMapping("/deleteUser/{username}")
+    public void deleteUser(@PathVariable String username) throws Exception{
+        userService.deleteUser(username);
+    }
+
+    @GetMapping("/getUserDetailsByUserRole/{userRoleId}")
+    public UserRole getUserDetailsByUserRole(@PathVariable String userRoleId){
+        return userService.getUserDetailsByUserRole(userRoleId);
+    }
+
 }

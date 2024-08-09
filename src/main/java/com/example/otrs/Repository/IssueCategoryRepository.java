@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/*
+
+@author ishani.s
+ */
 @Repository
 public interface IssueCategoryRepository extends JpaRepository<IssueCategory, Integer> {
     @Query("SELECT ic FROM IssueCategory ic WHERE ic.issueType = :issueType")

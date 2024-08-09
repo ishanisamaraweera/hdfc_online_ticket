@@ -1,8 +1,6 @@
 package com.example.otrs.Service;
 
-import com.example.otrs.DTO.LoginDTO;
-import com.example.otrs.DTO.UserDTO;
-import com.example.otrs.DTO.UserDetailsDTO;
+import com.example.otrs.DTO.*;
 import com.example.otrs.Entity.*;
 import com.example.otrs.Repository.UserFunctionRepository;
 import com.example.otrs.Repository.UserRepository;
@@ -16,8 +14,15 @@ import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.file.AccessDeniedException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+/*
+
+@author ishani.s
+ */
 @Service
 public class UserService {
     @Autowired
@@ -26,10 +31,10 @@ public class UserService {
     private UserRoleRepository userRoleRepository;
     @Autowired
     private UserFunctionRepository userFunctionRepository;
-    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
     @Autowired
     private UserRoleAssignRepository userRoleAssignRepository;
+
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User getUserDetailsByUsername(String username) {
         return userRepository.getUserDetailsByUsername(username);
@@ -117,5 +122,121 @@ public class UserService {
 
     public String checkInitialLoginStatus(String username){
         return userRepository.checkInitialLoginStatus(username);
+    }
+
+    public List<UserDataDTO> getAllUserDetails() {
+        List<Object[]> results = userRepository.getAllUserDetails();
+        List<UserDataDTO> users = new ArrayList<>();
+
+        for (Object[] result : results) {
+            UserDataDTO user = new UserDataDTO();
+            user.setUsername((String) result[0]);
+            user.setDisplayName((String) result[1]);
+            user.setDesignation((String) result[2]);
+            user.setDob((String) result[3]);
+            user.setEpf((String) result[4]);
+            user.setLocation((String) result[5]);
+            user.setBranchDivision((String) result[6]);
+            user.setAddedBy((String) result[7]);
+            user.setAddedDateTime((String) result[8]);
+            user.setLastUpdatedUser((String) result[9]);
+            user.setLastUpdatedDateTime((String) result[10]);
+            user.setStatus((String) result[11]);
+            users.add(user);
+        }
+        return users;
+    }
+
+    public List<UserRoleDTO> getAllUserRoles() {
+        List<Object[]> results = userRoleRepository.getAllUserRoles();
+        List<UserRoleDTO> userRoles = new ArrayList<>();
+
+        for (Object[] result : results) {
+            UserRoleDTO userRole = new UserRoleDTO();
+            userRole.setUserRoleId((String) result[0]);
+            userRole.setUserRoleDes((String) result[1]);
+            userRole.setCreatedUser((String) result[2]);
+            userRole.setCreatedDateTime((String) result[3]);
+            userRole.setLastUpdatedUser((String) result[4]);
+            userRole.setLastUpdatedDateTime((String) result[5]);
+            userRole.setStatus((String) result[6]);
+            userRoles.add(userRole);
+        }
+        return userRoles;
+    }
+
+    public List<String> getUserRolesForUsername(String username) {
+        return userRepository.getUserRolesForUsername(username);
+    }
+
+    public UserRole getUserDetailsByUserRole(String userRoleId){
+        return userRoleRepository.getUserDetailsByUserRole(userRoleId);
+    }
+
+    public User updateUser(User user) throws Exception {
+        User updateUser = userRepository.findById(user.getUsername()).orElse(null);
+
+        if (updateUser == null) {
+            throw new Exception("User not found");
+        }
+        updateUser.setDisplayName(user.getDisplayName());
+        updateUser.setDesignation(user.getDesignation());
+        updateUser.setDob(user.getDob());
+        updateUser.setLocation(user.getLocation());
+        updateUser.setBranchDivision(user.getBranchDivision());
+        updateUser.setStatus(user.getStatus());
+        updateUser.setLastUpdatedUser(user.getLastUpdatedUser());
+        updateUser.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        userRepository.save((updateUser));
+        return updateUser;
+    }
+
+    public UserRole updateUserRole(UserRole userRole) throws Exception {
+        UserRole updateUserRole = userRoleRepository.findById(userRole.getUserRoleId()).orElse(null);
+
+        if (updateUserRole == null) {
+            throw new Exception("User not found");
+        }
+        updateUserRole.setUserRoleDes(userRole.getUserRoleDes());
+        updateUserRole.setStatus(userRole.getStatus());
+        updateUserRole.setLastUpdatedUser(userRole.getLastUpdatedUser());
+        updateUserRole.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        userRoleRepository.save((updateUserRole));
+        return updateUserRole;
+    }
+
+
+    @Transactional
+    public boolean assignUserRoles(String username, List<String> userRoles) {
+        userRoleAssignRepository.deleteExistingUserRoles(username);
+
+        for (String userRole : userRoles) {
+            UserRoleAssignId id = new UserRoleAssignId(username, userRole);
+            UserRoleAssign userRoleAssign = new UserRoleAssign(id);
+            userRoleAssignRepository.save(userRoleAssign);
+        }
+        return true;
+    }
+
+    public void deleteUser(String username) throws Exception {
+        User deleteUser = userRepository.findById(username).orElse(null);
+
+        if (deleteUser == null) {
+            throw new Exception("User not found");
+        }
+        deleteUser.setStatus(6);
+        deleteUser.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        userRepository.save((deleteUser));
+    }
+
+    public void deleteUserRole(String userRoleId) throws Exception {
+        UserRole deleteUserRole = userRoleRepository.findById(userRoleId).orElse(null);
+
+        if (deleteUserRole == null) {
+            throw new Exception("User not found");
+        }
+        deleteUserRole.setStatus(6);
+        deleteUserRole.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        userRoleRepository.save((deleteUserRole));
     }
 }

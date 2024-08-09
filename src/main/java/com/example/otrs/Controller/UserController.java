@@ -1,9 +1,6 @@
 package com.example.otrs.Controller;
 
-import com.example.otrs.DTO.LoginDTO;
-import com.example.otrs.DTO.PasswordChangeRequestDTO;
-import com.example.otrs.DTO.UserDTO;
-import com.example.otrs.DTO.UserDetailsDTO;
+import com.example.otrs.DTO.*;
 import com.example.otrs.Entity.User;
 import com.example.otrs.Entity.UserRole;
 import com.example.otrs.Entity.UserFunction;
@@ -11,9 +8,13 @@ import com.example.otrs.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.net.UnknownHostException;
+import java.util.List;
 
+/*
+
+@author ishani.s
+ */
 @RestController
 public class UserController {
     @Autowired
@@ -70,9 +71,55 @@ public class UserController {
         }
     }
 
-
     @GetMapping("/checkInitialLoginStatus/{username}")
     public String checkInitialLoginStatus (@PathVariable String username){
         return userService.checkInitialLoginStatus(username);
+    }
+
+    @GetMapping("/getAllUserDetails")
+    public List<UserDataDTO> getAllUserDetails(){
+        return userService.getAllUserDetails();
+    }
+
+    @GetMapping("/getAllUserRoles")
+    public List<UserRoleDTO> getAllUserRoles(){
+        return userService.getAllUserRoles();
+    }
+
+    @GetMapping("/getUserRolesForUsername/{username}")
+    public List<String> getUserRolesForUsername(@PathVariable String username){
+        return userService.getUserRolesForUsername(username);
+    }
+
+    //Update all user details
+    @PutMapping("/updateUser")
+    public User updateUser(@RequestBody User user) throws Exception{
+        return userService.updateUser(user);
+    }
+
+    //Update all user role details
+    @PutMapping("/updateUserRole")
+    public UserRole updateUserRole(@RequestBody UserRole userRole) throws Exception{
+        return userService.updateUserRole(userRole);
+    }
+
+    @PostMapping("/assignUserRoles/{username}")
+    public boolean assignUserRoles (@RequestBody List<String> userRoles, @PathVariable String username){
+        return userService.assignUserRoles(username, userRoles);
+    }
+
+    @PutMapping("/deleteUser/{username}")
+    public void deleteUser(@PathVariable String username) throws Exception{
+        userService.deleteUser(username);
+    }
+
+    @PutMapping("/deleteUserRole/{userRoleId}")
+    public void deleteUserRole(@PathVariable String userRoleId) throws Exception{
+        userService.deleteUserRole(userRoleId);
+    }
+
+    @GetMapping("/getUserDetailsByUserRole/{userRoleId}")
+    public UserRole getUserDetailsByUserRole(@PathVariable String userRoleId){
+        return userService.getUserDetailsByUserRole(userRoleId);
     }
 }

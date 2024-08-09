@@ -1,15 +1,15 @@
 package com.example.otrs.DTO;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-/*
-
-@author ishani.s
- */
-@Data
-public class UserDTO {
+@Getter
+@Setter
+@NoArgsConstructor
+public class UserDataDTO {
     private String username;
     private String displayName;
     private String designation;
@@ -21,11 +21,17 @@ public class UserDTO {
     private String addedDateTime;
     private String lastUpdatedUser;
     private String lastUpdatedDateTime;
-    private Integer status;
+    private String status;
     private List<String> userRoles;
     private String password;
+    private String locationId;
+    private String locationDes;
+    private String branchDivisionId;
+    private String branchDivisionDes;
 
-    public UserDTO(String username, String displayName, String designation, String dob, String epf, String location, String branchDivision, String addedBy, String addedDateTime, String lastUpdatedUser, String lastUpdatedDateTime, Integer status, List<String> userRoles, String password) {
+    public UserDataDTO(String username, String displayName, String designation, String dob, String epf,
+                       String location, String branchDivision, String addedBy, String addedDateTime, String lastUpdatedUser,
+                       String lastUpdatedDateTime, String status, List<String> userRoles) {
         this.username = username;
         this.displayName = displayName;
         this.designation = designation;
@@ -39,6 +45,5 @@ public class UserDTO {
         this.lastUpdatedDateTime = lastUpdatedDateTime;
         this.status = status;
         this.userRoles = userRoles;
-        this.password = password;
     }
 }

@@ -3,11 +3,14 @@ package com.example.otrs.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+/*
+
+@author ishani.s
+ */
 @Entity
 @Data
 @Table(name = "issue_category")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-
 @Getter
 @Setter
 @NoArgsConstructor

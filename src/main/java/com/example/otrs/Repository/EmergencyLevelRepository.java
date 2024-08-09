@@ -6,6 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
+/*
+
+@author ishani.s
+ */
 @Repository
 public interface EmergencyLevelRepository extends JpaRepository<EmergencyLevel, Integer> {
     @Query("SELECT e FROM EmergencyLevel e")

@@ -91,10 +91,16 @@ public class UserController {
         return userService.getUserRolesForUsername(username);
     }
 
-    //Update all ticket details
+    //Update all user details
     @PutMapping("/updateUser")
     public User updateUser(@RequestBody User user) throws Exception{
         return userService.updateUser(user);
+    }
+
+    //Update all user role details
+    @PutMapping("/updateUserRole")
+    public UserRole updateUserRole(@RequestBody UserRole userRole) throws Exception{
+        return userService.updateUserRole(userRole);
     }
 
     @PostMapping("/assignUserRoles/{username}")
@@ -107,9 +113,13 @@ public class UserController {
         userService.deleteUser(username);
     }
 
+    @PutMapping("/deleteUserRole/{userRoleId}")
+    public void deleteUserRole(@PathVariable String userRoleId) throws Exception{
+        userService.deleteUserRole(userRoleId);
+    }
+
     @GetMapping("/getUserDetailsByUserRole/{userRoleId}")
     public UserRole getUserDetailsByUserRole(@PathVariable String userRoleId){
         return userService.getUserDetailsByUserRole(userRoleId);
     }
-
 }

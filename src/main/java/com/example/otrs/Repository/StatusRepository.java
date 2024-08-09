@@ -17,7 +17,7 @@ public interface StatusRepository extends JpaRepository<Status, String> {
     @Query("SELECT s FROM Status s")
     List<Status> getStatues();
 
-    @Query("SELECT s.statusId, s.statusDes FROM Status s WHERE s.module = :module ")
+    @Query("SELECT DISTINCT s.statusId, s.statusDes FROM Status s WHERE s.module = :module ")
     List<Object[]> getStatuesByModule(String module);
 
     @Modifying

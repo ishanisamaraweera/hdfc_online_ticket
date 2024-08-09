@@ -20,4 +20,6 @@ public interface UserRoleFunctionAssignRepository extends JpaRepository<UserRole
     @Transactional
     @Query("DELETE FROM UserRoleFunction u WHERE u.userRoleId = :userRoleId")
     void deleteExistingUserFunctions(String userRoleId);
+
+
 }

@@ -191,6 +191,21 @@ public class UserService {
         return updateUser;
     }
 
+    public UserRole updateUserRole(UserRole userRole) throws Exception {
+        UserRole updateUserRole = userRoleRepository.findById(userRole.getUserRoleId()).orElse(null);
+
+        if (updateUserRole == null) {
+            throw new Exception("User not found");
+        }
+        updateUserRole.setUserRoleDes(userRole.getUserRoleDes());
+        updateUserRole.setStatus(userRole.getStatus());
+        updateUserRole.setLastUpdatedUser(userRole.getLastUpdatedUser());
+        updateUserRole.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        userRoleRepository.save((updateUserRole));
+        return updateUserRole;
+    }
+
+
     @Transactional
     public boolean assignUserRoles(String username, List<String> userRoles) {
         userRoleAssignRepository.deleteExistingUserRoles(username);
@@ -212,5 +227,16 @@ public class UserService {
         deleteUser.setStatus(6);
         deleteUser.setLastUpdatedDateTime(LocalDateTime.now().toString());
         userRepository.save((deleteUser));
+    }
+
+    public void deleteUserRole(String userRoleId) throws Exception {
+        UserRole deleteUserRole = userRoleRepository.findById(userRoleId).orElse(null);
+
+        if (deleteUserRole == null) {
+            throw new Exception("User not found");
+        }
+        deleteUserRole.setStatus(6);
+        deleteUserRole.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        userRoleRepository.save((deleteUserRole));
     }
 }

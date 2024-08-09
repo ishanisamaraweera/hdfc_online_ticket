@@ -18,14 +18,14 @@ public class IssueCategoryService {
 
         for (Object[] result : results) {
             IssueCategoryDTO issueCategory = new IssueCategoryDTO();
-            issueCategory.setIssueCategoryId((String) result[0]);
+            issueCategory.setIssueCategoryId((Integer) result[0]);
             issueCategory.setIssueCategoryDes((String) result[1]);
-            issueCategory.setIssueType((String) result[1]);
-            issueCategory.setCreatedUser((String) result[2]);
-            issueCategory.setCreatedDateTime((String) result[3]);
-            issueCategory.setLastUpdatedUser((String) result[4]);
-            issueCategory.setLastUpdatedDateTime((String) result[5]);
-            issueCategory.setStatus((String) result[6]);
+            issueCategory.setIssueType((String) result[2]);
+            issueCategory.setCreatedUser((String) result[3]);
+            issueCategory.setCreatedDateTime((String) result[4]);
+            issueCategory.setLastUpdatedUser((String) result[5]);
+            issueCategory.setLastUpdatedDateTime((String) result[6]);
+            issueCategory.setStatus((String) result[7]);
             issueCategories.add(issueCategory);
         }
         return issueCategories;

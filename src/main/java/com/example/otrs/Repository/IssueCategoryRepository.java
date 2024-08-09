@@ -18,7 +18,7 @@ public interface IssueCategoryRepository extends JpaRepository<IssueCategory, In
     @Query("SELECT ic FROM IssueCategory ic WHERE ic.issueType = :issueType")
     List<IssueCategory> getIssueCategoriesByIssueType(@Param("issueType") Integer issueType);
 
-    @Query("SELECT new com.example.otrs.DTO.IssueCategoryDTO(" +
+    @Query(value = "SELECT DISTINCT " +
             "i.issueCategoryId, " +
             "i.issueCategoryDes, " +
             "it.issueTypeDes as issueType, " +
@@ -26,7 +26,7 @@ public interface IssueCategoryRepository extends JpaRepository<IssueCategory, In
             "i.createdDateTime, " +
             "u2.displayName as lastUpdatedUser, " +
             "i.lastUpdatedDateTime, " +
-            "s.statusDes as status) FROM IssueCategory i " +
+            "s.statusDes as status FROM IssueCategory i " +
             "LEFT JOIN IssueType it ON i.issueType = it.issueTypeId " +
             "LEFT JOIN User u1 ON i.createdUser = u1.username " +
             "LEFT JOIN User u2 ON i.createdUser = u2.username " +

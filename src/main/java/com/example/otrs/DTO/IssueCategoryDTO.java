@@ -13,7 +13,7 @@ import lombok.Setter;
  * @author ishani.s
  */
 public class IssueCategoryDTO {
-    private String issueCategoryId;
+    private Integer issueCategoryId;
     private String issueCategoryDes;
     private String issueType;
     private String createdUser;
@@ -22,7 +22,7 @@ public class IssueCategoryDTO {
     private String lastUpdatedDateTime;
     private String status;
 
-    public IssueCategoryDTO(String issueCategoryId, String issueCategoryDes, String issueType, String createdUser, String createdDateTime, String lastUpdatedUser, String lastUpdatedDateTime, String status) {
+    public IssueCategoryDTO(Integer issueCategoryId, String issueCategoryDes, String issueType, String createdUser, String createdDateTime, String lastUpdatedUser, String lastUpdatedDateTime, String status) {
         this.issueCategoryId = issueCategoryId;
         this.issueCategoryDes = issueCategoryDes;
         this.issueType = issueType;

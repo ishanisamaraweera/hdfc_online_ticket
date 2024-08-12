@@ -2,9 +2,9 @@ package com.example.otrs.DTO;
 
 import lombok.Data;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @Data
 public class UserFunctionDTO {

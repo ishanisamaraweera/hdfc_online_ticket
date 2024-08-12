@@ -85,7 +85,7 @@ public class UserFunctionService {
         UserFunction deleteFunction = userFunctionRepository.findById(userFunctionId).orElse(null);
 
         if (deleteFunction == null) {
-            throw new Exception("User not found");
+            throw new Exception("Function not found");
         }
         deleteFunction.setStatus(6);
         deleteFunction.setLastUpdatedDateTime(LocalDateTime.now().toString());

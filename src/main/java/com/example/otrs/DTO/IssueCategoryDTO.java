@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 /**
  *
- * @author ishani.s
+ @author ishani.s
  */
 public class IssueCategoryDTO {
     private Integer issueCategoryId;

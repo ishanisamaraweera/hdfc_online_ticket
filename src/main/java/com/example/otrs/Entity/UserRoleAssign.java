@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @Entity
 @Data

@@ -3,9 +3,9 @@ package com.example.otrs.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @Entity
 @Data

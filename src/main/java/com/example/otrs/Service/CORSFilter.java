@@ -6,9 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @Component
 public class CORSFilter implements Filter {

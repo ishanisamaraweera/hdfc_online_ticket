@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @Data
 @Table(name = "user_role_function")

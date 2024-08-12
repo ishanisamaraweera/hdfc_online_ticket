@@ -9,6 +9,10 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+/**
+ *
+ @author ishani.s
+ */
 public class UserDataDTO {
     private String username;
     private String displayName;

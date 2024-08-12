@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+*
+@author ishani.s
+ */
 @Service
 public class IssueCategoryService {
     @Autowired

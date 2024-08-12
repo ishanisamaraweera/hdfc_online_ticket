@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.net.UnknownHostException;
 import java.util.List;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @RestController
 public class UserController {

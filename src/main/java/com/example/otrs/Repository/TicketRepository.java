@@ -7,9 +7,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 public interface TicketRepository extends JpaRepository<Ticket, String> {
     @Query("SELECT COUNT(t) FROM Ticket t WHERE t.sender = :username AND t.status = 1")

@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @Repository
 public interface IssueCategoryRepository extends JpaRepository<IssueCategory, Integer> {

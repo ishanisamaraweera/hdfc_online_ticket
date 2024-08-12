@@ -4,9 +4,9 @@ import com.example.otrs.Entity.Ticket;
 
 import java.util.List;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 public class TicketMapper {
 

@@ -1,10 +1,13 @@
 package com.example.otrs.DTO;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ *
+ @author ishani.s
+ */
 @Getter
 @Setter
 @NoArgsConstructor

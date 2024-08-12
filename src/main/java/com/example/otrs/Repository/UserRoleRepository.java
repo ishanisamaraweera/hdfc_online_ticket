@@ -9,9 +9,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @Repository
 public interface UserRoleRepository extends JpaRepository<UserRole, String> {

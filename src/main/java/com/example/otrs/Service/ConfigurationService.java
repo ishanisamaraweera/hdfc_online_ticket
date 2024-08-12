@@ -75,5 +75,11 @@ public class ConfigurationService {
         return branchDivisionRepository.getBranchDivisionByLocation(location);
     }
 
+    public List<String> getFunctionPrivileges(String username){
+        return userFunctionRepository.getUserFunctionsByUsername(username);
+    }
 
+    public List<String> getPagePrivileges(String username){
+        return userFunctionRepository.getUserPagesByUsername(username);
+    }
 }

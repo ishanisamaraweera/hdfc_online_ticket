@@ -1,6 +1,6 @@
 package com.example.otrs.Controller;
 
-import com.example.otrs.Service.ExcelReportService;
+import com.example.otrs.Service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,13 +12,19 @@ import java.io.IOException;
  *
  @author ishani.s
  */
+
 @RestController
 public class ReportController {
     @Autowired
-    private ExcelReportService excelReportService;
+    private ReportService excelReportService;
 
-    @GetMapping("/exportUsers/{status}")
-    public void exportUsers(HttpServletResponse response, @PathVariable Integer status) throws IOException {
+    @GetMapping("/exportTickets/{status}")
+    public void exportTickets(HttpServletResponse response, @PathVariable Integer status) throws IOException {
         excelReportService.generateExcelReport(response, status);
+    }
+
+    @GetMapping("/exportTickets")
+    public void exportTickets(HttpServletResponse response) throws IOException {
+        excelReportService.generateExcelReport(response);
     }
 }

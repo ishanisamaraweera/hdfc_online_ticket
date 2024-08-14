@@ -172,4 +172,72 @@ public class TicketService {
     public long getTotalTicketCount(String username) {
         return ticketRepository.getTotalTicketCount(username);
     }
+
+    public List<TicketDTO> searchTickets(Integer status) {
+        List<Object[]> results = ticketRepository.getAllTicketDetailsByStatus(status);
+        List<TicketDTO> tickets = new ArrayList<>();
+
+        for (Object[] result : results) {
+            TicketDTO ticket = new TicketDTO();
+            ticket.setTicketId((String) result[0]);
+            ticket.setSender((String) result[1]);
+            ticket.setAssignee((String) result[2]);
+            ticket.setReportedDateTime((String) result[3]);
+            ticket.setEmergencyLevel((String) result[4]);
+            ticket.setStatus((String) result[5]);
+            ticket.setIssueType((String) result[6]);
+            ticket.setIssueCategory((String) result[7]);
+            ticket.setSerialNo((String) result[8]);
+            ticket.setIsWorkingPc((String) result[9]);
+            ticket.setIp((String) result[10]);
+            ticket.setIssueDesAndRemarks((String) result[11]);
+            ticket.setAssigneeResponseDateTime((String) result[12]);
+            ticket.setResolvedDateTime((String) result[13]);
+            ticket.setLastUpdatedUser((String) result[14]);
+            ticket.setLastUpdatedDateTime((String) result[15]);
+            ticket.setCompletedPercentage((String) result[16]);
+            ticket.setAssigneeComments((String) result[17]);
+            ticket.setBranchDivision((String) result[18]);
+            ticket.setContactNo((String) result[19]);
+            ticket.setLocation((String) result[20]);
+            ticket.setResolutionPeriod((String) result[21]);
+
+            tickets.add(ticket);
+        }
+        return tickets;
+    }
+
+    public List<TicketDTO> searchTickets() {
+        List<Object[]> results = ticketRepository.getAllTicketDetails();
+        List<TicketDTO> tickets = new ArrayList<>();
+
+        for (Object[] result : results) {
+            TicketDTO ticket = new TicketDTO();
+            ticket.setTicketId((String) result[0]);
+            ticket.setSender((String) result[1]);
+            ticket.setAssignee((String) result[2]);
+            ticket.setReportedDateTime((String) result[3]);
+            ticket.setEmergencyLevel((String) result[4]);
+            ticket.setStatus((String) result[5]);
+            ticket.setIssueType((String) result[6]);
+            ticket.setIssueCategory((String) result[7]);
+            ticket.setSerialNo((String) result[8]);
+            ticket.setIsWorkingPc((String) result[9]);
+            ticket.setIp((String) result[10]);
+            ticket.setIssueDesAndRemarks((String) result[11]);
+            ticket.setAssigneeResponseDateTime((String) result[12]);
+            ticket.setResolvedDateTime((String) result[13]);
+            ticket.setLastUpdatedUser((String) result[14]);
+            ticket.setLastUpdatedDateTime((String) result[15]);
+            ticket.setCompletedPercentage((String) result[16]);
+            ticket.setAssigneeComments((String) result[17]);
+            ticket.setBranchDivision((String) result[18]);
+            ticket.setContactNo((String) result[19]);
+            ticket.setLocation((String) result[20]);
+            ticket.setResolutionPeriod((String) result[21]);
+
+            tickets.add(ticket);
+        }
+        return tickets;
+    }
 }

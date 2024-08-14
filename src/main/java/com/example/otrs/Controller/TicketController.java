@@ -4,9 +4,11 @@ import com.example.otrs.DTO.TicketDTO;
 import com.example.otrs.DTO.TicketMapper;
 import com.example.otrs.Entity.Ticket;
 import com.example.otrs.Service.TicketService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -88,5 +90,15 @@ public class TicketController {
     @GetMapping("/getTotalTicketCount/{username}")
     public long getTotalTicketCount(@PathVariable String username){
         return ticketService.getTotalTicketCount(username);
+    }
+
+    @GetMapping("/searchTickets/{status}")
+    public List<TicketDTO> searchTickets(@PathVariable Integer status) throws IOException {
+        return ticketService.searchTickets(status);
+    }
+
+    @GetMapping("/searchTickets")
+    public List<TicketDTO> searchTickets() throws IOException {
+        return ticketService.searchTickets();
     }
 }

@@ -108,9 +108,8 @@ public class ReportService {
         headerStyle.setBorderLeft(BorderStyle.THIN);
         headerStyle.setBorderRight(BorderStyle.THIN);
 
-
         // Set the fill pattern and foreground color
-        headerStyle.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
+        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
         for (int i = 0; i < headers.length; i++) {
@@ -245,6 +244,10 @@ public class ReportService {
         headerStyle.setBorderLeft(BorderStyle.THIN);
         headerStyle.setBorderRight(BorderStyle.THIN);
 
+        // Set the fill pattern and foreground color
+        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
         for (int i = 0; i < headers.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(headers[i]);
@@ -305,10 +308,5 @@ public class ReportService {
     private void setCellValue(Cell cell, String value, CellStyle style) {
         cell.setCellValue(value != null && !value.isEmpty() ? value : "--");
         cell.setCellStyle(style);
-    }
-
-    // Helper method to set cell value and replace empty with "--"
-    private void setCellValue(Cell cell, String value) {
-        cell.setCellValue(value != null && !value.isEmpty() ? value : "--");
     }
 }

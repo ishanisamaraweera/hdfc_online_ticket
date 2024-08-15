@@ -32,4 +32,6 @@ public interface IssueCategoryRepository extends JpaRepository<IssueCategory, In
             "LEFT JOIN Status s ON i.status = s.statusId WHERE i.status <> 6")
     List<Object[]> getAllIssueCategories();
 
+    @Query("SELECT COALESCE(MAX(i.issueCategoryId), 0) AS issueCategoryId FROM IssueCategory i")
+    Integer findMaxIssueCategoryId();
 }

@@ -30,6 +30,11 @@ public class IssueCategoryController {
         return issueCategoryService.getIssueCategoryDetailsById(issueCategoryId);
     }
 
+    @PostMapping("/addIssueCategory")
+    public IssueCategory addIssueCategory(@RequestBody IssueCategory issueCategory) throws Exception{
+        return issueCategoryService.addIssueCategory(issueCategory);
+    }
+
     @PutMapping("/updateIssueCategory")
     public IssueCategory updateIssueCategory(@RequestBody IssueCategory issueCategory) throws Exception{
         return issueCategoryService.updateIssueCategory(issueCategory);

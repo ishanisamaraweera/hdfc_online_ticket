@@ -2,7 +2,6 @@ package com.example.otrs.Service;
 
 import com.example.otrs.DTO.IssueCategoryDTO;
 import com.example.otrs.Entity.IssueCategory;
-import com.example.otrs.Entity.UserFunction;
 import com.example.otrs.Repository.IssueCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +41,14 @@ public class IssueCategoryService {
 
     public Optional<IssueCategory> getIssueCategoryDetailsById(Integer issueCategoryId){
         return issueCategoryRepository.findById(issueCategoryId);
+    }
+
+    public IssueCategory addIssueCategory(IssueCategory issueCategory) {
+        int  issueCategoryId = issueCategoryRepository.findMaxIssueCategoryId() + 1;
+        issueCategory.setIssueCategoryId(issueCategoryId);
+        issueCategory.setCreatedDateTime(LocalDateTime.now().toString());
+        issueCategory.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        return issueCategoryRepository.save(issueCategory);
     }
 
     public IssueCategory updateIssueCategory(IssueCategory issueCategory) throws Exception {

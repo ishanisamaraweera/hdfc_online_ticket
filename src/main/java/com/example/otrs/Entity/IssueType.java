@@ -13,8 +13,6 @@ import lombok.*;
 @Entity
 @Data
 @Table(name = "issue_type")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class IssueType {

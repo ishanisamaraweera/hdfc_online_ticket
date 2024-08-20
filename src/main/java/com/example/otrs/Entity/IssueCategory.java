@@ -11,7 +11,6 @@ import lombok.*;
 @Data
 @Table(name = "issue_category")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor

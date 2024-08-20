@@ -13,8 +13,6 @@ import lombok.*;
 @Entity
 @Data
 @Table(name = "emergency_level")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmergencyLevel {

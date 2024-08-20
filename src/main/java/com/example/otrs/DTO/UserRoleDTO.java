@@ -1,5 +1,6 @@
 package com.example.otrs.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserRoleDTO {
     private String userRoleId;
     private String userRoleDes;
@@ -19,14 +21,4 @@ public class UserRoleDTO {
     private String lastUpdatedUser;
     private String lastUpdatedDateTime;
     private String status;
-
-    public UserRoleDTO(String userRoleId, String userRoleDes, String createdUser, String createdDateTime, String lastUpdatedUser, String lastUpdatedDateTime, String status) {
-        this.userRoleId = userRoleId;
-        this.userRoleDes = userRoleDes;
-        this.createdUser = createdUser;
-        this.createdDateTime = createdDateTime;
-        this.lastUpdatedUser = lastUpdatedUser;
-        this.lastUpdatedDateTime = lastUpdatedDateTime;
-        this.status = status;
-    }
 }

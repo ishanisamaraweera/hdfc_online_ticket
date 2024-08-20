@@ -1,13 +1,11 @@
 package com.example.otrs.DTO;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 /**
  *
  @author ishani.s
@@ -21,15 +19,4 @@ public class IssueCategoryDTO {
     private String lastUpdatedUser;
     private String lastUpdatedDateTime;
     private String status;
-
-    public IssueCategoryDTO(Integer issueCategoryId, String issueCategoryDes, String issueType, String createdUser, String createdDateTime, String lastUpdatedUser, String lastUpdatedDateTime, String status) {
-        this.issueCategoryId = issueCategoryId;
-        this.issueCategoryDes = issueCategoryDes;
-        this.issueType = issueType;
-        this.createdUser = createdUser;
-        this.createdDateTime = createdDateTime;
-        this.lastUpdatedUser = lastUpdatedUser;
-        this.lastUpdatedDateTime = lastUpdatedDateTime;
-        this.status = status;
-    }
 }

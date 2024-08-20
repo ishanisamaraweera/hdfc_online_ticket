@@ -1,5 +1,6 @@
 package com.example.otrs.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class TicketDTO {
     private String ticketId;
     private String sender;
@@ -34,50 +36,4 @@ public class TicketDTO {
     private String assigneeComments;
     private String contactNo;
     private String resolutionPeriod;
-
-    public TicketDTO( String ticketId,
-                      String sender,
-                      String assignee,
-                      String reportedDateTime,
-                      String emergencyLevel,
-                      String status,
-                      String location,
-                      String branchDivision,
-                      String issueType,
-                      String issueCategory,
-                      String serialNo,
-                      String isWorkingPc,
-                      String ip,
-                      String issueDesAndRemarks,
-                      String assigneeResponseDateTime,
-                      String resolvedDateTime,
-                      String lastUpdatedUser,
-                      String lastUpdatedDateTime,
-                      String completedPercentage,
-                      String assigneeComments,
-                      String contactNo,
-                      String resolutionPeriod) {
-        this.ticketId = ticketId;
-        this.sender = sender;
-        this.assignee = assignee;
-        this.reportedDateTime = reportedDateTime;
-        this.emergencyLevel = emergencyLevel;
-        this.status = status;
-        this.location = location;
-        this.branchDivision = branchDivision;
-        this.issueType = issueType;
-        this.issueCategory = issueCategory;
-        this.serialNo = serialNo;
-        this.isWorkingPc = isWorkingPc;
-        this.ip = ip;
-        this.issueDesAndRemarks = issueDesAndRemarks;
-        this.assigneeResponseDateTime = assigneeResponseDateTime;
-        this.resolvedDateTime = resolvedDateTime;
-        this.lastUpdatedUser = lastUpdatedUser;
-        this.lastUpdatedDateTime = lastUpdatedDateTime;
-        this.completedPercentage = completedPercentage;
-        this.assigneeComments = assigneeComments;
-        this.contactNo = contactNo;
-        this.resolutionPeriod = resolutionPeriod;
-    }
 }

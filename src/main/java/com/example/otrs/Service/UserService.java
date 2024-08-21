@@ -94,7 +94,7 @@ public class UserService {
     }
 
     public boolean authenticateUser(LoginDTO loginInfo) {
-        User user = userRepository.getUserDetailsByUsername(loginInfo.getUsername());
+        User user = userRepository.getUserDetailsByUsernameToAuthenticate(loginInfo.getUsername());
         if (user != null) {
             return passwordEncoder.matches(loginInfo.getPassword(), user.getPassword());
         }

@@ -33,10 +33,10 @@ public interface UserFunctionRepository extends JpaRepository<UserFunction, Stri
     UserFunction getFunctionDetailsByFunctionId(String userFunctionId);
 
     @Query("SELECT DISTINCT functionId FROM UserRoleFunction " +
-            "WHERE userRoleId IN (SELECT userRoleId from UserRoleAssign WHERE id.userId = :username) ")
+            "WHERE userRoleId IN (SELECT id.userRoleId from UserRoleAssign WHERE id.userId = :username) ")
     List<String> getUserFunctionsByUsername(String username);
 
     @Query("SELECT DISTINCT pageId FROM UserRolePage " +
-            "WHERE userRoleId IN (SELECT userRoleId from UserRoleAssign WHERE id.userId = :username) ")
+            "WHERE userRoleId IN (SELECT id.userRoleId from UserRoleAssign WHERE id.userId = :username) ")
     List<String> getUserPagesByUsername(String username);
 }

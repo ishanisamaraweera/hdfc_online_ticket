@@ -19,6 +19,7 @@ public class UserDTO {
     private String designation;
     private String dob;
     private String epf;
+    private String email;
     private String location;
     private String branchDivision;
     private String addedBy;

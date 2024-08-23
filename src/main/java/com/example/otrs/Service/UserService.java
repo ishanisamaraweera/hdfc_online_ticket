@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +68,7 @@ public class UserService {
         user.setLastUpdatedDateTime(userRequest.getLastUpdatedDateTime());
         user.setDob(userRequest.getDob());
         user.setEpf(userRequest.getEpf());
+        user.setEmail(userRequest.getEmail());
         List<String> roles = userRequest.getUserRoles();
         user.setStatus(userRequest.getStatus());
         user.setInitialLogin("Yes");
@@ -135,13 +135,14 @@ public class UserService {
             user.setDesignation((String) result[2]);
             user.setDob((String) result[3]);
             user.setEpf((String) result[4]);
-            user.setLocation((String) result[5]);
-            user.setBranchDivision((String) result[6]);
-            user.setAddedBy((String) result[7]);
-            user.setAddedDateTime((String) result[8]);
-            user.setLastUpdatedUser((String) result[9]);
-            user.setLastUpdatedDateTime((String) result[10]);
-            user.setStatus((String) result[11]);
+            user.setEmail((String) result[5]);
+            user.setLocation((String) result[6]);
+            user.setBranchDivision((String) result[7]);
+            user.setAddedBy((String) result[8]);
+            user.setAddedDateTime((String) result[9]);
+            user.setLastUpdatedUser((String) result[10]);
+            user.setLastUpdatedDateTime((String) result[11]);
+            user.setStatus((String) result[12]);
             users.add(user);
         }
         return users;
@@ -181,6 +182,7 @@ public class UserService {
         }
         updateUser.setDisplayName(user.getDisplayName());
         updateUser.setDesignation(user.getDesignation());
+        updateUser.setEmail(user.getEmail());
         updateUser.setDob(user.getDob());
         updateUser.setLocation(user.getLocation());
         updateUser.setBranchDivision(user.getBranchDivision());
@@ -238,5 +240,9 @@ public class UserService {
         deleteUserRole.setStatus(6);
         deleteUserRole.setLastUpdatedDateTime(LocalDateTime.now().toString());
         userRoleRepository.save((deleteUserRole));
+    }
+
+    public List<UserNameDTO> getUserListsByUserRole(String userRole){
+        return userRepository.getUserListsByUserRole(userRole);
     }
 }

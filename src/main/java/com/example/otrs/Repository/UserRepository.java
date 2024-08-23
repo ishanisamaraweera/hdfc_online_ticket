@@ -1,6 +1,8 @@
 package com.example.otrs.Repository;
 
+import com.example.otrs.DTO.UserDTO;
 import com.example.otrs.DTO.UserDetailsDTO;
+import com.example.otrs.DTO.UserNameDTO;
 import com.example.otrs.Entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,13 +37,14 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO User (username, password, displayName, " +
-            "epf, designation, dob, location, branchDivision, addedBy, addedDateTime, lastUpdatedUser, lastUpdatedDateTime) " +
-            "VALUES (:username, :password, :displayName, :epf, :designation, :dob, :location, :branchDivision, :addedBy, " +
+            "epf, email, designation, dob, location, branchDivision, addedBy, addedDateTime, lastUpdatedUser, lastUpdatedDateTime) " +
+            "VALUES (:username, :password, :displayName, :epf, :email, :designation, :dob, :location, :branchDivision, :addedBy, " +
             ":addedDateTime, :lastUpdatedUser, :lastUpdatedDateTime)")
     void saveDetails(@Param("username") String username,
                      @Param("password") String password,
                      @Param("displayName") String displayName,
                      @Param("epf") String epf,
+                     @Param("email") String email,
                      @Param("designation") String designation,
                      @Param("dob") String dob,
                      @Param("location") String location,
@@ -59,6 +62,7 @@ public interface UserRepository extends JpaRepository<User, String> {
             "u.designation, " +
             "u.dob, " +
             "u.epf, " +
+            "u.email, " +
             "l.locationDes as location, " +
             "bd.branchDivisionDes as branchDivision, " +
             "u1.displayName as addedBy, " +
@@ -79,4 +83,8 @@ public interface UserRepository extends JpaRepository<User, String> {
             "FROM UserRoleAssign u " +
             "WHERE u.id.userId = :username")
     List<String> getUserRolesForUsername(String username);
+
+    @Query("SELECT DISTINCT new com.example.otrs.DTO.UserNameDTO(u.username, u.displayName) FROM User u " +
+            "WHERE u.username IN (SELECT ura.id.userId FROM UserRoleAssign ura where ura.id.userRoleId = :userRole)")
+    List<UserNameDTO> getUserListsByUserRole(@Param("userRole") String userRole);
 }

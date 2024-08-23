@@ -43,6 +43,8 @@ public class User {
     private String dob;
     @Column(name = "epf")
     private String epf;
+    @Column(name = "email")
+    private String email;
     @Column(name = "status")
     private Integer status;
     @Column(name = "initial_login")

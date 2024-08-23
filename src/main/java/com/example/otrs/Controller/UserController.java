@@ -122,4 +122,9 @@ public class UserController {
     public UserRole getUserDetailsByUserRole(@PathVariable String userRoleId){
         return userService.getUserDetailsByUserRole(userRoleId);
     }
+
+    @GetMapping("/getUserListsByUserRole/{userRole}")
+    public List<UserNameDTO> getUserListsByUserRole(@PathVariable String userRole){
+        return userService.getUserListsByUserRole(userRole);
+    }
 }

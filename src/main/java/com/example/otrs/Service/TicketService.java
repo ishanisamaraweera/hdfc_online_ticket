@@ -1,5 +1,6 @@
 package com.example.otrs.Service;
 
+import com.example.otrs.DTO.AssignRequestDTO;
 import com.example.otrs.DTO.TicketDTO;
 import com.example.otrs.Entity.Status;
 import com.example.otrs.Entity.Ticket;
@@ -7,14 +8,14 @@ import com.example.otrs.Repository.StatusRepository;
 import com.example.otrs.Repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- @author ishani.s
+ * @author ishani.s
  */
 @Service
 public class TicketService {
@@ -29,7 +30,7 @@ public class TicketService {
         String branch = ticket.getBranchDivision();
         String ticketId;
 
-        if (lastTicketId == null || !lastTicketId.substring(0,4).equals(currentYear)) {
+        if (lastTicketId == null || !lastTicketId.substring(0, 4).equals(currentYear)) {
             ticketId = "00001";
         } else {
             int lastId = Integer.parseInt(lastTicketId.substring(7));
@@ -141,7 +142,8 @@ public class TicketService {
 
         Status deletedStatus = statusRepository.findById("6").orElse(null);
         if (deletedStatus == null) {
-            statusRepository.saveDetails(5, "Deleted Status");;
+            statusRepository.saveDetails(5, "Deleted Status");
+            ;
         }
         updateTicket.setStatus(6);
         updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
@@ -239,5 +241,23 @@ public class TicketService {
             tickets.add(ticket);
         }
         return tickets;
+    }
+
+    public void assignTicket(String ticketId, AssignRequestDTO request) throws Exception {
+        Ticket assignTicket = ticketRepository.findById(ticketId).orElse(null);
+
+        if (assignTicket == null) {
+            throw new Exception("Ticket not found");
+        }
+
+//        if (!assignTicket.getStatus().equals(1)) {
+//            throw new AccessDeniedException("Access denied: Only tickets with status 'New' can be assigned");
+//        }
+
+        assignTicket.setAssignee(request.getAssigneeId());
+        assignTicket.setStatus(2);
+        assignTicket.setLastUpdatedUser(request.getUsername());
+        assignTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        ticketRepository.save((assignTicket));
     }
 }

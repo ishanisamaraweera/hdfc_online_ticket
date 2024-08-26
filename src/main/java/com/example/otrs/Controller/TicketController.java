@@ -1,5 +1,6 @@
 package com.example.otrs.Controller;
 
+import com.example.otrs.DTO.AssignRequestDTO;
 import com.example.otrs.DTO.TicketDTO;
 import com.example.otrs.DTO.TicketMapper;
 import com.example.otrs.Entity.Ticket;
@@ -100,5 +101,10 @@ public class TicketController {
     @GetMapping("/searchTickets")
     public List<TicketDTO> searchTickets() throws IOException {
         return ticketService.searchTickets();
+    }
+
+    @PutMapping("/assignTicket/{ticketId}")
+    public void assignTicket(@PathVariable String ticketId, @RequestBody AssignRequestDTO request) throws Exception {
+        ticketService.assignTicket(ticketId, request);
     }
 }

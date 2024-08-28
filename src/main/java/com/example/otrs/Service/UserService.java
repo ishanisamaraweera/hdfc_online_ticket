@@ -32,6 +32,8 @@ public class UserService {
     private UserFunctionRepository userFunctionRepository;
     @Autowired
     private UserRoleAssignRepository userRoleAssignRepository;
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -55,10 +57,12 @@ public class UserService {
     @Transactional
     public User createUserWithRoles(UserDTO userRequest) {
         User user = new User();
+        String password = userRequest.getEpf() + userRequest.getDob().replace("-", "");
+
         // Set user fields from userRequest
         user.setUsername(userRequest.getEpf());
         user.setDisplayName(userRequest.getDisplayName());
-        user.setPassword(passwordEncoder.encode(userRequest.getEpf() + userRequest.getDob().replace("-", "")));
+        user.setPassword(passwordEncoder.encode(password));
         user.setLocation(userRequest.getLocation());
         user.setBranchDivision(userRequest.getBranchDivision());
         user.setDesignation(userRequest.getDesignation());
@@ -80,6 +84,15 @@ public class UserService {
             UserRoleAssign userRoleAssign = new UserRoleAssign(id);
             userRoleAssignRepository.save(userRoleAssign);
         }
+
+        emailSenderService.sendEmail(user.getEmail(), "Initial User Password",
+                ("Dear " + user.getDisplayName() + ","
+                        + "\n\nYour OTRS username = " + user.getUsername()
+                        + "\nYour OTRS temporary password = " + password
+                        + "\n\nPlease login to the system using above credentials and reset the password when your initial login."
+                        + "\n\nThank you.!"
+                        + "\nHDFC Bank")
+                );
         return user;
     }
 

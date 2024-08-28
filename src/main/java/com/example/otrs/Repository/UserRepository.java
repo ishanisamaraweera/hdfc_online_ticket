@@ -1,6 +1,5 @@
 package com.example.otrs.Repository;
 
-import com.example.otrs.DTO.UserDTO;
 import com.example.otrs.DTO.UserDetailsDTO;
 import com.example.otrs.DTO.UserNameDTO;
 import com.example.otrs.Entity.User;

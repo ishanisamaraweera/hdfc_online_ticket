@@ -107,4 +107,9 @@ public class TicketController {
     public void assignTicket(@PathVariable String ticketId, @RequestBody AssignRequestDTO request) throws Exception {
         ticketService.assignTicket(ticketId, request);
     }
+
+    @PutMapping("/savePercentage/{ticketId}")
+    public void savePercentage(@PathVariable String ticketId, @RequestBody AssignRequestDTO request) throws Exception {
+        ticketService.savePercentage(ticketId, request);
+    }
 }

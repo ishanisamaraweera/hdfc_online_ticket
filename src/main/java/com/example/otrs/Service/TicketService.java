@@ -260,4 +260,17 @@ public class TicketService {
         assignTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
         ticketRepository.save((assignTicket));
     }
+
+    public void savePercentage(String ticketId, AssignRequestDTO request) throws Exception {
+        Ticket assignTicket = ticketRepository.findById(ticketId).orElse(null);
+
+        if (assignTicket == null) {
+            throw new Exception("Ticket not found");
+        }
+
+        assignTicket.setCompletedPercentage(request.getCompletedPercentage());
+        assignTicket.setLastUpdatedUser(request.getUsername());
+        assignTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        ticketRepository.save((assignTicket));
+    }
 }

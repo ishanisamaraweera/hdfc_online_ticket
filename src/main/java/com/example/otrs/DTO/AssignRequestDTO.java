@@ -12,4 +12,5 @@ import lombok.Setter;
 public class AssignRequestDTO {
     private String assigneeId;
     private String username;
+    private String completedPercentage;
 }

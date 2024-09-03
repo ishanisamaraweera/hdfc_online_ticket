@@ -32,7 +32,7 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
 
     @Query("SELECT t.ticketId, " +
             "u1.displayName as sender, " +
-            "u2.displayName as assignee, " +
+            "u2.displayName as agent, " +
             "t.reportedDateTime, " +
             "e.levelDes as emergencyLevel, " +
             "s.statusDes as status, " +
@@ -42,19 +42,19 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
             "t.isWorkingPc, " +
             "t.ip, " +
             "t.issueDesAndRemarks, " +
-            "t.assigneeResponseDateTime, " +
+            "t.agentResponseDateTime, " +
             "t.resolvedDateTime, " +
             "u3.displayName as lastUpdatedUser, " +
             "t.lastUpdatedDateTime, " +
             "t.completedPercentage, " +
-            "t.assigneeComments, " +
+            "t.agentComment, " +
             "bd.branchDivisionDes as branchDivision, " +
             "t.contactNo, " +
             "l.locationDes as location, " +
             "t.resolutionPeriod " +
             "FROM Ticket t " +
             "LEFT JOIN User u1 ON u1.username = t.sender " +
-            "LEFT JOIN User u2 ON u2.username = t.assignee " +
+            "LEFT JOIN User u2 ON u2.username = t.agent " +
             "LEFT JOIN User u3 ON u3.username = t.lastUpdatedUser " +
             "LEFT JOIN EmergencyLevel e ON e.levelId = t.emergencyLevel " +
             "LEFT JOIN Status s ON s.statusId = t.status " +
@@ -75,7 +75,7 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
 
     @Query("SELECT t.ticketId, " +
             "u1.displayName as sender, " +
-            "u2.displayName as assignee, " +
+            "u2.displayName as agent, " +
             "t.reportedDateTime, " +
             "e.levelDes as emergencyLevel, " +
             "s.statusDes as status, " +
@@ -85,19 +85,19 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
             "t.isWorkingPc, " +
             "t.ip, " +
             "t.issueDesAndRemarks, " +
-            "t.assigneeResponseDateTime, " +
+            "t.agentResponseDateTime, " +
             "t.resolvedDateTime, " +
             "u3.displayName as lastUpdatedUser, " +
             "t.lastUpdatedDateTime, " +
             "t.completedPercentage, " +
-            "t.assigneeComments, " +
+            "t.agentComment, " +
             "bd.branchDivisionDes as branchDivision, " +
             "t.contactNo, " +
             "l.locationDes as location, " +
             "t.resolutionPeriod " +
             "FROM Ticket t " +
             "LEFT JOIN User u1 ON u1.username = t.sender " +
-            "LEFT JOIN User u2 ON u2.username = t.assignee " +
+            "LEFT JOIN User u2 ON u2.username = t.agent " +
             "LEFT JOIN User u3 ON u3.username = t.lastUpdatedUser " +
             "LEFT JOIN EmergencyLevel e ON e.levelId = t.emergencyLevel " +
             "LEFT JOIN Status s ON s.statusId = t.status " +

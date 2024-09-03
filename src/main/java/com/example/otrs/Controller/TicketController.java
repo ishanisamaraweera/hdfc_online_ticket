@@ -108,8 +108,23 @@ public class TicketController {
         ticketService.assignTicket(ticketId, request);
     }
 
+    @PutMapping("/acceptTicket/{ticketId}")
+    public void acceptTicket(@PathVariable String ticketId, @RequestBody AssignRequestDTO request) throws Exception {
+        ticketService.acceptTicket(ticketId, request);
+    }
+
+    @PutMapping("/rejectTicket/{ticketId}")
+    public void rejectTicket(@PathVariable String ticketId, @RequestBody AssignRequestDTO request) throws Exception {
+        ticketService.rejectTicket(ticketId, request);
+    }
+
     @PutMapping("/savePercentage/{ticketId}")
     public void savePercentage(@PathVariable String ticketId, @RequestBody AssignRequestDTO request) throws Exception {
         ticketService.savePercentage(ticketId, request);
+    }
+
+    @PutMapping("/saveStatus/{ticketId}")
+    public void saveStatus(@PathVariable String ticketId, @RequestBody AssignRequestDTO request) throws Exception {
+        ticketService.saveStatus(ticketId, request);
     }
 }

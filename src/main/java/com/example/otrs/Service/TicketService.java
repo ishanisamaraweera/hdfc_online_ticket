@@ -49,7 +49,7 @@ public class TicketService {
             TicketDTO ticket = new TicketDTO();
             ticket.setTicketId((String) result[0]);
             ticket.setSender((String) result[1]);
-            ticket.setAssignee((String) result[2]);
+            ticket.setAgent((String) result[2]);
             ticket.setReportedDateTime((String) result[3]);
             ticket.setEmergencyLevel((String) result[4]);
             ticket.setStatus((String) result[5]);
@@ -59,12 +59,12 @@ public class TicketService {
             ticket.setIsWorkingPc((String) result[9]);
             ticket.setIp((String) result[10]);
             ticket.setIssueDesAndRemarks((String) result[11]);
-            ticket.setAssigneeResponseDateTime((String) result[12]);
+            ticket.setAgentResponseDateTime((String) result[12]);
             ticket.setResolvedDateTime((String) result[13]);
             ticket.setLastUpdatedUser((String) result[14]);
             ticket.setLastUpdatedDateTime((String) result[15]);
             ticket.setCompletedPercentage((String) result[16]);
-            ticket.setAssigneeComments((String) result[17]);
+            ticket.setAgentComment((String) result[17]);
             ticket.setBranchDivision((String) result[18]);
             ticket.setContactNo((String) result[19]);
             ticket.setLocation((String) result[20]);
@@ -91,7 +91,7 @@ public class TicketService {
             throw new AccessDeniedException("Access denied: Only tickets with status 'New' can be deleted");
         }
 
-        updateTicket.setAssignee(ticket.getAssignee());
+        updateTicket.setAgent(ticket.getAgent());
         updateTicket.setEmergencyLevel(ticket.getEmergencyLevel());
         updateTicket.setStatus(ticket.getStatus());
         updateTicket.setLocation(ticket.getLocation());
@@ -103,10 +103,10 @@ public class TicketService {
         updateTicket.setIsWorkingPc(ticket.getIsWorkingPc());
         updateTicket.setIp(ticket.getIp());
         updateTicket.setIssueDesAndRemarks(ticket.getIssueDesAndRemarks());
-        updateTicket.setAssigneeResponseDateTime(ticket.getAssigneeResponseDateTime());
+        updateTicket.setAgentResponseDateTime(ticket.getAgentResponseDateTime());
         updateTicket.setResolvedDateTime(ticket.getResolvedDateTime());
         updateTicket.setResolutionPeriod(ticket.getResolutionPeriod());
-        updateTicket.setAssigneeComments(ticket.getAssigneeComments());
+        updateTicket.setAgentComment(ticket.getAgentComment());
         updateTicket.setLastUpdatedUser(ticket.getLastUpdatedUser());
         updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
         ticketRepository.save((updateTicket));
@@ -183,7 +183,7 @@ public class TicketService {
             TicketDTO ticket = new TicketDTO();
             ticket.setTicketId((String) result[0]);
             ticket.setSender((String) result[1]);
-            ticket.setAssignee((String) result[2]);
+            ticket.setAgent((String) result[2]);
             ticket.setReportedDateTime((String) result[3]);
             ticket.setEmergencyLevel((String) result[4]);
             ticket.setStatus((String) result[5]);
@@ -193,12 +193,12 @@ public class TicketService {
             ticket.setIsWorkingPc((String) result[9]);
             ticket.setIp((String) result[10]);
             ticket.setIssueDesAndRemarks((String) result[11]);
-            ticket.setAssigneeResponseDateTime((String) result[12]);
+            ticket.setAgentResponseDateTime((String) result[12]);
             ticket.setResolvedDateTime((String) result[13]);
             ticket.setLastUpdatedUser((String) result[14]);
             ticket.setLastUpdatedDateTime((String) result[15]);
             ticket.setCompletedPercentage((String) result[16]);
-            ticket.setAssigneeComments((String) result[17]);
+            ticket.setAgentComment((String) result[17]);
             ticket.setBranchDivision((String) result[18]);
             ticket.setContactNo((String) result[19]);
             ticket.setLocation((String) result[20]);
@@ -217,7 +217,7 @@ public class TicketService {
             TicketDTO ticket = new TicketDTO();
             ticket.setTicketId((String) result[0]);
             ticket.setSender((String) result[1]);
-            ticket.setAssignee((String) result[2]);
+            ticket.setAgent((String) result[2]);
             ticket.setReportedDateTime((String) result[3]);
             ticket.setEmergencyLevel((String) result[4]);
             ticket.setStatus((String) result[5]);
@@ -227,12 +227,12 @@ public class TicketService {
             ticket.setIsWorkingPc((String) result[9]);
             ticket.setIp((String) result[10]);
             ticket.setIssueDesAndRemarks((String) result[11]);
-            ticket.setAssigneeResponseDateTime((String) result[12]);
+            ticket.setAgentResponseDateTime((String) result[12]);
             ticket.setResolvedDateTime((String) result[13]);
             ticket.setLastUpdatedUser((String) result[14]);
             ticket.setLastUpdatedDateTime((String) result[15]);
             ticket.setCompletedPercentage((String) result[16]);
-            ticket.setAssigneeComments((String) result[17]);
+            ticket.setAgentComment((String) result[17]);
             ticket.setBranchDivision((String) result[18]);
             ticket.setContactNo((String) result[19]);
             ticket.setLocation((String) result[20]);
@@ -254,11 +254,39 @@ public class TicketService {
 //            throw new AccessDeniedException("Access denied: Only tickets with status 'New' can be assigned");
 //        }
 
-        assignTicket.setAssignee(request.getAssigneeId());
+        assignTicket.setAgent(request.getAgentId());
         assignTicket.setStatus(2);
         assignTicket.setLastUpdatedUser(request.getUsername());
         assignTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
         ticketRepository.save((assignTicket));
+    }
+
+    public void acceptTicket(String ticketId, AssignRequestDTO request) throws Exception {
+        Ticket ticket = ticketRepository.findById(ticketId).orElse(null);
+
+        if (ticket == null) {
+            throw new Exception("Ticket not found");
+        }
+
+        ticket.setStatus(3);
+        ticket.setAgentComment(request.getAgentComment());
+        ticket.setLastUpdatedUser(request.getUsername());
+        ticket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        ticketRepository.save((ticket));
+    }
+
+    public void rejectTicket(String ticketId, AssignRequestDTO request) throws Exception {
+        Ticket ticket = ticketRepository.findById(ticketId).orElse(null);
+
+        if (ticket == null) {
+            throw new Exception("Ticket not found");
+        }
+
+        ticket.setStatus(1);
+        ticket.setAgentComment(request.getAgentComment());
+        ticket.setLastUpdatedUser(request.getUsername());
+        ticket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        ticketRepository.save((ticket));
     }
 
     public void savePercentage(String ticketId, AssignRequestDTO request) throws Exception {
@@ -269,6 +297,19 @@ public class TicketService {
         }
 
         assignTicket.setCompletedPercentage(request.getCompletedPercentage());
+        assignTicket.setLastUpdatedUser(request.getUsername());
+        assignTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        ticketRepository.save((assignTicket));
+    }
+
+    public void saveStatus(String ticketId, AssignRequestDTO request) throws Exception {
+        Ticket assignTicket = ticketRepository.findById(ticketId).orElse(null);
+
+        if (assignTicket == null) {
+            throw new Exception("Ticket not found");
+        }
+
+        assignTicket.setStatus(4);
         assignTicket.setLastUpdatedUser(request.getUsername());
         assignTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
         ticketRepository.save((assignTicket));

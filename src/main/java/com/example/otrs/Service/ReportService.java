@@ -22,11 +22,11 @@ public class ReportService {
     private TicketRepository ticketRepository;
 
     String[] headers = {
-            "Ticket ID", "Sender", "Assignee", "Reported Date Time", "Emergency Level",
+            "Ticket ID", "Sender", "Agent", "Reported Date Time", "Emergency Level",
             "Location", "Branch or Division", "Issue Type", "Issue Category", "Contact No",
             "Serial No", "Is Working PC", "IP", "Issue Description & Remarks",
-            "Assignee Response Date-Time", "Resolved Date Time", "Resolution Period",
-            "Completed Percentage", "Assignee Comments", "Last Updated User",
+            "Agent Response Date-Time", "Resolved Date Time", "Resolution Period",
+            "Completed Percentage", "Agent Comments", "Last Updated User",
             "Last Updated Date-Time", "Status"
     };
 
@@ -39,7 +39,7 @@ public class ReportService {
             TicketDTO ticket = new TicketDTO();
             ticket.setTicketId((String) result[0]);
             ticket.setSender((String) result[1]);
-            ticket.setAssignee((String) result[2]);
+            ticket.setAgent((String) result[2]);
             ticket.setReportedDateTime((String) result[3]);
             ticket.setEmergencyLevel((String) result[4]);
             ticket.setStatus((String) result[5]);
@@ -50,12 +50,12 @@ public class ReportService {
             ticket.setIsWorkingPc((String) result[9]);
             ticket.setIp((String) result[10]);
             ticket.setIssueDesAndRemarks((String) result[11]);
-            ticket.setAssigneeResponseDateTime((String) result[12]);
+            ticket.setAgentResponseDateTime((String) result[12]);
             ticket.setResolvedDateTime((String) result[13]);
             ticket.setLastUpdatedUser((String) result[14]);
             ticket.setLastUpdatedDateTime((String) result[15]);
             ticket.setCompletedPercentage((String) result[16]);
-            ticket.setAssigneeComments((String) result[17]);
+            ticket.setAgentComment((String) result[17]);
             ticket.setBranchDivision((String) result[18]);
             ticket.setContactNo((String) result[19]);
             ticket.setLocation((String) result[20]);
@@ -132,7 +132,7 @@ public class ReportService {
             // Set values for each cell and replace empty values with "--"
             setCellValue(row.createCell(0), ticket.getTicketId(), dataCellStyle);
             setCellValue(row.createCell(1), ticket.getSender(), dataCellStyle);
-            setCellValue(row.createCell(2), ticket.getAssignee(), dataCellStyle);
+            setCellValue(row.createCell(2), ticket.getAgent(), dataCellStyle);
             setCellValue(row.createCell(3), ticket.getReportedDateTime(), dataCellStyle);
             setCellValue(row.createCell(4), ticket.getEmergencyLevel(), dataCellStyle);
             setCellValue(row.createCell(5), ticket.getLocation(), dataCellStyle);
@@ -144,11 +144,11 @@ public class ReportService {
             setCellValue(row.createCell(11), ticket.getIsWorkingPc(), dataCellStyle);
             setCellValue(row.createCell(12), ticket.getIp(), dataCellStyle);
             setCellValue(row.createCell(13), ticket.getIssueDesAndRemarks(), dataCellStyle);
-            setCellValue(row.createCell(14), ticket.getAssigneeResponseDateTime(), dataCellStyle);
+            setCellValue(row.createCell(14), ticket.getAgentResponseDateTime(), dataCellStyle);
             setCellValue(row.createCell(15), ticket.getResolvedDateTime(), dataCellStyle);
             setCellValue(row.createCell(16), ticket.getResolutionPeriod(), dataCellStyle);
             setCellValue(row.createCell(17), ticket.getCompletedPercentage(), dataCellStyle);
-            setCellValue(row.createCell(18), ticket.getAssigneeComments(), dataCellStyle);
+            setCellValue(row.createCell(18), ticket.getAgentComment(), dataCellStyle);
             setCellValue(row.createCell(19), ticket.getLastUpdatedUser(), dataCellStyle);
             setCellValue(row.createCell(20), ticket.getLastUpdatedDateTime(), dataCellStyle);
             setCellValue(row.createCell(21), ticket.getStatus(), dataCellStyle);
@@ -177,7 +177,7 @@ public class ReportService {
             TicketDTO ticket = new TicketDTO();
             ticket.setTicketId((String) result[0]);
             ticket.setSender((String) result[1]);
-            ticket.setAssignee((String) result[2]);
+            ticket.setAgent((String) result[2]);
             ticket.setReportedDateTime((String) result[3]);
             ticket.setEmergencyLevel((String) result[4]);
             ticket.setStatus((String) result[5]);
@@ -187,12 +187,12 @@ public class ReportService {
             ticket.setIsWorkingPc((String) result[9]);
             ticket.setIp((String) result[10]);
             ticket.setIssueDesAndRemarks((String) result[11]);
-            ticket.setAssigneeResponseDateTime((String) result[12]);
+            ticket.setAgentResponseDateTime((String) result[12]);
             ticket.setResolvedDateTime((String) result[13]);
             ticket.setLastUpdatedUser((String) result[14]);
             ticket.setLastUpdatedDateTime((String) result[15]);
             ticket.setCompletedPercentage((String) result[16]);
-            ticket.setAssigneeComments((String) result[17]);
+            ticket.setAgentComment((String) result[17]);
             ticket.setBranchDivision((String) result[18]);
             ticket.setContactNo((String) result[19]);
             ticket.setLocation((String) result[20]);
@@ -267,7 +267,7 @@ public class ReportService {
             // Set values for each cell and replace empty values with "--"
             setCellValue(row.createCell(0), ticket.getTicketId(), dataCellStyle);
             setCellValue(row.createCell(1), ticket.getSender(), dataCellStyle);
-            setCellValue(row.createCell(2), ticket.getAssignee(), dataCellStyle);
+            setCellValue(row.createCell(2), ticket.getAgent(), dataCellStyle);
             setCellValue(row.createCell(3), ticket.getReportedDateTime(), dataCellStyle);
             setCellValue(row.createCell(4), ticket.getEmergencyLevel(), dataCellStyle);
             setCellValue(row.createCell(5), ticket.getLocation(), dataCellStyle);
@@ -279,11 +279,11 @@ public class ReportService {
             setCellValue(row.createCell(11), ticket.getIsWorkingPc(), dataCellStyle);
             setCellValue(row.createCell(12), ticket.getIp(), dataCellStyle);
             setCellValue(row.createCell(13), ticket.getIssueDesAndRemarks(), dataCellStyle);
-            setCellValue(row.createCell(14), ticket.getAssigneeResponseDateTime(), dataCellStyle);
+            setCellValue(row.createCell(14), ticket.getAgentResponseDateTime(), dataCellStyle);
             setCellValue(row.createCell(15), ticket.getResolvedDateTime(), dataCellStyle);
             setCellValue(row.createCell(16), ticket.getResolutionPeriod(), dataCellStyle);
             setCellValue(row.createCell(17), ticket.getCompletedPercentage(), dataCellStyle);
-            setCellValue(row.createCell(18), ticket.getAssigneeComments(), dataCellStyle);
+            setCellValue(row.createCell(18), ticket.getAgentComment(), dataCellStyle);
             setCellValue(row.createCell(19), ticket.getLastUpdatedUser(), dataCellStyle);
             setCellValue(row.createCell(20), ticket.getLastUpdatedDateTime(), dataCellStyle);
             setCellValue(row.createCell(21), ticket.getStatus(), dataCellStyle);

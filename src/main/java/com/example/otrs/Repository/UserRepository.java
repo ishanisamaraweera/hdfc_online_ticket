@@ -22,6 +22,9 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("SELECT u FROM User u WHERE u.username =  :username")
     User getUserDetailsByUsername(@Param("username") String username);
 
+    @Query("SELECT u.displayName FROM User u WHERE u.username =  :username")
+    String getDisplayNameByUsername(@Param("username") String username);
+
     @Query("SELECT new com.example.otrs.DTO.UserDetailsDTO(u.password, " +
             "u.displayName, " +
             "u.location as locationId, " +

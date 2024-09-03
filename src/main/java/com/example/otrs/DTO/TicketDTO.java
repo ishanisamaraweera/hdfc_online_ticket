@@ -1,5 +1,6 @@
 package com.example.otrs.DTO;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import lombok.Setter;
 public class TicketDTO {
     private String ticketId;
     private String sender;
-    private String assignee;
+    private String agent;
     private String reportedDateTime;
     private String emergencyLevel;
     private String status;
@@ -28,12 +29,12 @@ public class TicketDTO {
     private String isWorkingPc;
     private String ip;
     private String issueDesAndRemarks;
-    private String assigneeResponseDateTime;
+    private String agentResponseDateTime;
     private String resolvedDateTime;
     private String lastUpdatedUser;
     private String lastUpdatedDateTime;
     private String completedPercentage;
-    private String assigneeComments;
+    private String agentComment;
     private String contactNo;
     private String resolutionPeriod;
 }

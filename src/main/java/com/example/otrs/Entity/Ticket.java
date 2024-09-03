@@ -20,8 +20,8 @@ public class Ticket {
     private String ticketId;
     @Column(name = "sender", length = 45)
     private String sender;
-    @Column(name = "assignee", length = 45)
-    private String assignee;
+    @Column(name = "agent", length = 45)
+    private String agent;
     @Column(name = "reported_date_time")
     private String reportedDateTime;
     @Column(name = "emergency_level", length = 20)
@@ -46,14 +46,14 @@ public class Ticket {
     private String ip;
     @Column(name = "issue_des_and_remarks")
     private String issueDesAndRemarks;
-    @Column(name = "assignee_response_date_time")
-    private String assigneeResponseDateTime;
+    @Column(name = "agent_response_date_time")
+    private String agentResponseDateTime;
     @Column(name = "resolved_date_time")
     private String resolvedDateTime;
     @Column(name = "resolution_period")
     private String resolutionPeriod;
-    @Column(name = "assignee_comments")
-    private String assigneeComments;
+    @Column(name = "agent_comment")
+    private String agentComment;
     @Column(name = "last_updated_user", length = 45)
     private String lastUpdatedUser;
     @Column(name = "last_updated_date_time")

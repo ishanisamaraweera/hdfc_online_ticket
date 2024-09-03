@@ -10,7 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AssignRequestDTO {
-    private String assigneeId;
+    private String agentId;
     private String username;
     private String completedPercentage;
+    private String agentComment;
 }

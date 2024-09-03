@@ -41,6 +41,10 @@ public class UserService {
         return userRepository.getUserDetailsByUsername(username);
     }
 
+    public String getDisplayNameByUsername(String username) {
+        return userRepository.getDisplayNameByUsername(username);
+    }
+
     public UserDetailsDTO getUserDetailsForTicketByUsername(String username) {
         return userRepository.getUserDetailsForTicketByUsername(username);
     }

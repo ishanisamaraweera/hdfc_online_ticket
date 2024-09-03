@@ -27,6 +27,11 @@ public class UserController {
         return userService.getUserDetailsByUsername(username);
     }
 
+    @GetMapping("/getDisplayNameByUsername/{username}")
+    public String getDisplayNameByUsername(@PathVariable String username) {
+        return userService.getDisplayNameByUsername(username);
+    }
+
     @GetMapping("/getUserDetailsForTicketByUsername/{username}")
     public UserDetailsDTO getUserDetailsForTicketByUsername(@PathVariable String username) {
         return userService.getUserDetailsForTicketByUsername(username);

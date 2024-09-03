@@ -14,7 +14,7 @@ public class TicketMapper {
         Ticket ticket = new Ticket();
         ticket.setTicketId(input.get(0));
         ticket.setSender(input.get(1));
-        ticket.setAssignee(input.get(2));
+        ticket.setAgent(input.get(2));
         ticket.setReportedDateTime(input.get(3));
         ticket.setEmergencyLevel(mapEmergencyLevel(input.get(4)));
         ticket.setStatus(mapStatus(input.get(5)));
@@ -27,10 +27,10 @@ public class TicketMapper {
         ticket.setIsWorkingPc(input.get(9));
         ticket.setIp(input.get(10));
         ticket.setIssueDesAndRemarks(input.get(11));
-        ticket.setAssigneeResponseDateTime(input.get(12));
+        ticket.setAgentResponseDateTime(input.get(12));
         ticket.setResolvedDateTime(input.get(13));
         ticket.setResolutionPeriod(input.get(17));  // Assuming resolutionPeriod is at index 17
-        ticket.setAssigneeComments(input.get(14));
+        ticket.setAgentComment(input.get(14));
         ticket.setLastUpdatedUser(input.get(15));
         ticket.setLastUpdatedDateTime(input.get(16));
         ticket.setCompletedPercentage(input.get(21));  // Assuming completedPercentage is at index 21

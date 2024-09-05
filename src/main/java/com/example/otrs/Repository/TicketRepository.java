@@ -68,11 +68,6 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
     @Query("SELECT MAX(t.ticketId) AS ticketId FROM Ticket t")
     String findMaxTicketId();
 
-    @Query(value = "SELECT t " +
-            "FROM Ticket t " +
-            "WHERE t.status <> 6 AND  t.ticketId = :ticketId ORDER BY t.lastUpdatedDateTime DESC")
-    Ticket getAllDetailsByID(@Param("ticketId") String ticketId);
-
     @Query("SELECT t.ticketId, " +
             "u1.displayName as sender, " +
             "u2.displayName as agent, " +

@@ -1,14 +1,17 @@
 package com.example.otrs.Service;
 
 import com.example.otrs.DTO.AssignRequestDTO;
+import com.example.otrs.DTO.CommentRequestDTO;
 import com.example.otrs.DTO.TicketDTO;
+import com.example.otrs.Entity.Comment;
 import com.example.otrs.Entity.Status;
 import com.example.otrs.Entity.Ticket;
+import com.example.otrs.Repository.CommentRepository;
 import com.example.otrs.Repository.StatusRepository;
 import com.example.otrs.Repository.TicketRepository;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,6 +26,8 @@ public class TicketService {
     private TicketRepository ticketRepository;
     @Autowired
     private StatusRepository statusRepository;
+    @Autowired
+    private CommentRepository commentRepository;
 
     public Ticket saveDetails(Ticket ticket) {
         String lastTicketId = ticketRepository.findMaxTicketId();
@@ -76,8 +81,9 @@ public class TicketService {
         return tickets;
     }
 
-    public Ticket getAllDetailsByID(String ticketId) {
-        return ticketRepository.getAllDetailsByID(ticketId);
+    public Ticket getTicketWithComments(String ticketId) {
+        return ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found with id " + ticketId));
     }
 
     public Ticket updateTicket(Ticket ticket) throws Exception {
@@ -313,5 +319,24 @@ public class TicketService {
         assignTicket.setLastUpdatedUser(request.getUsername());
         assignTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
         ticketRepository.save((assignTicket));
+    }
+
+    public void addComment(Comment request) throws Exception {
+        String lastCommentId = commentRepository.findMaxCommentId();
+        String commentId;
+
+        if (lastCommentId == null ) {
+            commentId = "1";
+        } else {
+            commentId = String.valueOf(Long.parseLong(lastCommentId) + 1);
+        }
+
+        request.setCommentId(commentId);
+        request.setAddedDateTime(LocalDateTime.now().toString());
+        commentRepository.save(request);
+    }
+
+    public List<CommentRequestDTO> getCommentsByTicketId(String ticketId){
+        return commentRepository.getCommentsByTicketId(ticketId);
     }
 }

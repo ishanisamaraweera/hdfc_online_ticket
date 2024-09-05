@@ -1,12 +1,13 @@
 package com.example.otrs.Controller;
 
 import com.example.otrs.DTO.AssignRequestDTO;
+import com.example.otrs.DTO.CommentRequestDTO;
 import com.example.otrs.DTO.TicketDTO;
-import com.example.otrs.DTO.TicketMapper;
+import com.example.otrs.Entity.Comment;
 import com.example.otrs.Entity.Ticket;
 import com.example.otrs.Service.TicketService;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -34,8 +35,9 @@ public class TicketController {
     }
 
     @GetMapping("/getTicketByID/{id}")
-    public Ticket getDetailsByID(@PathVariable String id){
-        return ticketService.getAllDetailsByID(id);
+    public ResponseEntity<Ticket> getTicketById(@PathVariable("id") String ticketId) {
+        Ticket ticket = ticketService.getTicketWithComments(ticketId);
+        return ResponseEntity.ok(ticket);
     }
 
 
@@ -126,5 +128,14 @@ public class TicketController {
     @PutMapping("/saveStatus/{ticketId}")
     public void saveStatus(@PathVariable String ticketId, @RequestBody AssignRequestDTO request) throws Exception {
         ticketService.saveStatus(ticketId, request);
+    }
+    @PostMapping("/addComment")
+    public void addComment(@RequestBody Comment request) throws Exception {
+        ticketService.addComment(request);
+    }
+
+    @GetMapping("/getCommentsByTicketId/{ticketId}")
+    public List<CommentRequestDTO> getCommentsByTicketId(@PathVariable String ticketId){
+        return ticketService.getCommentsByTicketId(ticketId);
     }
 }

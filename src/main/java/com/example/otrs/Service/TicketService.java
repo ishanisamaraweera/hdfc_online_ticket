@@ -3,16 +3,27 @@ package com.example.otrs.Service;
 import com.example.otrs.DTO.AssignRequestDTO;
 import com.example.otrs.DTO.CommentRequestDTO;
 import com.example.otrs.DTO.TicketDTO;
+import com.example.otrs.Entity.Attachment;
 import com.example.otrs.Entity.Comment;
 import com.example.otrs.Entity.Status;
 import com.example.otrs.Entity.Ticket;
+import com.example.otrs.Repository.AttachmentRepository;
 import com.example.otrs.Repository.CommentRepository;
 import com.example.otrs.Repository.StatusRepository;
 import com.example.otrs.Repository.TicketRepository;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +39,11 @@ public class TicketService {
     private StatusRepository statusRepository;
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    AttachmentRepository attachmentRepository;
+
+    final String FILE_PATH = "C:/Users/ishani.s/Documents/OTRS/";
 
     public Ticket saveDetails(Ticket ticket) {
         String lastTicketId = ticketRepository.findMaxTicketId();
@@ -321,22 +337,78 @@ public class TicketService {
         ticketRepository.save((assignTicket));
     }
 
-    public void addComment(Comment request) throws Exception {
-        String lastCommentId = commentRepository.findMaxCommentId();
-        String commentId;
+    public ResponseEntity<?> addComment(String ticketId, String comment, String addedBy, MultipartFile file,
+                                        List<MultipartFile> attachments) throws IOException {
+        Integer lastCommentId = commentRepository.findMaxCommentId();
+        Integer commentId;
 
-        if (lastCommentId == null ) {
-            commentId = "1";
+        if (lastCommentId == null) {
+            commentId = 1;
         } else {
-            commentId = String.valueOf(Long.parseLong(lastCommentId) + 1);
+            commentId = lastCommentId + 1;
         }
 
+        Comment request = new Comment();
+
         request.setCommentId(commentId);
+        request.setTicketId(ticketId);
+        request.setComment(comment);
+        request.setAddedBy(addedBy);
         request.setAddedDateTime(LocalDateTime.now().toString());
-        commentRepository.save(request);
+
+        try {
+            if (file != null && !file.isEmpty()) {
+                saveFile(file);
+            }
+
+            // Save attachments if any
+            if (attachments != null) {
+                for (MultipartFile attachment : attachments) {
+                    saveFile(attachment);
+                }
+            }
+
+            commentRepository.save(request);
+
+            return new ResponseEntity<>("Comment and file(s) uploaded successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to add comment and upload file(s)", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    public List<CommentRequestDTO> getCommentsByTicketId(String ticketId){
+    private void saveFile(MultipartFile file) throws IOException {
+        if (!Files.exists(Paths.get(FILE_PATH))) {
+            Files.createDirectories(Paths.get(FILE_PATH));
+        }
+        Path filePath = Paths.get(FILE_PATH + file.getOriginalFilename());
+        Files.write(filePath, file.getBytes());
+    }
+
+    public List<CommentRequestDTO> getCommentsByTicketId(String ticketId) {
         return commentRepository.getCommentsByTicketId(ticketId);
+    }
+
+    public ResponseEntity<?> uploadFile(MultipartFile file) {
+        try {
+            // Define the file path
+            String filePath = FILE_PATH + file.getOriginalFilename();
+
+            // Save the file to the file system
+            File dest = new File(filePath);
+            file.transferTo(dest);
+
+            // Save the file path to the database
+            Attachment entity = new Attachment();
+            entity.setFilePath(filePath);
+            entity.setName(file.getOriginalFilename());
+            entity.setFileType(file.getContentType());
+            entity.setUploadedDateTime(LocalDateTime.now().toString());
+            attachmentRepository.save(entity);
+
+            return ResponseEntity.ok("File uploaded successfully");
+        } catch (
+                IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file");
+        }
     }
 }

@@ -14,11 +14,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentRequestDTO {
-    private String commentId;
+    private Integer commentId;
     private String comment;
     private String addedDateTime;
     private String addedBy;
-    private String attachmentId;
     private String commentType;
     private String ticketId;
 }

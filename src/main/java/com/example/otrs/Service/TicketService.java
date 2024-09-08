@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,7 +132,7 @@ public class TicketService {
         updateTicket.setResolutionPeriod(ticket.getResolutionPeriod());
         updateTicket.setAgentComment(ticket.getAgentComment());
         updateTicket.setLastUpdatedUser(ticket.getLastUpdatedUser());
-        updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        updateTicket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         ticketRepository.save((updateTicket));
         return updateTicket;
     }
@@ -145,7 +146,7 @@ public class TicketService {
                 statusRepository.saveDetails(5, "Closed");
             }
             updateTicket.setStatus(5);
-            updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+            updateTicket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             ticketRepository.save(updateTicket);
             return updateTicket;
         }
@@ -355,7 +356,7 @@ public class TicketService {
         request.setTicketId(ticketId);
         request.setComment(comment);
         request.setAddedBy(addedBy);
-        request.setAddedDateTime(LocalDateTime.now().toString());
+        request.setAddedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         try {
             if (file != null && !file.isEmpty()) {

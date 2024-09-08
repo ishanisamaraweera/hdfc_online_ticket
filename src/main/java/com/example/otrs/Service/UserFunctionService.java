@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class UserFunctionService {
         updateUserFunction.setUserFunctionDes(userFunction.getUserFunctionDes());
         updateUserFunction.setStatus(userFunction.getStatus());
         updateUserFunction.setLastUpdatedUser(userFunction.getLastUpdatedUser());
-        updateUserFunction.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        updateUserFunction.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         userFunctionRepository.save((updateUserFunction));
         return updateUserFunction;
     }

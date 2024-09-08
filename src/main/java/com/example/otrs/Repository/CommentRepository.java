@@ -11,7 +11,8 @@ public interface CommentRepository extends JpaRepository<Comment, String> {
     @Query("SELECT MAX(c.commentId) AS commentId FROM Comment c")
     Integer findMaxCommentId();
 
-    @Query("SELECT new com.example.otrs.DTO.CommentRequestDTO(c.commentId, c.comment, c.addedDateTime, " +
+    @Query("SELECT new com.example.otrs.DTO.CommentRequestDTO(c.commentId, c.comment, " +
+            "c.addedDateTime, " +
             "u.displayName as addedBy, " +
             "c.commentType, c.ticketId) " +
             "FROM Comment c " +

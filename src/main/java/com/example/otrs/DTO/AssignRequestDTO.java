@@ -12,6 +12,6 @@ import lombok.Setter;
 public class AssignRequestDTO {
     private String agentId;
     private String username;
-    private String completedPercentage;
+    private Integer completedPercentage;
     private String agentComment;
 }

@@ -6,11 +6,15 @@ import com.example.otrs.DTO.TicketDTO;
 import com.example.otrs.Entity.Ticket;
 import com.example.otrs.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -25,7 +29,22 @@ public class TicketController {
     //Add new ticket
     @CrossOrigin(origins = "*")
     @PostMapping("/addTicket")
-    public Ticket addTicket(@RequestBody Ticket ticket) {
+    public Ticket addTicket(@RequestBody Ticket ticket//, @RequestParam("files") List<MultipartFile> files
+    ) {
+//        System.out.println("Add Ticket");
+//
+//        for (MultipartFile file : files) {
+//            if (!file.isEmpty()) {
+//                try {
+//                    // Save the file or process it
+//                    byte[] bytes = file.getBytes();
+//                    Path path = Paths.get("uploads/" + file.getOriginalFilename());
+//                    Files.write(path, bytes);
+//                } catch (IOException e) {
+//                    return null;
+//                }
+//            }
+//        }
         return ticketService.saveDetails(ticket);
     }
 

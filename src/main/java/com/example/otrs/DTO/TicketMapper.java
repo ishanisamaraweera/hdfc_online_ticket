@@ -33,7 +33,7 @@ public class TicketMapper {
         ticket.setAgentComment(input.get(14));
         ticket.setLastUpdatedUser(input.get(15));
         ticket.setLastUpdatedDateTime(input.get(16));
-        ticket.setCompletedPercentage(input.get(21));  // Assuming completedPercentage is at index 21
+        ticket.setCompletedPercentage(Integer.parseInt(input.get(21)));  // Assuming completedPercentage is at index 21
         return ticket;
     }
 

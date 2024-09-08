@@ -57,6 +57,7 @@ public class TicketService {
             int lastId = Integer.parseInt(lastTicketId.substring(7));
             ticketId = String.format("%05d", lastId + 1);
         }
+        ticket.setCompletedPercentage(0);
 
         ticket.setTicketId(currentYear + branch + ticketId);
         return ticketRepository.save(ticket);
@@ -84,7 +85,7 @@ public class TicketService {
             ticket.setResolvedDateTime((String) result[13]);
             ticket.setLastUpdatedUser((String) result[14]);
             ticket.setLastUpdatedDateTime((String) result[15]);
-            ticket.setCompletedPercentage((String) result[16]);
+            ticket.setCompletedPercentage((Integer)result[16]);
             ticket.setAgentComment((String) result[17]);
             ticket.setBranchDivision((String) result[18]);
             ticket.setContactNo((String) result[19]);
@@ -219,7 +220,7 @@ public class TicketService {
             ticket.setResolvedDateTime((String) result[13]);
             ticket.setLastUpdatedUser((String) result[14]);
             ticket.setLastUpdatedDateTime((String) result[15]);
-            ticket.setCompletedPercentage((String) result[16]);
+            ticket.setCompletedPercentage((Integer) result[16]);
             ticket.setAgentComment((String) result[17]);
             ticket.setBranchDivision((String) result[18]);
             ticket.setContactNo((String) result[19]);
@@ -253,7 +254,7 @@ public class TicketService {
             ticket.setResolvedDateTime((String) result[13]);
             ticket.setLastUpdatedUser((String) result[14]);
             ticket.setLastUpdatedDateTime((String) result[15]);
-            ticket.setCompletedPercentage((String) result[16]);
+            ticket.setCompletedPercentage((Integer) result[16]);
             ticket.setAgentComment((String) result[17]);
             ticket.setBranchDivision((String) result[18]);
             ticket.setContactNo((String) result[19]);

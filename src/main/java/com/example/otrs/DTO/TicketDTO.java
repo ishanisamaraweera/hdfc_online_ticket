@@ -33,7 +33,7 @@ public class TicketDTO {
     private String resolvedDateTime;
     private String lastUpdatedUser;
     private String lastUpdatedDateTime;
-    private String completedPercentage;
+    private Integer completedPercentage;
     private String agentComment;
     private String contactNo;
     private String resolutionPeriod;

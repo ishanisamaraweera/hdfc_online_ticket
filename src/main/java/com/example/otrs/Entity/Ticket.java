@@ -62,5 +62,5 @@ public class Ticket {
     @Column(name = "last_updated_date_time")
     private String lastUpdatedDateTime;
     @Column(name = "completed_percentage")
-    private String completedPercentage;
+    private Integer completedPercentage;
 }

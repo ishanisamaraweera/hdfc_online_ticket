@@ -54,7 +54,7 @@ public class ReportService {
             ticket.setResolvedDateTime((String) result[13]);
             ticket.setLastUpdatedUser((String) result[14]);
             ticket.setLastUpdatedDateTime((String) result[15]);
-            ticket.setCompletedPercentage((String) result[16]);
+            ticket.setCompletedPercentage((Integer) result[16]);
             ticket.setAgentComment((String) result[17]);
             ticket.setBranchDivision((String) result[18]);
             ticket.setContactNo((String) result[19]);
@@ -147,7 +147,7 @@ public class ReportService {
             setCellValue(row.createCell(14), ticket.getAgentResponseDateTime(), dataCellStyle);
             setCellValue(row.createCell(15), ticket.getResolvedDateTime(), dataCellStyle);
             setCellValue(row.createCell(16), ticket.getResolutionPeriod(), dataCellStyle);
-            setCellValue(row.createCell(17), ticket.getCompletedPercentage(), dataCellStyle);
+            setCellValue(row.createCell(17), ticket.getCompletedPercentage().toString(), dataCellStyle);
             setCellValue(row.createCell(18), ticket.getAgentComment(), dataCellStyle);
             setCellValue(row.createCell(19), ticket.getLastUpdatedUser(), dataCellStyle);
             setCellValue(row.createCell(20), ticket.getLastUpdatedDateTime(), dataCellStyle);
@@ -191,7 +191,7 @@ public class ReportService {
             ticket.setResolvedDateTime((String) result[13]);
             ticket.setLastUpdatedUser((String) result[14]);
             ticket.setLastUpdatedDateTime((String) result[15]);
-            ticket.setCompletedPercentage((String) result[16]);
+            ticket.setCompletedPercentage((Integer) result[16]);
             ticket.setAgentComment((String) result[17]);
             ticket.setBranchDivision((String) result[18]);
             ticket.setContactNo((String) result[19]);
@@ -282,7 +282,7 @@ public class ReportService {
             setCellValue(row.createCell(14), ticket.getAgentResponseDateTime(), dataCellStyle);
             setCellValue(row.createCell(15), ticket.getResolvedDateTime(), dataCellStyle);
             setCellValue(row.createCell(16), ticket.getResolutionPeriod(), dataCellStyle);
-            setCellValue(row.createCell(17), ticket.getCompletedPercentage(), dataCellStyle);
+            setCellValue(row.createCell(17), ticket.getCompletedPercentage().toString(), dataCellStyle);
             setCellValue(row.createCell(18), ticket.getAgentComment(), dataCellStyle);
             setCellValue(row.createCell(19), ticket.getLastUpdatedUser(), dataCellStyle);
             setCellValue(row.createCell(20), ticket.getLastUpdatedDateTime(), dataCellStyle);

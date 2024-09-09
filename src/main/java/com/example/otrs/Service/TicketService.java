@@ -24,7 +24,9 @@ import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +88,7 @@ public class TicketService {
             ticket.setResolvedDateTime((String) result[13]);
             ticket.setLastUpdatedUser((String) result[14]);
             ticket.setLastUpdatedDateTime((String) result[15]);
-            ticket.setCompletedPercentage((Integer)result[16]);
+            ticket.setCompletedPercentage((Integer) result[16]);
             ticket.setAgentComment((String) result[17]);
             ticket.setBranchDivision((String) result[18]);
             ticket.setContactNo((String) result[19]);
@@ -295,7 +297,8 @@ public class TicketService {
         ticket.setStatus(3);
         ticket.setAgentComment(request.getAgentComment());
         ticket.setLastUpdatedUser(request.getUsername());
-        ticket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        ticket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        ticket.setAgentResponseDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         ticketRepository.save((ticket));
     }
 
@@ -309,7 +312,8 @@ public class TicketService {
         ticket.setStatus(1);
         ticket.setAgentComment(request.getAgentComment());
         ticket.setLastUpdatedUser(request.getUsername());
-        ticket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        ticket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        ticket.setAgentResponseDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         ticketRepository.save((ticket));
     }
 
@@ -322,7 +326,7 @@ public class TicketService {
 
         assignTicket.setCompletedPercentage(request.getCompletedPercentage());
         assignTicket.setLastUpdatedUser(request.getUsername());
-        assignTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        assignTicket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         ticketRepository.save((assignTicket));
     }
 
@@ -333,9 +337,24 @@ public class TicketService {
             throw new Exception("Ticket not found");
         }
 
-        assignTicket.setStatus(4);
+        assignTicket.setStatus(4);//completed
         assignTicket.setLastUpdatedUser(request.getUsername());
-        assignTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        assignTicket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        assignTicket.setResolvedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime agentResponseDateTime = LocalDateTime.parse(assignTicket.getAgentResponseDateTime(), formatter);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        Period period = Period.between(agentResponseDateTime.toLocalDate(), currentDateTime.toLocalDate());
+
+        int days = period.getDays();
+        Duration duration = Duration.between(agentResponseDateTime.plusDays(days), currentDateTime);
+        long hours = duration.toHours();
+        long minutes = duration.toMinutes() % 60;
+
+        String readableDuration = String.format("%d days, %d hours, %d minutes",
+                days, hours, minutes);
+        assignTicket.setResolutionPeriod(readableDuration);
         ticketRepository.save((assignTicket));
     }
 

@@ -48,9 +48,9 @@ public class TicketController {
         return ticketService.saveDetails(ticket);
     }
 
-    @GetMapping("/getTicket")
-    public List<TicketDTO> getDetails() {
-        return ticketService.getAllDetails();
+    @GetMapping("/getTicket/{username}")
+    public List<TicketDTO> getDetails(@PathVariable("username") String username) {
+        return ticketService.getAllDetails(username);
     }
 
     @GetMapping("/getTicketByID/{id}")

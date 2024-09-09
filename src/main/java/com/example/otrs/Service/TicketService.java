@@ -3,14 +3,8 @@ package com.example.otrs.Service;
 import com.example.otrs.DTO.AssignRequestDTO;
 import com.example.otrs.DTO.CommentRequestDTO;
 import com.example.otrs.DTO.TicketDTO;
-import com.example.otrs.Entity.Attachment;
-import com.example.otrs.Entity.Comment;
-import com.example.otrs.Entity.Status;
-import com.example.otrs.Entity.Ticket;
-import com.example.otrs.Repository.AttachmentRepository;
-import com.example.otrs.Repository.CommentRepository;
-import com.example.otrs.Repository.StatusRepository;
-import com.example.otrs.Repository.TicketRepository;
+import com.example.otrs.Entity.*;
+import com.example.otrs.Repository.*;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,6 +39,8 @@ public class TicketService {
 
     @Autowired
     AttachmentRepository attachmentRepository;
+    @Autowired
+    UserService userService;
 
     final String FILE_PATH = "C:/Users/ishani.s/Documents/OTRS/";
 
@@ -66,8 +62,18 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    public List<TicketDTO> getAllDetails() {
-        List<Object[]> results = ticketRepository.getAllTicketDetails();
+    public List<TicketDTO> getAllDetails(String username) {
+        List<String> userRoleList = userService.getUserRolesForUsername(username);
+        List<Object[]> results;
+
+        if (userRoleList.contains("MANAGER") || userRoleList.contains("SUPERVISOR")
+                || userRoleList.contains("ADMIN") || userRoleList.contains("SUPERADMIN")
+                || userRoleList.contains("TOPSUPERVISOR")) {
+            results = ticketRepository.getAllTicketDetails();
+        } else {
+            results = ticketRepository.getAllTicketDetails(username);
+        }
+
         List<TicketDTO> tickets = new ArrayList<>();
 
         for (Object[] result : results) {

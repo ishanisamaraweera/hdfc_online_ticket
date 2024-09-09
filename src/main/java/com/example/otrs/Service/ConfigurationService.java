@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @Service
 public class ConfigurationService {
@@ -75,5 +75,11 @@ public class ConfigurationService {
         return branchDivisionRepository.getBranchDivisionByLocation(location);
     }
 
+    public List<String> getFunctionPrivileges(String username){
+        return userFunctionRepository.getUserFunctionsByUsername(username);
+    }
 
+    public List<String> getPagePrivileges(String username){
+        return userFunctionRepository.getUserPagesByUsername(username);
+    }
 }

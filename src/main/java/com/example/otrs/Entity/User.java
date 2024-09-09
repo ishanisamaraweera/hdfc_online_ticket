@@ -8,9 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @Entity
 @Data
@@ -43,6 +43,8 @@ public class User {
     private String dob;
     @Column(name = "epf")
     private String epf;
+    @Column(name = "email")
+    private String email;
     @Column(name = "status")
     private Integer status;
     @Column(name = "initial_login")

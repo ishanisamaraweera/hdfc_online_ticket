@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/*
-
+/**
+*
 @author ishani.s
  */
 @RestController
@@ -71,5 +71,15 @@ public class ConfigurationController {
     @GetMapping("/getBranchDivisionByLocation/{location}")
     public List<BranchDivisionDTO> getBranchDivisionByLocation(@PathVariable String location) {
         return configurationService.getBranchDivisionByLocation(location);
+    }
+
+    @GetMapping("/getFunctionPrivileges/{username}")
+    public List<String> getFunctionPrivileges(@PathVariable String username){
+        return configurationService.getFunctionPrivileges(username);
+    }
+
+    @GetMapping("/getPagePrivileges/{username}")
+    public List<String> getPagePrivileges(@PathVariable String username){
+        return configurationService.getPagePrivileges(username);
     }
 }

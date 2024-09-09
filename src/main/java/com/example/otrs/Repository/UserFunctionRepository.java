@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @Repository
 public interface UserFunctionRepository extends JpaRepository<UserFunction, String> {
@@ -31,4 +31,12 @@ public interface UserFunctionRepository extends JpaRepository<UserFunction, Stri
 
     @Query("SELECT f FROM UserFunction f WHERE userFunctionId = :userFunctionId")
     UserFunction getFunctionDetailsByFunctionId(String userFunctionId);
+
+    @Query("SELECT DISTINCT functionId FROM UserRoleFunction " +
+            "WHERE userRoleId IN (SELECT id.userRoleId from UserRoleAssign WHERE id.userId = :username) ")
+    List<String> getUserFunctionsByUsername(String username);
+
+    @Query("SELECT DISTINCT pageId FROM UserRolePage " +
+            "WHERE userRoleId IN (SELECT id.userRoleId from UserRoleAssign WHERE id.userId = :username) ")
+    List<String> getUserPagesByUsername(String username);
 }

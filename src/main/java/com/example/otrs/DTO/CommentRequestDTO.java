@@ -13,9 +13,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PasswordChangeRequestDTO {
-    private String username;
-    private String oldPassword;
-    private String newPassword;
-    private String confirmPassword;
+public class CommentRequestDTO {
+    private Integer commentId;
+    private String comment;
+    private String addedDateTime;
+    private String addedBy;
+    private String commentType;
+    private String ticketId;
 }

@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.net.UnknownHostException;
 import java.util.List;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @RestController
 public class UserController {
@@ -25,6 +25,11 @@ public class UserController {
     @GetMapping("/getUserDetailsByUsername/{username}")
     public User getDetailsByUsername(@PathVariable String username) {
         return userService.getUserDetailsByUsername(username);
+    }
+
+    @GetMapping("/getDisplayNameByUsername/{username}")
+    public String getDisplayNameByUsername(@PathVariable String username) {
+        return userService.getDisplayNameByUsername(username);
     }
 
     @GetMapping("/getUserDetailsForTicketByUsername/{username}")
@@ -121,5 +126,10 @@ public class UserController {
     @GetMapping("/getUserDetailsByUserRole/{userRoleId}")
     public UserRole getUserDetailsByUserRole(@PathVariable String userRoleId){
         return userService.getUserDetailsByUserRole(userRoleId);
+    }
+
+    @GetMapping("/getUserListsByUserRole/{userRole}")
+    public List<UserNameDTO> getUserListsByUserRole(@PathVariable String userRole){
+        return userService.getUserListsByUserRole(userRole);
     }
 }

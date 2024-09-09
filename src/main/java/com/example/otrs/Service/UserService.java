@@ -14,14 +14,13 @@ import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @Service
 public class UserService {
@@ -33,11 +32,17 @@ public class UserService {
     private UserFunctionRepository userFunctionRepository;
     @Autowired
     private UserRoleAssignRepository userRoleAssignRepository;
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User getUserDetailsByUsername(String username) {
         return userRepository.getUserDetailsByUsername(username);
+    }
+
+    public String getDisplayNameByUsername(String username) {
+        return userRepository.getDisplayNameByUsername(username);
     }
 
     public UserDetailsDTO getUserDetailsForTicketByUsername(String username) {
@@ -56,10 +61,12 @@ public class UserService {
     @Transactional
     public User createUserWithRoles(UserDTO userRequest) {
         User user = new User();
+        String password = userRequest.getEpf() + userRequest.getDob().replace("-", "");
+
         // Set user fields from userRequest
         user.setUsername(userRequest.getEpf());
         user.setDisplayName(userRequest.getDisplayName());
-        user.setPassword(passwordEncoder.encode(userRequest.getEpf() + userRequest.getDob().replace("-", "")));
+        user.setPassword(passwordEncoder.encode(password));
         user.setLocation(userRequest.getLocation());
         user.setBranchDivision(userRequest.getBranchDivision());
         user.setDesignation(userRequest.getDesignation());
@@ -69,6 +76,7 @@ public class UserService {
         user.setLastUpdatedDateTime(userRequest.getLastUpdatedDateTime());
         user.setDob(userRequest.getDob());
         user.setEpf(userRequest.getEpf());
+        user.setEmail(userRequest.getEmail());
         List<String> roles = userRequest.getUserRoles();
         user.setStatus(userRequest.getStatus());
         user.setInitialLogin("Yes");
@@ -80,6 +88,15 @@ public class UserService {
             UserRoleAssign userRoleAssign = new UserRoleAssign(id);
             userRoleAssignRepository.save(userRoleAssign);
         }
+
+        emailSenderService.sendEmail(user.getEmail(), "Initial User Password",
+                ("Dear " + user.getDisplayName() + ","
+                        + "\n\nYour OTRS username = " + user.getUsername()
+                        + "\nYour OTRS temporary password = " + password
+                        + "\n\nPlease login to the system using above credentials and reset the password when your initial login."
+                        + "\n\nThank you.!"
+                        + "\nHDFC Bank")
+                );
         return user;
     }
 
@@ -94,7 +111,7 @@ public class UserService {
     }
 
     public boolean authenticateUser(LoginDTO loginInfo) {
-        User user = userRepository.getUserDetailsByUsername(loginInfo.getUsername());
+        User user = userRepository.getUserDetailsByUsernameToAuthenticate(loginInfo.getUsername());
         if (user != null) {
             return passwordEncoder.matches(loginInfo.getPassword(), user.getPassword());
         }
@@ -135,13 +152,14 @@ public class UserService {
             user.setDesignation((String) result[2]);
             user.setDob((String) result[3]);
             user.setEpf((String) result[4]);
-            user.setLocation((String) result[5]);
-            user.setBranchDivision((String) result[6]);
-            user.setAddedBy((String) result[7]);
-            user.setAddedDateTime((String) result[8]);
-            user.setLastUpdatedUser((String) result[9]);
-            user.setLastUpdatedDateTime((String) result[10]);
-            user.setStatus((String) result[11]);
+            user.setEmail((String) result[5]);
+            user.setLocation((String) result[6]);
+            user.setBranchDivision((String) result[7]);
+            user.setAddedBy((String) result[8]);
+            user.setAddedDateTime((String) result[9]);
+            user.setLastUpdatedUser((String) result[10]);
+            user.setLastUpdatedDateTime((String) result[11]);
+            user.setStatus((String) result[12]);
             users.add(user);
         }
         return users;
@@ -181,6 +199,7 @@ public class UserService {
         }
         updateUser.setDisplayName(user.getDisplayName());
         updateUser.setDesignation(user.getDesignation());
+        updateUser.setEmail(user.getEmail());
         updateUser.setDob(user.getDob());
         updateUser.setLocation(user.getLocation());
         updateUser.setBranchDivision(user.getBranchDivision());
@@ -238,5 +257,9 @@ public class UserService {
         deleteUserRole.setStatus(6);
         deleteUserRole.setLastUpdatedDateTime(LocalDateTime.now().toString());
         userRoleRepository.save((deleteUserRole));
+    }
+
+    public List<UserNameDTO> getUserListsByUserRole(String userRole){
+        return userRepository.getUserListsByUserRole(userRole);
     }
 }

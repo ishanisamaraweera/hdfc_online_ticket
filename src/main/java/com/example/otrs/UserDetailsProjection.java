@@ -1,8 +1,8 @@
 package com.example.otrs;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 public interface UserDetailsProjection {
     String getPassword();

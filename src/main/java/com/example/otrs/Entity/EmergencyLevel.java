@@ -6,15 +6,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @Entity
 @Data
 @Table(name = "emergency_level")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmergencyLevel {

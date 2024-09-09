@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 public interface UserRoleFunctionAssignRepository extends JpaRepository<UserRoleFunctionAssign, String> {
     @Query("SELECT new com.example.otrs.DTO.UserFunctionDTO(u.functionId) FROM UserRoleFunction u WHERE u.userRoleId = :userRoleId")

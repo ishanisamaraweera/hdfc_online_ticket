@@ -1,21 +1,19 @@
 package com.example.otrs.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-/**
- *
- @author ishani.s
- */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRoleDTO {
-    private String userRoleId;
-    private String userRoleDes;
+/**
+ *
+ @author ishani.s
+ */
+public class IssueCategoryDTO {
+    private Integer issueCategoryId;
+    private String issueCategoryDes;
+    private String issueType;
     private String createdUser;
     private String createdDateTime;
     private String lastUpdatedUser;

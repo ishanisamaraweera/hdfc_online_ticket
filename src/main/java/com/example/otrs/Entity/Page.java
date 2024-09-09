@@ -14,13 +14,15 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Data
-@Table(name = "location")
+@Table(name = "page")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Location {
+public class Page {
     @Id
-    @Column(name = "location_id", length = 45)
-    private String locationId;
-    @Column(name = "location_des")
-    private String locationDes;
+    @Column(name = "page_id", length = 45)
+    private String pageId;
+    @Column(name = "page_description")
+    private String pageDescription;
+    @Column(name = "status")
+    private Integer status;
 }

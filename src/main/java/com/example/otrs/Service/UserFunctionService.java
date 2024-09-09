@@ -14,12 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-
-@author ishani.s
+/**
+ *
+ @author ishani.s
  */
 @Service
 public class UserFunctionService {
@@ -76,7 +77,7 @@ public class UserFunctionService {
         updateUserFunction.setUserFunctionDes(userFunction.getUserFunctionDes());
         updateUserFunction.setStatus(userFunction.getStatus());
         updateUserFunction.setLastUpdatedUser(userFunction.getLastUpdatedUser());
-        updateUserFunction.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        updateUserFunction.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         userFunctionRepository.save((updateUserFunction));
         return updateUserFunction;
     }
@@ -85,7 +86,7 @@ public class UserFunctionService {
         UserFunction deleteFunction = userFunctionRepository.findById(userFunctionId).orElse(null);
 
         if (deleteFunction == null) {
-            throw new Exception("User not found");
+            throw new Exception("Function not found");
         }
         deleteFunction.setStatus(6);
         deleteFunction.setLastUpdatedDateTime(LocalDateTime.now().toString());

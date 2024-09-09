@@ -5,15 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
-*
-@author ishani.s
- */
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class LoginDTO {
+@NoArgsConstructor
+public class AssignRequestDTO {
+    private String agentId;
     private String username;
-    private String password;
+    private Integer completedPercentage;
+    private String agentComment;
 }

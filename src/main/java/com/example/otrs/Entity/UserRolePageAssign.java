@@ -1,6 +1,8 @@
 package com.example.otrs.Entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,10 +13,10 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Data
-@Table(name = "user_role_function")
+@Table(name = "user_role_page")
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRoleFunctionAssign {
+public class UserRolePageAssign {
     @EmbeddedId
-    private UserRoleFunctionAssignId id;
+    private UserRolePageAssignId id;
 }

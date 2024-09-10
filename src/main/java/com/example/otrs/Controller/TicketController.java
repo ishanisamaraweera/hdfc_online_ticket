@@ -3,18 +3,15 @@ package com.example.otrs.Controller;
 import com.example.otrs.DTO.AssignRequestDTO;
 import com.example.otrs.DTO.CommentRequestDTO;
 import com.example.otrs.DTO.TicketDTO;
+import com.example.otrs.Entity.Comment;
 import com.example.otrs.Entity.Ticket;
 import com.example.otrs.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -25,26 +22,9 @@ public class TicketController {
     @Autowired
     private TicketService ticketService;
 
-
-    //Add new ticket
     @CrossOrigin(origins = "*")
     @PostMapping("/addTicket")
-    public Ticket addTicket(@RequestBody Ticket ticket//, @RequestParam("files") List<MultipartFile> files
-    ) {
-//        System.out.println("Add Ticket");
-//
-//        for (MultipartFile file : files) {
-//            if (!file.isEmpty()) {
-//                try {
-//                    // Save the file or process it
-//                    byte[] bytes = file.getBytes();
-//                    Path path = Paths.get("uploads/" + file.getOriginalFilename());
-//                    Files.write(path, bytes);
-//                } catch (IOException e) {
-//                    return null;
-//                }
-//            }
-//        }
+    public Ticket addTicket(@RequestBody Ticket ticket) {
         return ticketService.saveDetails(ticket);
     }
 
@@ -58,7 +38,6 @@ public class TicketController {
         Ticket ticket = ticketService.getTicketWithComments(ticketId);
         return ResponseEntity.ok(ticket);
     }
-
 
     //Update all ticket details
     @PutMapping("/updateTicket")
@@ -150,12 +129,8 @@ public class TicketController {
     }
 
     @PostMapping("/addComment")
-    public ResponseEntity<?> addComment(@RequestParam("comment") String comment,
-                                        @RequestParam("ticketId") String ticketId,
-                                        @RequestParam("addedBy") String addedBy,
-                                        @RequestParam(value = "file", required = false) MultipartFile file,
-                                        @RequestParam(value = "attachments", required = false) List<MultipartFile> attachments) throws IOException {
-        return ticketService.addComment(ticketId, comment, addedBy, file, attachments);
+    public Comment addComment(@ModelAttribute Comment comment, @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        return ticketService.addComment(comment, file);
     }
 
     @GetMapping("/getCommentsByTicketId/{ticketId}")

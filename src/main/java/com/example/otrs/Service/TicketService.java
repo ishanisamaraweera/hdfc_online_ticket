@@ -43,6 +43,8 @@ public class TicketService {
     UserService userService;
 
     final String FILE_PATH = "C:/Users/ishani.s/Documents/OTRS/";
+    public static String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/images";
+
 
     public Ticket saveDetails(Ticket ticket) {
         String lastTicketId = ticketRepository.findMaxTicketId();
@@ -364,10 +366,9 @@ public class TicketService {
         ticketRepository.save((assignTicket));
     }
 
-    public ResponseEntity<?> addComment(String ticketId, String comment, String addedBy, MultipartFile file,
-                                        List<MultipartFile> attachments) throws IOException {
+    public Comment addComment(Comment comment, MultipartFile file) throws IOException {
         Integer lastCommentId = commentRepository.findMaxCommentId();
-        Integer commentId;
+        int commentId;
 
         if (lastCommentId == null) {
             commentId = 1;
@@ -375,32 +376,17 @@ public class TicketService {
             commentId = lastCommentId + 1;
         }
 
-        Comment request = new Comment();
+        comment.setCommentId(commentId);
+        comment.setAddedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
-        request.setCommentId(commentId);
-        request.setTicketId(ticketId);
-        request.setComment(comment);
-        request.setAddedBy(addedBy);
-        request.setAddedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-
-        try {
-            if (file != null && !file.isEmpty()) {
-                saveFile(file);
-            }
-
-            // Save attachments if any
-            if (attachments != null) {
-                for (MultipartFile attachment : attachments) {
-                    saveFile(attachment);
-                }
-            }
-
-            commentRepository.save(request);
-
-            return new ResponseEntity<>("Comment and file(s) uploaded successfully", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Failed to add comment and upload file(s)", HttpStatus.INTERNAL_SERVER_ERROR);
+        if (file != null) {
+            String originalFileName = file.getOriginalFilename();
+            Path fileNameAndPath = Paths.get(uploadDirectory, originalFileName);
+            Files.write(fileNameAndPath, file.getBytes());
+            comment.setAttachmentId(originalFileName);
+            comment.setFilePath(fileNameAndPath.toString());
         }
+        return commentRepository.save(comment);
     }
 
     private void saveFile(MultipartFile file) throws IOException {

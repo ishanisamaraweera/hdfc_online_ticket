@@ -63,4 +63,8 @@ public class Ticket {
     private String lastUpdatedDateTime;
     @Column(name = "completed_percentage")
     private Integer completedPercentage;
+    @Column(name = "attachment_id")
+    private String attachmentId;
+    @Column (name = "file_path")
+    private String filePath;
 }

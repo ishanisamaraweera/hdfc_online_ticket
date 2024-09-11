@@ -46,7 +46,7 @@ public class TicketService {
     public static String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/images";
 
 
-    public Ticket saveDetails(Ticket ticket) {
+    public Ticket saveDetails(Ticket ticket, MultipartFile file) throws IOException {
         String lastTicketId = ticketRepository.findMaxTicketId();
         String currentYear = Integer.toString(LocalDateTime.now().getYear());
         String branch = ticket.getBranchDivision();
@@ -61,6 +61,14 @@ public class TicketService {
         ticket.setCompletedPercentage(0);
 
         ticket.setTicketId(currentYear + branch + ticketId);
+
+        if (file != null) {
+            String originalFileName = file.getOriginalFilename();
+            Path fileNameAndPath = Paths.get(uploadDirectory, originalFileName);
+            Files.write(fileNameAndPath, file.getBytes());
+            ticket.setAttachmentId(originalFileName);
+            ticket.setFilePath(fileNameAndPath.toString());
+        }
         return ticketRepository.save(ticket);
     }
 
@@ -389,39 +397,7 @@ public class TicketService {
         return commentRepository.save(comment);
     }
 
-    private void saveFile(MultipartFile file) throws IOException {
-        if (!Files.exists(Paths.get(FILE_PATH))) {
-            Files.createDirectories(Paths.get(FILE_PATH));
-        }
-        Path filePath = Paths.get(FILE_PATH + file.getOriginalFilename());
-        Files.write(filePath, file.getBytes());
-    }
-
     public List<CommentRequestDTO> getCommentsByTicketId(String ticketId) {
         return commentRepository.getCommentsByTicketId(ticketId);
-    }
-
-    public ResponseEntity<?> uploadFile(MultipartFile file) {
-        try {
-            // Define the file path
-            String filePath = FILE_PATH + file.getOriginalFilename();
-
-            // Save the file to the file system
-            File dest = new File(filePath);
-            file.transferTo(dest);
-
-            // Save the file path to the database
-            Attachment entity = new Attachment();
-            entity.setFilePath(filePath);
-            entity.setName(file.getOriginalFilename());
-            entity.setFileType(file.getContentType());
-            entity.setUploadedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            attachmentRepository.save(entity);
-
-            return ResponseEntity.ok("File uploaded successfully");
-        } catch (
-                IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file");
-        }
     }
 }

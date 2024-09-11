@@ -24,8 +24,8 @@ public class TicketController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/addTicket")
-    public Ticket addTicket(@RequestBody Ticket ticket) {
-        return ticketService.saveDetails(ticket);
+    public Ticket addTicket(@ModelAttribute Ticket ticket, @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        return ticketService.saveDetails(ticket, file);
     }
 
     @GetMapping("/getTicket/{username}")
@@ -136,10 +136,5 @@ public class TicketController {
     @GetMapping("/getCommentsByTicketId/{ticketId}")
     public List<CommentRequestDTO> getCommentsByTicketId(@PathVariable String ticketId) {
         return ticketService.getCommentsByTicketId(ticketId);
-    }
-
-    @PostMapping("/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
-        return ticketService.uploadFile(file);
     }
 }

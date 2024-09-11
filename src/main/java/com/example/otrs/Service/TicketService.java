@@ -180,7 +180,7 @@ public class TicketService {
             ;
         }
         updateTicket.setStatus(6);
-        updateTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        updateTicket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         ticketRepository.save(updateTicket);
         return updateTicket;
     }
@@ -291,7 +291,7 @@ public class TicketService {
         assignTicket.setAgent(request.getAgentId());
         assignTicket.setStatus(2);
         assignTicket.setLastUpdatedUser(request.getUsername());
-        assignTicket.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        assignTicket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         ticketRepository.save((assignTicket));
     }
 
@@ -415,7 +415,7 @@ public class TicketService {
             entity.setFilePath(filePath);
             entity.setName(file.getOriginalFilename());
             entity.setFileType(file.getContentType());
-            entity.setUploadedDateTime(LocalDateTime.now().toString());
+            entity.setUploadedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             attachmentRepository.save(entity);
 
             return ResponseEntity.ok("File uploaded successfully");

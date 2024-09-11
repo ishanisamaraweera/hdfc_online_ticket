@@ -74,7 +74,7 @@ public class IssueCategoryService {
             throw new Exception("Issue category not found");
         }
         deleteIssueCategory.setStatus(6);
-        deleteIssueCategory.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        deleteIssueCategory.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         issueCategoryRepository.save((deleteIssueCategory));
     }
 }

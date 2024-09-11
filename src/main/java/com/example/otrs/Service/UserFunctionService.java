@@ -89,7 +89,7 @@ public class UserFunctionService {
             throw new Exception("Function not found");
         }
         deleteFunction.setStatus(6);
-        deleteFunction.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        deleteFunction.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         userFunctionRepository.save((deleteFunction));
     }
 }

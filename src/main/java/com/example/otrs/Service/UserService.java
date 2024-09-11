@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -205,7 +206,7 @@ public class UserService {
         updateUser.setBranchDivision(user.getBranchDivision());
         updateUser.setStatus(user.getStatus());
         updateUser.setLastUpdatedUser(user.getLastUpdatedUser());
-        updateUser.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        updateUser.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         userRepository.save((updateUser));
         return updateUser;
     }
@@ -219,7 +220,7 @@ public class UserService {
         updateUserRole.setUserRoleDes(userRole.getUserRoleDes());
         updateUserRole.setStatus(userRole.getStatus());
         updateUserRole.setLastUpdatedUser(userRole.getLastUpdatedUser());
-        updateUserRole.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        updateUserRole.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         userRoleRepository.save((updateUserRole));
         return updateUserRole;
     }
@@ -244,7 +245,7 @@ public class UserService {
             throw new Exception("User not found");
         }
         deleteUser.setStatus(6);
-        deleteUser.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        deleteUser.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         userRepository.save((deleteUser));
     }
 
@@ -255,7 +256,7 @@ public class UserService {
             throw new Exception("User not found");
         }
         deleteUserRole.setStatus(6);
-        deleteUserRole.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        deleteUserRole.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         userRoleRepository.save((deleteUserRole));
     }
 

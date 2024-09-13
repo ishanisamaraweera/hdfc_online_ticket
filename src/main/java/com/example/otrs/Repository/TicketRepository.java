@@ -8,6 +8,7 @@ import java.util.List;
 
 
 /**
+ * Repository interface for Ticket entity.
  *
  @author ishani.s
  */
@@ -100,8 +101,17 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
             "WHERE t.status <> 6 AND (t.sender = :username OR t.agent = :username) ORDER BY t.ticketId DESC")
     List<Object[]> getAllTicketDetails(String username);
 
-    @Query("SELECT MAX(t.ticketId) AS ticketId FROM Ticket t")
+    @Query("SELECT t.ticketId FROM Ticket t " +
+            "WHERE CAST(SUBSTRING(t.ticketId, LENGTH(t.ticketId) - 4, 5) AS UNSIGNED) = (" +
+            "  SELECT MAX(CAST(SUBSTRING(t2.ticketId, LENGTH(t2.ticketId) - 4, 5) AS UNSIGNED)) FROM Ticket t2" +
+            ")")
     String findMaxTicketId();
+
+    @Query("SELECT SUBSTRING(t.ticketId, LENGTH(t.ticketId) - 4, 5) AS FROM Ticket t " +
+            "WHERE CAST(SUBSTRING(t.ticketId, LENGTH(t.ticketId) - 4, 5) AS UNSIGNED) = (" +
+            "  SELECT MAX(CAST(SUBSTRING(t2.ticketId, LENGTH(t2.ticketId) - 4, 5) AS UNSIGNED)) FROM Ticket t2" +
+            ")")
+    String findTicketWithMaxLastFiveDigits();
 
     @Query("SELECT t.ticketId, " +
             "u1.displayName as sender, " +

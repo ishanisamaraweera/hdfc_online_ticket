@@ -6,6 +6,10 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
 
+/**
+ *
+ @author ishani.s
+ */
 @Service
 public class EmailSenderService {
     public void sendEmail(String to, String subject, String body) {

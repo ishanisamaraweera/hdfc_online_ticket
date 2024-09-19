@@ -55,7 +55,7 @@ public class TicketService {
         if (lastTicketId == null || !lastTicketId.substring(0, 4).equals(currentYear)) {
             ticketId = "00001";
         } else {
-            int lastId = Integer.parseInt(lastTicketId.substring(7));
+            int lastId = Integer.parseInt(ticketRepository.findTicketWithMaxLastFiveDigits());
             ticketId = String.format("%05d", lastId + 1);
         }
         ticket.setCompletedPercentage(0);

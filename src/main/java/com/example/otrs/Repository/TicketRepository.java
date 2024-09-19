@@ -4,13 +4,14 @@ import com.example.otrs.Entity.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 
 
 /**
  * Repository interface for Ticket entity.
  *
- @author ishani.s
+ * @author ishani.s
  */
 public interface TicketRepository extends JpaRepository<Ticket, String> {
     @Query("SELECT COUNT(t) FROM Ticket t WHERE t.sender = :username AND t.status = 1")
@@ -63,7 +64,7 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
             "LEFT JOIN BranchDivision bd ON bd.branchDivisionId = t.branchDivision " +
             "LEFT JOIN IssueType it ON t.issueType = it.issueTypeId " +
             "LEFT JOIN IssueCategory ic ON t.issueCategory = ic.issueCategoryId " +
-            "WHERE t.status <> 6 ORDER BY t.ticketId DESC")
+            "WHERE t.status <> 6 ORDER BY t.lastUpdatedDateTime DESC")
     List<Object[]> getAllTicketDetails();
 
     @Query("SELECT t.ticketId, " +
@@ -98,19 +99,22 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
             "LEFT JOIN BranchDivision bd ON bd.branchDivisionId = t.branchDivision " +
             "LEFT JOIN IssueType it ON t.issueType = it.issueTypeId " +
             "LEFT JOIN IssueCategory ic ON t.issueCategory = ic.issueCategoryId " +
-            "WHERE t.status <> 6 AND (t.sender = :username OR t.agent = :username) ORDER BY t.ticketId DESC")
+            "WHERE t.status <> 6 AND (t.sender = :username OR t.agent = :username) ORDER BY t.lastUpdatedDateTime DESC")
     List<Object[]> getAllTicketDetails(String username);
 
-    @Query("SELECT t.ticketId FROM Ticket t " +
-            "WHERE CAST(SUBSTRING(t.ticketId, LENGTH(t.ticketId) - 4, 5) AS UNSIGNED) = (" +
-            "  SELECT MAX(CAST(SUBSTRING(t2.ticketId, LENGTH(t2.ticketId) - 4, 5) AS UNSIGNED)) FROM Ticket t2" +
-            ")")
+    @Query(value = "SELECT t.ticket_Id FROM Ticket t " +
+            "WHERE CAST(SUBSTRING(t.ticket_Id, LENGTH(t.ticket_Id) - 4, 5) AS UNSIGNED) = (" +
+            "  SELECT MAX(CAST(SUBSTRING(t2.ticket_Id, LENGTH(t2.ticket_Id) - 4, 5) AS UNSIGNED)) FROM Ticket t2" +
+            ")", nativeQuery = true)
     String findMaxTicketId();
 
-    @Query("SELECT SUBSTRING(t.ticketId, LENGTH(t.ticketId) - 4, 5) AS FROM Ticket t " +
-            "WHERE CAST(SUBSTRING(t.ticketId, LENGTH(t.ticketId) - 4, 5) AS UNSIGNED) = (" +
-            "  SELECT MAX(CAST(SUBSTRING(t2.ticketId, LENGTH(t2.ticketId) - 4, 5) AS UNSIGNED)) FROM Ticket t2" +
-            ")")
+    @Query(value = """
+            SELECT SUBSTRING(t.ticket_Id, LENGTH(t.ticket_Id) - 4, 5) AS ticketId
+            FROM Ticket t
+            WHERE CAST(SUBSTRING(t.ticket_Id, LENGTH(t.ticket_Id) - 4, 5) AS UNSIGNED) = (
+              SELECT MAX(CAST(SUBSTRING(t2.ticket_Id, LENGTH(t2.ticket_Id) - 4, 5) AS UNSIGNED))
+              FROM Ticket t2
+            )""", nativeQuery = true)
     String findTicketWithMaxLastFiveDigits();
 
     @Query("SELECT t.ticketId, " +
@@ -145,7 +149,7 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
             "LEFT JOIN BranchDivision bd ON bd.branchDivisionId = t.branchDivision " +
             "LEFT JOIN IssueType it ON t.issueType = it.issueTypeId " +
             "LEFT JOIN IssueCategory ic ON t.issueCategory = ic.issueCategoryId " +
-            "WHERE t.status = :status ORDER BY t.ticketId DESC")
+            "WHERE t.status = :status ORDER BY t.lastUpdatedDateTime DESC")
     List<Object[]> getAllTicketDetailsByStatus(Integer status);
 }
 

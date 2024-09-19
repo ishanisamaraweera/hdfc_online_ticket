@@ -4,9 +4,12 @@ import com.example.otrs.DTO.CommentRequestDTO;
 import com.example.otrs.Entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
 
+/**
+ *
+ @author ishani.s
+ */
 public interface CommentRepository extends JpaRepository<Comment, String> {
     @Query("SELECT MAX(c.commentId) AS commentId FROM Comment c")
     Integer findMaxCommentId();

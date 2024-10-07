@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -93,14 +95,26 @@ public class TicketController {
         return ticketService.getTotalTicketCount(username);
     }
 
-    @GetMapping("/searchTickets/{status}")
-    public List<TicketDTO> searchTickets(@PathVariable Integer status) throws IOException {
-        return ticketService.searchTickets(status);
-    }
-
     @GetMapping("/searchTickets")
-    public List<TicketDTO> searchTickets() throws IOException {
-        return ticketService.searchTickets();
+    public List<TicketDTO> searchTickets(@RequestParam(required = false) String status,
+                                         @RequestParam(required = false) String fromDate,
+                                         @RequestParam(required = false) String toDate) throws IOException {
+        LocalDateTime fromDateInput = null;
+        LocalDateTime toDateInput = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+        if (fromDate == null || fromDate.equals("null")){
+            fromDateInput = LocalDateTime.of(1800, 1, 1, 0, 0); // Some minimum date
+        } else {
+            fromDateInput = LocalDateTime.parse(fromDate, formatter);
+        }
+        if (toDate == null || toDate.equals("null")) {
+            toDateInput = LocalDateTime.now(); // Current date as the maximum date
+        } else {
+            toDateInput = LocalDateTime.parse(toDate, formatter);
+        }
+
+        return ticketService.searchTickets(status, fromDateInput, toDateInput);
     }
 
     @PutMapping("/assignTicket/{ticketId}")
@@ -136,5 +150,10 @@ public class TicketController {
     @GetMapping("/getCommentsByTicketId/{ticketId}")
     public List<CommentRequestDTO> getCommentsByTicketId(@PathVariable String ticketId) {
         return ticketService.getCommentsByTicketId(ticketId);
+    }
+
+    @PutMapping("/reopenTicket/{ticketId}")
+    public void reopenTicket(@PathVariable String ticketId, @RequestBody AssignRequestDTO request) throws Exception {
+        ticketService.reopenTicket(ticketId, request);
     }
 }

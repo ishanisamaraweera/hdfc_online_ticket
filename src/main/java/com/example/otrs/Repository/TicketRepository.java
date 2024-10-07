@@ -4,7 +4,7 @@ import com.example.otrs.Entity.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -149,7 +149,13 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
             "LEFT JOIN BranchDivision bd ON bd.branchDivisionId = t.branchDivision " +
             "LEFT JOIN IssueType it ON t.issueType = it.issueTypeId " +
             "LEFT JOIN IssueCategory ic ON t.issueCategory = ic.issueCategoryId " +
-            "WHERE t.status = :status ORDER BY t.lastUpdatedDateTime DESC")
-    List<Object[]> getAllTicketDetailsByStatus(Integer status);
-}
+            "WHERE t.status <> 6 " +
+            "AND (:status IS NULL OR t.status = :status) " +
+            "AND (:fromDate IS NULL OR t.reportedDateTime >= CAST(:fromDate AS java.time.LocalDateTime)) " +
+            "AND (:toDate IS NULL OR t.reportedDateTime <= CAST(:toDate AS java.time.LocalDateTime)) " +
+            "ORDER BY t.lastUpdatedDateTime DESC")
+    List<Object[]> getAllTicketDetailsForSearch(@Param("status") String status, @Param("fromDate") LocalDateTime fromDate, @Param("toDate") LocalDateTime toDate);
 
+    @Query("SELECT statusDes FROM Status WHERE statusId = :statusId ")
+    String getStatusDesForStatusId(@Param("statusId") String statusId);
+}

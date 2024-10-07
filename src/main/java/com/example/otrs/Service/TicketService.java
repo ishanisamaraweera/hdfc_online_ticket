@@ -3,16 +3,18 @@ package com.example.otrs.Service;
 import com.example.otrs.DTO.AssignRequestDTO;
 import com.example.otrs.DTO.CommentRequestDTO;
 import com.example.otrs.DTO.TicketDTO;
-import com.example.otrs.Entity.*;
-import com.example.otrs.Repository.*;
+import com.example.otrs.Entity.Comment;
+import com.example.otrs.Entity.Status;
+import com.example.otrs.Entity.Ticket;
+import com.example.otrs.Repository.AttachmentRepository;
+import com.example.otrs.Repository.CommentRepository;
+import com.example.otrs.Repository.StatusRepository;
+import com.example.otrs.Repository.TicketRepository;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
@@ -91,7 +93,7 @@ public class TicketService {
             ticket.setTicketId((String) result[0]);
             ticket.setSender((String) result[1]);
             ticket.setAgent((String) result[2]);
-            ticket.setReportedDateTime((String) result[3]);
+            ticket.setReportedDateTime((LocalDateTime) result[3]);
             ticket.setEmergencyLevel((String) result[4]);
             ticket.setStatus((String) result[5]);
             ticket.setIssueType((String) result[6]);
@@ -100,10 +102,10 @@ public class TicketService {
             ticket.setIsWorkingPc((String) result[9]);
             ticket.setIp((String) result[10]);
             ticket.setIssueDesAndRemarks((String) result[11]);
-            ticket.setAgentResponseDateTime((String) result[12]);
-            ticket.setResolvedDateTime((String) result[13]);
+            ticket.setAgentResponseDateTime((LocalDateTime) result[12]);
+            ticket.setResolvedDateTime((LocalDateTime) result[13]);
             ticket.setLastUpdatedUser((String) result[14]);
-            ticket.setLastUpdatedDateTime((String) result[15]);
+            ticket.setLastUpdatedDateTime((LocalDateTime) result[15]);
             ticket.setCompletedPercentage((Integer) result[16]);
             ticket.setAgentComment((String) result[17]);
             ticket.setBranchDivision((String) result[18]);
@@ -150,7 +152,7 @@ public class TicketService {
         updateTicket.setResolutionPeriod(ticket.getResolutionPeriod());
         updateTicket.setAgentComment(ticket.getAgentComment());
         updateTicket.setLastUpdatedUser(ticket.getLastUpdatedUser());
-        updateTicket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        updateTicket.setLastUpdatedDateTime(LocalDateTime.now());
         ticketRepository.save((updateTicket));
         return updateTicket;
     }
@@ -164,7 +166,7 @@ public class TicketService {
                 statusRepository.saveDetails(5, "Closed");
             }
             updateTicket.setStatus(5);
-            updateTicket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            updateTicket.setLastUpdatedDateTime(LocalDateTime.now());
             ticketRepository.save(updateTicket);
             return updateTicket;
         }
@@ -188,7 +190,7 @@ public class TicketService {
             ;
         }
         updateTicket.setStatus(6);
-        updateTicket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        updateTicket.setLastUpdatedDateTime(LocalDateTime.now());
         ticketRepository.save(updateTicket);
         return updateTicket;
     }
@@ -217,42 +219,17 @@ public class TicketService {
         return ticketRepository.getTotalTicketCount(username);
     }
 
-    public List<TicketDTO> searchTickets(Integer status) {
-        List<Object[]> results = ticketRepository.getAllTicketDetailsByStatus(status);
-        List<TicketDTO> tickets = new ArrayList<>();
+    public List<TicketDTO> searchTickets(String status, LocalDateTime fromDate, LocalDateTime toDate) {
+        List<Object[]> results = null;
+        toDate = toDate.plusDays(1);
 
-        for (Object[] result : results) {
-            TicketDTO ticket = new TicketDTO();
-            ticket.setTicketId((String) result[0]);
-            ticket.setSender((String) result[1]);
-            ticket.setAgent((String) result[2]);
-            ticket.setReportedDateTime((String) result[3]);
-            ticket.setEmergencyLevel((String) result[4]);
-            ticket.setStatus((String) result[5]);
-            ticket.setIssueType((String) result[6]);
-            ticket.setIssueCategory((String) result[7]);
-            ticket.setSerialNo((String) result[8]);
-            ticket.setIsWorkingPc((String) result[9]);
-            ticket.setIp((String) result[10]);
-            ticket.setIssueDesAndRemarks((String) result[11]);
-            ticket.setAgentResponseDateTime((String) result[12]);
-            ticket.setResolvedDateTime((String) result[13]);
-            ticket.setLastUpdatedUser((String) result[14]);
-            ticket.setLastUpdatedDateTime((String) result[15]);
-            ticket.setCompletedPercentage((Integer) result[16]);
-            ticket.setAgentComment((String) result[17]);
-            ticket.setBranchDivision((String) result[18]);
-            ticket.setContactNo((String) result[19]);
-            ticket.setLocation((String) result[20]);
-            ticket.setResolutionPeriod((String) result[21]);
-
-            tickets.add(ticket);
+        Integer statusInteger = null;
+        if (!"undefined".equals(status) && status != null && !("null").equals(status)) {
+            results = ticketRepository.getAllTicketDetailsForSearch(status, fromDate, toDate);
+        } else {
+            results = ticketRepository.getAllTicketDetailsForSearch(null, fromDate, toDate);
         }
-        return tickets;
-    }
 
-    public List<TicketDTO> searchTickets() {
-        List<Object[]> results = ticketRepository.getAllTicketDetails();
         List<TicketDTO> tickets = new ArrayList<>();
 
         for (Object[] result : results) {
@@ -260,7 +237,7 @@ public class TicketService {
             ticket.setTicketId((String) result[0]);
             ticket.setSender((String) result[1]);
             ticket.setAgent((String) result[2]);
-            ticket.setReportedDateTime((String) result[3]);
+            ticket.setReportedDateTime((LocalDateTime) result[3]);
             ticket.setEmergencyLevel((String) result[4]);
             ticket.setStatus((String) result[5]);
             ticket.setIssueType((String) result[6]);
@@ -269,10 +246,10 @@ public class TicketService {
             ticket.setIsWorkingPc((String) result[9]);
             ticket.setIp((String) result[10]);
             ticket.setIssueDesAndRemarks((String) result[11]);
-            ticket.setAgentResponseDateTime((String) result[12]);
-            ticket.setResolvedDateTime((String) result[13]);
+            ticket.setAgentResponseDateTime((LocalDateTime) result[12]);
+            ticket.setResolvedDateTime((LocalDateTime) result[13]);
             ticket.setLastUpdatedUser((String) result[14]);
-            ticket.setLastUpdatedDateTime((String) result[15]);
+            ticket.setLastUpdatedDateTime((LocalDateTime) result[15]);
             ticket.setCompletedPercentage((Integer) result[16]);
             ticket.setAgentComment((String) result[17]);
             ticket.setBranchDivision((String) result[18]);
@@ -299,7 +276,7 @@ public class TicketService {
         assignTicket.setAgent(request.getAgentId());
         assignTicket.setStatus(2);
         assignTicket.setLastUpdatedUser(request.getUsername());
-        assignTicket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        assignTicket.setLastUpdatedDateTime(LocalDateTime.now());
         ticketRepository.save((assignTicket));
     }
 
@@ -313,8 +290,8 @@ public class TicketService {
         ticket.setStatus(3);
         ticket.setAgentComment(request.getAgentComment());
         ticket.setLastUpdatedUser(request.getUsername());
-        ticket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        ticket.setAgentResponseDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        ticket.setLastUpdatedDateTime(LocalDateTime.now());
+        ticket.setAgentResponseDateTime(LocalDateTime.now());
         ticketRepository.save((ticket));
     }
 
@@ -328,8 +305,8 @@ public class TicketService {
         ticket.setStatus(1);
         ticket.setAgentComment(request.getAgentComment());
         ticket.setLastUpdatedUser(request.getUsername());
-        ticket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        ticket.setAgentResponseDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        ticket.setLastUpdatedDateTime(LocalDateTime.now());
+        ticket.setAgentResponseDateTime(LocalDateTime.now());
         ticketRepository.save((ticket));
     }
 
@@ -342,7 +319,7 @@ public class TicketService {
 
         assignTicket.setCompletedPercentage(request.getCompletedPercentage());
         assignTicket.setLastUpdatedUser(request.getUsername());
-        assignTicket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        assignTicket.setLastUpdatedDateTime(LocalDateTime.now());
         ticketRepository.save((assignTicket));
     }
 
@@ -355,11 +332,11 @@ public class TicketService {
 
         assignTicket.setStatus(4);//completed
         assignTicket.setLastUpdatedUser(request.getUsername());
-        assignTicket.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        assignTicket.setResolvedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        assignTicket.setLastUpdatedDateTime(LocalDateTime.now());
+        assignTicket.setResolvedDateTime(LocalDateTime.now());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime agentResponseDateTime = LocalDateTime.parse(assignTicket.getAgentResponseDateTime(), formatter);
+        LocalDateTime agentResponseDateTime = assignTicket.getAgentResponseDateTime();
         LocalDateTime currentDateTime = LocalDateTime.now();
         Period period = Period.between(agentResponseDateTime.toLocalDate(), currentDateTime.toLocalDate());
 
@@ -399,5 +376,19 @@ public class TicketService {
 
     public List<CommentRequestDTO> getCommentsByTicketId(String ticketId) {
         return commentRepository.getCommentsByTicketId(ticketId);
+    }
+
+    public void reopenTicket(String ticketId, AssignRequestDTO request) throws Exception {
+        Ticket ticket = ticketRepository.findById(ticketId).orElse(null);
+
+        if (ticket == null) {
+            throw new Exception("Ticket not found");
+        }
+
+        ticket.setCompletedPercentage(0);
+        ticket.setLastUpdatedUser(request.getUsername());
+        ticket.setLastUpdatedDateTime(LocalDateTime.now());
+        ticket.setStatus(9);
+        ticketRepository.save((ticket));
     }
 }

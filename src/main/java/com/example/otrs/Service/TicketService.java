@@ -78,10 +78,13 @@ public class TicketService {
         List<String> userRoleList = userService.getUserRolesForUsername(username);
         List<Object[]> results;
 
-        if (userRoleList.contains("MANAGER") || userRoleList.contains("SUPERVISOR")
+        if (userRoleList.contains("SUPERVISOR")
                 || userRoleList.contains("ADMIN") || userRoleList.contains("SUPERADMIN")
                 || userRoleList.contains("TOPSUPERVISOR")) {
             results = ticketRepository.getAllTicketDetails();
+        } else if (userRoleList.contains("MANAGER")) {
+            String branch = ticketRepository.getBranch(username);
+            results = ticketRepository.getAllTicketDetailsForBranch(branch);
         } else {
             results = ticketRepository.getAllTicketDetails(username);
         }
@@ -115,7 +118,6 @@ public class TicketService {
 
             tickets.add(ticket);
         }
-
         return tickets;
     }
 
@@ -219,15 +221,34 @@ public class TicketService {
         return ticketRepository.getTotalTicketCount(username);
     }
 
-    public List<TicketDTO> searchTickets(String status, LocalDateTime fromDate, LocalDateTime toDate) {
+    public List<TicketDTO> searchTickets(String username, String status, LocalDateTime fromDate, LocalDateTime toDate) {
         List<Object[]> results = null;
+        List<String> userRoleList = userService.getUserRolesForUsername(username);
         toDate = toDate.plusDays(1);
 
         Integer statusInteger = null;
         if (!"undefined".equals(status) && status != null && !("null").equals(status)) {
-            results = ticketRepository.getAllTicketDetailsForSearch(status, fromDate, toDate);
+            if (userRoleList.contains("SUPERVISOR")
+                    || userRoleList.contains("ADMIN") || userRoleList.contains("SUPERADMIN")
+                    || userRoleList.contains("TOPSUPERVISOR")) {
+                results = ticketRepository.getAllTicketDetailsForSearch(status, fromDate, toDate);
+            } else if (userRoleList.contains("MANAGER")) {
+                String branch = ticketRepository.getBranch(username);
+                results = ticketRepository.getAllTicketDetailsForSearchForBranch(branch, status, fromDate, toDate);
+            } else {
+                results = ticketRepository.getAllTicketDetailsForSearchForUsername(username, status, fromDate, toDate);
+            }
         } else {
-            results = ticketRepository.getAllTicketDetailsForSearch(null, fromDate, toDate);
+            if (userRoleList.contains("SUPERVISOR")
+                    || userRoleList.contains("ADMIN") || userRoleList.contains("SUPERADMIN")
+                    || userRoleList.contains("TOPSUPERVISOR")) {
+                results = ticketRepository.getAllTicketDetailsForSearch(null, fromDate, toDate);
+            } else if (userRoleList.contains("MANAGER")) {
+                String branch = ticketRepository.getBranch(username);
+                results = ticketRepository.getAllTicketDetailsForSearchForBranch(branch, null, fromDate, toDate);
+            } else {
+                results = ticketRepository.getAllTicketDetailsForSearchForUsername(username, null, fromDate, toDate);
+            }
         }
 
         List<TicketDTO> tickets = new ArrayList<>();

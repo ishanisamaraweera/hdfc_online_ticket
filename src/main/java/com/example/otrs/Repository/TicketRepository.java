@@ -102,11 +102,49 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
             "WHERE t.status <> 6 AND (t.sender = :username OR t.agent = :username) ORDER BY t.lastUpdatedDateTime DESC")
     List<Object[]> getAllTicketDetails(String username);
 
+    @Query("SELECT t.ticketId, " +
+            "u1.displayName as sender, " +
+            "u2.displayName as agent, " +
+            "t.reportedDateTime, " +
+            "e.levelDes as emergencyLevel, " +
+            "s.statusDes as status, " +
+            "it.issueTypeDes as issueType, " +
+            "ic.issueCategoryDes as issueCategory, " +
+            "t.serialNo, " +
+            "t.isWorkingPc, " +
+            "t.ip, " +
+            "t.issueDesAndRemarks, " +
+            "t.agentResponseDateTime, " +
+            "t.resolvedDateTime, " +
+            "u3.displayName as lastUpdatedUser, " +
+            "t.lastUpdatedDateTime, " +
+            "t.completedPercentage, " +
+            "t.agentComment, " +
+            "bd.branchDivisionDes as branchDivision, " +
+            "t.contactNo, " +
+            "l.locationDes as location, " +
+            "t.resolutionPeriod " +
+            "FROM Ticket t " +
+            "LEFT JOIN User u1 ON u1.username = t.sender " +
+            "LEFT JOIN User u2 ON u2.username = t.agent " +
+            "LEFT JOIN User u3 ON u3.username = t.lastUpdatedUser " +
+            "LEFT JOIN EmergencyLevel e ON e.levelId = t.emergencyLevel " +
+            "LEFT JOIN Status s ON s.statusId = t.status " +
+            "LEFT JOIN Location l ON l.locationId = t.location " +
+            "LEFT JOIN BranchDivision bd ON bd.branchDivisionId = t.branchDivision " +
+            "LEFT JOIN IssueType it ON t.issueType = it.issueTypeId " +
+            "LEFT JOIN IssueCategory ic ON t.issueCategory = ic.issueCategoryId " +
+            "WHERE t.status <> 6 AND (t.branchDivision = :branch) ORDER BY t.lastUpdatedDateTime DESC")
+    List<Object[]> getAllTicketDetailsForBranch(String branch);
+
     @Query(value = "SELECT t.ticket_Id FROM Ticket t " +
             "WHERE CAST(SUBSTRING(t.ticket_Id, LENGTH(t.ticket_Id) - 4, 5) AS UNSIGNED) = (" +
             "  SELECT MAX(CAST(SUBSTRING(t2.ticket_Id, LENGTH(t2.ticket_Id) - 4, 5) AS UNSIGNED)) FROM Ticket t2" +
             ")", nativeQuery = true)
     String findMaxTicketId();
+
+    @Query(value = "SELECT branchDivision FROM User WHERE username = :username")
+    String getBranch(String username);
 
     @Query(value = """
             SELECT SUBSTRING(t.ticket_Id, LENGTH(t.ticket_Id) - 4, 5) AS ticketId
@@ -155,6 +193,86 @@ public interface TicketRepository extends JpaRepository<Ticket, String> {
             "AND (:toDate IS NULL OR t.reportedDateTime <= CAST(:toDate AS java.time.LocalDateTime)) " +
             "ORDER BY t.lastUpdatedDateTime DESC")
     List<Object[]> getAllTicketDetailsForSearch(@Param("status") String status, @Param("fromDate") LocalDateTime fromDate, @Param("toDate") LocalDateTime toDate);
+
+    @Query("SELECT t.ticketId, " +
+            "u1.displayName as sender, " +
+            "u2.displayName as agent, " +
+            "t.reportedDateTime, " +
+            "e.levelDes as emergencyLevel, " +
+            "s.statusDes as status, " +
+            "it.issueTypeDes as issueType, " +
+            "ic.issueCategoryDes as issueCategory, " +
+            "t.serialNo, " +
+            "t.isWorkingPc, " +
+            "t.ip, " +
+            "t.issueDesAndRemarks, " +
+            "t.agentResponseDateTime, " +
+            "t.resolvedDateTime, " +
+            "u3.displayName as lastUpdatedUser, " +
+            "t.lastUpdatedDateTime, " +
+            "t.completedPercentage, " +
+            "t.agentComment, " +
+            "bd.branchDivisionDes as branchDivision, " +
+            "t.contactNo, " +
+            "l.locationDes as location, " +
+            "t.resolutionPeriod " +
+            "FROM Ticket t " +
+            "LEFT JOIN User u1 ON u1.username = t.sender " +
+            "LEFT JOIN User u2 ON u2.username = t.agent " +
+            "LEFT JOIN User u3 ON u3.username = t.lastUpdatedUser " +
+            "LEFT JOIN EmergencyLevel e ON e.levelId = t.emergencyLevel " +
+            "LEFT JOIN Status s ON s.statusId = t.status " +
+            "LEFT JOIN Location l ON l.locationId = t.location " +
+            "LEFT JOIN BranchDivision bd ON bd.branchDivisionId = t.branchDivision " +
+            "LEFT JOIN IssueType it ON t.issueType = it.issueTypeId " +
+            "LEFT JOIN IssueCategory ic ON t.issueCategory = ic.issueCategoryId " +
+            "WHERE t.status <> 6 " +
+            "AND (:status IS NULL OR t.status = :status) " +
+            "AND (:fromDate IS NULL OR t.reportedDateTime >= CAST(:fromDate AS java.time.LocalDateTime)) " +
+            "AND (:toDate IS NULL OR t.reportedDateTime <= CAST(:toDate AS java.time.LocalDateTime)) " +
+            "AND (t.sender = :username OR t.agent = :username) " +
+            "ORDER BY t.lastUpdatedDateTime DESC")
+    List<Object[]> getAllTicketDetailsForSearchForUsername(@Param("username") String username, @Param("status") String status, @Param("fromDate") LocalDateTime fromDate, @Param("toDate") LocalDateTime toDate);
+
+    @Query("SELECT t.ticketId, " +
+            "u1.displayName as sender, " +
+            "u2.displayName as agent, " +
+            "t.reportedDateTime, " +
+            "e.levelDes as emergencyLevel, " +
+            "s.statusDes as status, " +
+            "it.issueTypeDes as issueType, " +
+            "ic.issueCategoryDes as issueCategory, " +
+            "t.serialNo, " +
+            "t.isWorkingPc, " +
+            "t.ip, " +
+            "t.issueDesAndRemarks, " +
+            "t.agentResponseDateTime, " +
+            "t.resolvedDateTime, " +
+            "u3.displayName as lastUpdatedUser, " +
+            "t.lastUpdatedDateTime, " +
+            "t.completedPercentage, " +
+            "t.agentComment, " +
+            "bd.branchDivisionDes as branchDivision, " +
+            "t.contactNo, " +
+            "l.locationDes as location, " +
+            "t.resolutionPeriod " +
+            "FROM Ticket t " +
+            "LEFT JOIN User u1 ON u1.username = t.sender " +
+            "LEFT JOIN User u2 ON u2.username = t.agent " +
+            "LEFT JOIN User u3 ON u3.username = t.lastUpdatedUser " +
+            "LEFT JOIN EmergencyLevel e ON e.levelId = t.emergencyLevel " +
+            "LEFT JOIN Status s ON s.statusId = t.status " +
+            "LEFT JOIN Location l ON l.locationId = t.location " +
+            "LEFT JOIN BranchDivision bd ON bd.branchDivisionId = t.branchDivision " +
+            "LEFT JOIN IssueType it ON t.issueType = it.issueTypeId " +
+            "LEFT JOIN IssueCategory ic ON t.issueCategory = ic.issueCategoryId " +
+            "WHERE t.status <> 6 " +
+            "AND (:status IS NULL OR t.status = :status) " +
+            "AND (:fromDate IS NULL OR t.reportedDateTime >= CAST(:fromDate AS java.time.LocalDateTime)) " +
+            "AND (:toDate IS NULL OR t.reportedDateTime <= CAST(:toDate AS java.time.LocalDateTime)) " +
+            "AND (t.branchDivision = :branch) " +
+            "ORDER BY t.lastUpdatedDateTime DESC")
+    List<Object[]> getAllTicketDetailsForSearchForBranch(@Param("branch") String username, @Param("status") String status, @Param("fromDate") LocalDateTime fromDate, @Param("toDate") LocalDateTime toDate);
 
     @Query("SELECT statusDes FROM Status WHERE statusId = :statusId ")
     String getStatusDesForStatusId(@Param("statusId") String statusId);

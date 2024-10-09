@@ -23,6 +23,8 @@ import java.util.List;
 public class ReportService {
     @Autowired
     private TicketRepository ticketRepository;
+    @Autowired
+    UserService userService;
 
     String[] headers = {
             "Ticket ID", "Sender", "Agent", "Reported Date Time", "Emergency Level",
@@ -33,12 +35,13 @@ public class ReportService {
             "Last Updated Date-Time", "Status"
     };
 
-    public void generateExcelReport(HttpServletResponse response, String status, String fromDate, String toDate) throws IOException {
+    public void generateExcelReport(HttpServletResponse response, String username, String status, String fromDate, String toDate) throws IOException {
         List<Object[]> results = null;
         String statusDes;
         LocalDateTime fromDateInput = null;
         LocalDateTime toDateInput = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        List<String> userRoleList = userService.getUserRolesForUsername(username);
 
         if (fromDate == null || fromDate.equals("null")){
             fromDateInput = LocalDateTime.of(1800, 1, 1, 0, 0); // Some minimum date
@@ -54,10 +57,28 @@ public class ReportService {
 
         if (!"undefined".equals(status) && status != null && !("null").equals(status)) {
             statusDes = ticketRepository.getStatusDesForStatusId(status);
-            results = ticketRepository.getAllTicketDetailsForSearch(status, fromDateInput, toDateInput);
+            if (userRoleList.contains("SUPERVISOR")
+                    || userRoleList.contains("ADMIN") || userRoleList.contains("SUPERADMIN")
+                    || userRoleList.contains("TOPSUPERVISOR")) {
+                results = ticketRepository.getAllTicketDetailsForSearch(status, fromDateInput, toDateInput);
+            } else if (userRoleList.contains("MANAGER")) {
+                String branch = ticketRepository.getBranch(username);
+                results = ticketRepository.getAllTicketDetailsForSearchForBranch(branch, status, fromDateInput, toDateInput);
+            } else {
+                results = ticketRepository.getAllTicketDetailsForSearchForUsername(username, status, fromDateInput, toDateInput);
+            }
         } else {
             statusDes = "--";
-            results = ticketRepository.getAllTicketDetailsForSearch(null, fromDateInput, toDateInput);
+            if (userRoleList.contains("SUPERVISOR")
+                    || userRoleList.contains("ADMIN") || userRoleList.contains("SUPERADMIN")
+                    || userRoleList.contains("TOPSUPERVISOR")) {
+                results = ticketRepository.getAllTicketDetailsForSearch(null, fromDateInput, toDateInput);
+            } else if (userRoleList.contains("MANAGER")) {
+                String branch = ticketRepository.getBranch(username);
+                results = ticketRepository.getAllTicketDetailsForSearchForBranch(branch, null, fromDateInput, toDateInput);
+            } else {
+                results = ticketRepository.getAllTicketDetailsForSearchForUsername(username, null, fromDateInput, toDateInput);
+            }
         }
 
         List<TicketDTO> tickets = new ArrayList<>();
@@ -166,7 +187,6 @@ public class ReportService {
         dataCellStyle.setBorderBottom(BorderStyle.THIN);
         dataCellStyle.setBorderLeft(BorderStyle.THIN);
         dataCellStyle.setBorderRight(BorderStyle.THIN);
-
 
         // Fill data
         int rowNum = 7; // Start after the title and header rows

@@ -20,10 +20,11 @@ public class ReportController {
 
     @GetMapping("/exportTickets")
     public void exportTickets(HttpServletResponse response,
+                              @RequestParam String username,
                               @RequestParam(required = false) String status,
                               @RequestParam(required = false) String fromDate,
                               @RequestParam(required = false) String toDate) throws IOException {
 
-        excelReportService.generateExcelReport(response, status, fromDate, toDate);
+        excelReportService.generateExcelReport(response, username, status, fromDate, toDate);
     }
 }

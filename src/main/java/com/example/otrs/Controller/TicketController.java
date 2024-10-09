@@ -96,7 +96,8 @@ public class TicketController {
     }
 
     @GetMapping("/searchTickets")
-    public List<TicketDTO> searchTickets(@RequestParam(required = false) String status,
+    public List<TicketDTO> searchTickets(@RequestParam String username,
+                                         @RequestParam(required = false) String status,
                                          @RequestParam(required = false) String fromDate,
                                          @RequestParam(required = false) String toDate) throws IOException {
         LocalDateTime fromDateInput = null;
@@ -114,7 +115,7 @@ public class TicketController {
             toDateInput = LocalDateTime.parse(toDate, formatter);
         }
 
-        return ticketService.searchTickets(status, fromDateInput, toDateInput);
+        return ticketService.searchTickets(username, status, fromDateInput, toDateInput);
     }
 
     @PutMapping("/assignTicket/{ticketId}")

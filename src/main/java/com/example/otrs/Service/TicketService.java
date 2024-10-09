@@ -346,9 +346,12 @@ public class TicketService {
 
     public void saveStatus(String ticketId, AssignRequestDTO request) throws Exception {
         Ticket assignTicket = ticketRepository.findById(ticketId).orElse(null);
+        Integer percentage = assignTicket.getCompletedPercentage();
 
         if (assignTicket == null) {
             throw new Exception("Ticket not found");
+        } else if (!percentage.equals(100)) {
+            throw new Exception("Completed percentage is not equal to zero");
         }
 
         assignTicket.setStatus(4);//completed

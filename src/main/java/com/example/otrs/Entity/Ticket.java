@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -26,7 +27,7 @@ public class Ticket {
     @Column(name = "agent", length = 45)
     private String agent;
     @Column(name = "reported_date_time")
-    private String reportedDateTime;
+    private LocalDateTime reportedDateTime;
     @Column(name = "emergency_level", length = 20)
     private String emergencyLevel;
     @Column(name = "status")
@@ -50,9 +51,9 @@ public class Ticket {
     @Column(name = "issue_des_and_remarks")
     private String issueDesAndRemarks;
     @Column(name = "agent_response_date_time")
-    private String agentResponseDateTime;
+    private LocalDateTime agentResponseDateTime;
     @Column(name = "resolved_date_time")
-    private String resolvedDateTime;
+    private LocalDateTime resolvedDateTime;
     @Column(name = "resolution_period")
     private String resolutionPeriod;
     @Column(name = "agent_comment")
@@ -60,7 +61,11 @@ public class Ticket {
     @Column(name = "last_updated_user", length = 45)
     private String lastUpdatedUser;
     @Column(name = "last_updated_date_time")
-    private String lastUpdatedDateTime;
+    private LocalDateTime lastUpdatedDateTime;
     @Column(name = "completed_percentage")
     private Integer completedPercentage;
+    @Column(name = "attachment_id")
+    private String attachmentId;
+    @Column (name = "file_path")
+    private String filePath;
 }

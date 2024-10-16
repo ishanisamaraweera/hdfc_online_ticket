@@ -21,8 +21,8 @@ public class Comment {
     @Id
     @Column(name = "comment_id", length = 225)
     private Integer commentId;
-    @Column(name = "comment", length = 225)
-    private String comment;
+    @Column(name = "comment_text", length = 225)
+    private String commentText;
     @Column(name = "added_date_time")
     private String addedDateTime;
     @Column(name = "added_by", length = 45)
@@ -31,4 +31,8 @@ public class Comment {
     private String commentType;
     @Column(name = "ticket_id", length = 20)
     private String ticketId;
+    @Column(name="attachment_id")
+    private String attachmentId;
+    @Column(name="file_path")
+    private String filePath;
 }

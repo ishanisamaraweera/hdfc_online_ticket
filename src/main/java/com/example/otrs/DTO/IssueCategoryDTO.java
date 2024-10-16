@@ -2,14 +2,14 @@ package com.example.otrs.DTO;
 
 import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 /**
  *
  @author ishani.s
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class IssueCategoryDTO {
     private Integer issueCategoryId;
     private String issueCategoryDes;

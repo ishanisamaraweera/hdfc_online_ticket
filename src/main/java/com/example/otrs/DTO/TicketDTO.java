@@ -1,10 +1,11 @@
 package com.example.otrs.DTO;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 /**
  *
@@ -18,7 +19,7 @@ public class TicketDTO {
     private String ticketId;
     private String sender;
     private String agent;
-    private String reportedDateTime;
+    private LocalDateTime reportedDateTime;
     private String emergencyLevel;
     private String status;
     private String location;
@@ -29,10 +30,10 @@ public class TicketDTO {
     private String isWorkingPc;
     private String ip;
     private String issueDesAndRemarks;
-    private String agentResponseDateTime;
-    private String resolvedDateTime;
+    private LocalDateTime agentResponseDateTime;
+    private LocalDateTime resolvedDateTime;
     private String lastUpdatedUser;
-    private String lastUpdatedDateTime;
+    private LocalDateTime lastUpdatedDateTime;
     private Integer completedPercentage;
     private String agentComment;
     private String contactNo;

@@ -89,4 +89,11 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("SELECT DISTINCT new com.example.otrs.DTO.UserNameDTO(u.username, u.displayName) FROM User u " +
             "WHERE u.username IN (SELECT ura.id.userId FROM UserRoleAssign ura where ura.id.userRoleId = :userRole)")
     List<UserNameDTO> getUserListsByUserRole(@Param("userRole") String userRole);
+
+    @Query("SELECT email FROM User WHERE username = :username")
+    String getEmailByUsername(@Param("username") String username);
+
+    @Query("SELECT DISTINCT u.email FROM User u LEFT JOIN UserRoleAssign ura on u.username = ura.id.userId " +
+            "WHERE ura.id.userRoleId IN (:userRoles)")
+    List<String> getEmailListByUserRoles(@Param("userRoles") List<String> userRoles);
 }

@@ -263,4 +263,12 @@ public class UserService {
     public List<UserNameDTO> getUserListsByUserRole(String userRole){
         return userRepository.getUserListsByUserRole(userRole);
     }
+
+    public String getEmail(String username){
+        return userRepository.getEmailByUsername(username);
+    }
+
+    public List<String> getEmailListByUserRoles(List<String> userRoles){
+        return userRepository.getEmailListByUserRoles(userRoles);
+    }
 }

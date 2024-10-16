@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -43,6 +44,8 @@ public class TicketService {
     AttachmentRepository attachmentRepository;
     @Autowired
     UserService userService;
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     final String FILE_PATH = "C:/Users/ishani.s/Documents/OTRS/";
     public static String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/images";
@@ -70,6 +73,12 @@ public class TicketService {
             Files.write(fileNameAndPath, file.getBytes());
             ticket.setAttachmentId(originalFileName);
             ticket.setFilePath(fileNameAndPath.toString());
+        }
+
+        List<String> emailList = userService.getEmailListByUserRoles(Arrays.asList("SUPERADMIN", "ADMIN", "TOPSUPERVISOR", "'SUPERVISOR'"));
+        for (int i = 0; i < emailList.size(); i++) {
+            emailSenderService.sendEmail(emailList.get(i), "New ticket issued",
+                    "A new ticket " + ticket.getTicketId() + " has been issued and is waiting to be assigned to an agent.");
         }
         return ticketRepository.save(ticket);
     }
@@ -169,6 +178,12 @@ public class TicketService {
             }
             updateTicket.setStatus(5);
             updateTicket.setLastUpdatedDateTime(LocalDateTime.now());
+
+            List<String> emailList = userService.getEmailListByUserRoles(Arrays.asList("SUPERADMIN", "ADMIN", "TOPSUPERVISOR", "'SUPERVISOR'"));
+            for (int i = 0; i < emailList.size(); i++) {
+                emailSenderService.sendEmail(emailList.get(i), "Ticket Closed",
+                        "The ticket " + updateTicket.getTicketId() + " has been closed.");
+            }
             ticketRepository.save(updateTicket);
             return updateTicket;
         }
@@ -372,6 +387,14 @@ public class TicketService {
         String readableDuration = String.format("%d days, %d hours, %d minutes",
                 days, hours, minutes);
         assignTicket.setResolutionPeriod(readableDuration);
+        emailSenderService.sendEmail(userService.getEmail(assignTicket.getSender()), "Ticket Completed",
+                "Ticket " + assignTicket.getTicketId() + " has been completed. Please review it and close the ticket if the issue has been resolved.");
+
+        List<String> emailList = userService.getEmailListByUserRoles(Arrays.asList("SUPERADMIN", "ADMIN"));
+        for (int i = 0; i < emailList.size(); i++) {
+            emailSenderService.sendEmail(emailList.get(i), "Ticket Completed",
+                    "Ticket " + assignTicket.getTicketId() + " has been completed. Please review it and close the ticket if the issue has been resolved.");
+        }
         ticketRepository.save((assignTicket));
     }
 
@@ -413,6 +436,13 @@ public class TicketService {
         ticket.setLastUpdatedUser(request.getUsername());
         ticket.setLastUpdatedDateTime(LocalDateTime.now());
         ticket.setStatus(9);
+        emailSenderService.sendEmail(userService.getEmail(ticket.getAgent()), "Ticket Re-opened",
+                "The ticket " + ticket.getTicketId() + " has been re-opened. Please check it.");
+        List<String> emailList = userService.getEmailListByUserRoles(Arrays.asList("SUPERADMIN", "ADMIN"));
+        for (int i = 0; i < emailList.size(); i++) {
+            emailSenderService.sendEmail(emailList.get(i), "Ticket Re-opened",
+                    "The ticket " + ticket.getTicketId() + " has been re-opened. Please check it.");
+        }
         ticketRepository.save((ticket));
     }
 }

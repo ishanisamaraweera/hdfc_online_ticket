@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,8 +47,8 @@ public class IssueCategoryService {
     public IssueCategory addIssueCategory(IssueCategory issueCategory) {
         int  issueCategoryId = issueCategoryRepository.findMaxIssueCategoryId() + 1;
         issueCategory.setIssueCategoryId(issueCategoryId);
-        issueCategory.setCreatedDateTime(LocalDateTime.now().toString());
-        issueCategory.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        issueCategory.setCreatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        issueCategory.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         return issueCategoryRepository.save(issueCategory);
     }
 
@@ -61,8 +62,8 @@ public class IssueCategoryService {
         updateIssueCategory.setIssueType(issueCategory.getIssueType());
         updateIssueCategory.setStatus(issueCategory.getStatus());
         updateIssueCategory.setLastUpdatedUser(issueCategory.getLastUpdatedUser());
-        updateIssueCategory.setLastUpdatedDateTime(LocalDateTime.now().toString());
-        issueCategoryRepository.save((updateIssueCategory));
+        updateIssueCategory.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        issueCategoryRepository.save(updateIssueCategory);
         return updateIssueCategory;
     }
 
@@ -73,7 +74,7 @@ public class IssueCategoryService {
             throw new Exception("Issue category not found");
         }
         deleteIssueCategory.setStatus(6);
-        deleteIssueCategory.setLastUpdatedDateTime(LocalDateTime.now().toString());
+        deleteIssueCategory.setLastUpdatedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         issueCategoryRepository.save((deleteIssueCategory));
     }
 }

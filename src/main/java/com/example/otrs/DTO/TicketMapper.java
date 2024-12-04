@@ -2,6 +2,8 @@ package com.example.otrs.DTO;
 
 import com.example.otrs.Entity.Ticket;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -12,10 +14,12 @@ public class TicketMapper {
 
     public static Ticket mapToTicket(List<String> input) {
         Ticket ticket = new Ticket();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
         ticket.setTicketId(input.get(0));
         ticket.setSender(input.get(1));
         ticket.setAgent(input.get(2));
-        ticket.setReportedDateTime(input.get(3));
+        ticket.setReportedDateTime(LocalDateTime.parse(input.get(3), formatter));
         ticket.setEmergencyLevel(mapEmergencyLevel(input.get(4)));
         ticket.setStatus(mapStatus(input.get(5)));
         ticket.setLocation(input.get(18));  // Assuming location is at index 18
@@ -27,12 +31,12 @@ public class TicketMapper {
         ticket.setIsWorkingPc(input.get(9));
         ticket.setIp(input.get(10));
         ticket.setIssueDesAndRemarks(input.get(11));
-        ticket.setAgentResponseDateTime(input.get(12));
-        ticket.setResolvedDateTime(input.get(13));
+        ticket.setAgentResponseDateTime(LocalDateTime.parse(input.get(12), formatter));
+        ticket.setResolvedDateTime(LocalDateTime.parse(input.get(13), formatter));
         ticket.setResolutionPeriod(input.get(17));  // Assuming resolutionPeriod is at index 17
         ticket.setAgentComment(input.get(14));
         ticket.setLastUpdatedUser(input.get(15));
-        ticket.setLastUpdatedDateTime(input.get(16));
+        ticket.setLastUpdatedDateTime(LocalDateTime.parse(input.get(16), formatter));
         ticket.setCompletedPercentage(Integer.parseInt(input.get(21)));  // Assuming completedPercentage is at index 21
         return ticket;
     }

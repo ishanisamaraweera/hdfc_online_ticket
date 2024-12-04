@@ -15,9 +15,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CommentRequestDTO {
     private Integer commentId;
-    private String comment;
+    private String commentText;
     private String addedDateTime;
     private String addedBy;
     private String commentType;
     private String ticketId;
+    private String attachmentId;
+    private String filePath;
 }

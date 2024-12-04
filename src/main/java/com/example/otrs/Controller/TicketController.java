@@ -3,18 +3,17 @@ package com.example.otrs.Controller;
 import com.example.otrs.DTO.AssignRequestDTO;
 import com.example.otrs.DTO.CommentRequestDTO;
 import com.example.otrs.DTO.TicketDTO;
+import com.example.otrs.Entity.Comment;
 import com.example.otrs.Entity.Ticket;
 import com.example.otrs.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -25,27 +24,10 @@ public class TicketController {
     @Autowired
     private TicketService ticketService;
 
-
-    //Add new ticket
     @CrossOrigin(origins = "*")
     @PostMapping("/addTicket")
-    public Ticket addTicket(@RequestBody Ticket ticket//, @RequestParam("files") List<MultipartFile> files
-    ) {
-//        System.out.println("Add Ticket");
-//
-//        for (MultipartFile file : files) {
-//            if (!file.isEmpty()) {
-//                try {
-//                    // Save the file or process it
-//                    byte[] bytes = file.getBytes();
-//                    Path path = Paths.get("uploads/" + file.getOriginalFilename());
-//                    Files.write(path, bytes);
-//                } catch (IOException e) {
-//                    return null;
-//                }
-//            }
-//        }
-        return ticketService.saveDetails(ticket);
+    public Ticket addTicket(@ModelAttribute Ticket ticket, @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        return ticketService.saveDetails(ticket, file);
     }
 
     @GetMapping("/getTicket/{username}")
@@ -58,7 +40,6 @@ public class TicketController {
         Ticket ticket = ticketService.getTicketWithComments(ticketId);
         return ResponseEntity.ok(ticket);
     }
-
 
     //Update all ticket details
     @PutMapping("/updateTicket")
@@ -114,14 +95,27 @@ public class TicketController {
         return ticketService.getTotalTicketCount(username);
     }
 
-    @GetMapping("/searchTickets/{status}")
-    public List<TicketDTO> searchTickets(@PathVariable Integer status) throws IOException {
-        return ticketService.searchTickets(status);
-    }
-
     @GetMapping("/searchTickets")
-    public List<TicketDTO> searchTickets() throws IOException {
-        return ticketService.searchTickets();
+    public List<TicketDTO> searchTickets(@RequestParam String username,
+                                         @RequestParam(required = false) String status,
+                                         @RequestParam(required = false) String fromDate,
+                                         @RequestParam(required = false) String toDate) throws IOException {
+        LocalDateTime fromDateInput = null;
+        LocalDateTime toDateInput = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+        if (fromDate == null || fromDate.equals("null")){
+            fromDateInput = LocalDateTime.of(1800, 1, 1, 0, 0); // Some minimum date
+        } else {
+            fromDateInput = LocalDateTime.parse(fromDate, formatter);
+        }
+        if (toDate == null || toDate.equals("null")) {
+            toDateInput = LocalDateTime.now(); // Current date as the maximum date
+        } else {
+            toDateInput = LocalDateTime.parse(toDate, formatter);
+        }
+
+        return ticketService.searchTickets(username, status, fromDateInput, toDateInput);
     }
 
     @PutMapping("/assignTicket/{ticketId}")
@@ -150,12 +144,8 @@ public class TicketController {
     }
 
     @PostMapping("/addComment")
-    public ResponseEntity<?> addComment(@RequestParam("comment") String comment,
-                                        @RequestParam("ticketId") String ticketId,
-                                        @RequestParam("addedBy") String addedBy,
-                                        @RequestParam(value = "file", required = false) MultipartFile file,
-                                        @RequestParam(value = "attachments", required = false) List<MultipartFile> attachments) throws IOException {
-        return ticketService.addComment(ticketId, comment, addedBy, file, attachments);
+    public Comment addComment(@ModelAttribute Comment comment, @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        return ticketService.addComment(comment, file);
     }
 
     @GetMapping("/getCommentsByTicketId/{ticketId}")
@@ -163,8 +153,8 @@ public class TicketController {
         return ticketService.getCommentsByTicketId(ticketId);
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
-        return ticketService.uploadFile(file);
+    @PutMapping("/reopenTicket/{ticketId}")
+    public void reopenTicket(@PathVariable String ticketId, @RequestBody AssignRequestDTO request) throws Exception {
+        ticketService.reopenTicket(ticketId, request);
     }
 }
